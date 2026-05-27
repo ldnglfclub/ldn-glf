@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caddie — LDN GLF CLUB</title>
+<meta name="description" content="Hole-by-hole intel for London's golf courses. Where to aim. Where to miss. What the locals know. Crowd-sourced by LDN GLF Club members.">
+<meta property="og:title" content="Caddie — LDN GLF CLUB">
+<meta property="og:description" content="Hole-by-hole intel for London's courses. Real beta from real members.">
+<meta property="og:image" content="logo.png">
+<link rel="icon" type="image/png" href="logo-small.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0B2118;
+    --green-rich: #143425;
+    --green-mid: #1F4A33;
+    --green-soft: #2D5C3F;
+    --cream: #EFE5CC;
+    --cream-warm: #E5D8B8;
+    --cream-deep: #D9C99E;
+    --ink: #050505;
+    --brass: #C9A86A;
+    --hot: #E84D2C;
+    --water: #6B9DC2;
+    --sand: #D9C99E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--green-deep);
+    font-family: 'Archivo', sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 70px;
+  }
+  ::selection { background: var(--green-deep); color: var(--cream); }
+
+  /* ============ APP HEADER (mobile-feel) ============ */
+  .app-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--green-deep);
+    color: var(--cream);
+    z-index: 100;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--green-mid);
+  }
+  .app-header-left { display: flex; align-items: center; gap: 12px; }
+  .app-header-logo { width: 32px; height: 32px; border-radius: 50%; background: var(--cream); padding: 4px; }
+  .app-header-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    color: var(--cream);
+  }
+  .app-header-title .accent { color: var(--hot); }
+  .menu-btn {
+    background: transparent; border: none;
+    color: var(--cream); cursor: pointer;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .menu-btn svg { width: 24px; height: 24px; }
+
+  /* ============ MOBILE SIDE MENU ============ */
+  .mobile-menu {
+    position: fixed;
+    top: 0; right: -100%;
+    width: 80%; max-width: 320px;
+    height: 100%;
+    background: var(--green-deep);
+    z-index: 200;
+    padding: 80px 32px 32px;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .mobile-menu.open { right: 0; }
+  .mobile-menu a {
+    color: var(--cream);
+    text-decoration: none;
+    font-family: 'Anton', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1.5px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--green-mid);
+    transition: color 0.2s, padding-left 0.2s;
+  }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--hot); padding-left: 8px; }
+  .mobile-menu-close {
+    position: absolute;
+    top: 18px; right: 24px;
+    background: transparent; border: none;
+    color: var(--cream); cursor: pointer;
+    width: 36px; height: 36px;
+  }
+  .mobile-menu-close svg { width: 28px; height: 28px; }
+
+  /* ============ PAGE HERO ============ */
+  .page-hero {
+    padding: 36px 20px 24px;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 200px; height: 200px;
+    background: var(--hot);
+    border-radius: 50%;
+    opacity: 0.08;
+  }
+  .page-label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--hot);
+    margin-bottom: 10px;
+  }
+  .page-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 64px;
+    line-height: 0.92;
+    letter-spacing: -1px;
+    color: var(--green-deep);
+    margin-bottom: 14px;
+  }
+  .page-title .italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--hot);
+    letter-spacing: -2px;
+  }
+  .page-sub {
+    font-family: 'Archivo', sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--green-rich);
+    max-width: 600px;
+    font-weight: 500;
+  }
+  .page-sub strong { color: var(--green-deep); font-weight: 800; }
+
+  /* ============ COURSE SELECTOR (sticky chip row) ============ */
+  .selector-wrap {
+    position: sticky;
+    top: 60px;
+    z-index: 90;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(11, 33, 24, 0.12);
+    padding: 14px 0 14px;
+  }
+  .selector-label {
+    padding: 0 20px 8px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--green-mid);
+  }
+  .selector-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 20px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .selector-scroll::-webkit-scrollbar { display: none; }
+  .course-chip {
+    flex: 0 0 auto;
+    background: transparent;
+    border: 1.5px solid var(--green-deep);
+    color: var(--green-deep);
+    padding: 9px 16px;
+    border-radius: 100px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .course-chip:hover { background: var(--green-mid); color: var(--cream); border-color: var(--green-mid); }
+  .course-chip.active { background: var(--green-deep); color: var(--cream); }
+  .course-chip.locked {
+    border-color: rgba(11, 33, 24, 0.25);
+    color: rgba(11, 33, 24, 0.45);
+    cursor: not-allowed;
+  }
+  .course-chip.locked:hover { background: transparent; color: rgba(11, 33, 24, 0.45); border-color: rgba(11, 33, 24, 0.25); }
+  .course-chip .lock {
+    display: inline-block;
+    margin-right: 4px;
+    font-size: 10px;
+  }
+
+  /* ============ COURSE STAGE ============ */
+  .course-stage { display: none; }
+  .course-stage.active { display: block; }
+
+  /* ============ COURSE OVERVIEW CARD ============ */
+  .overview-card {
+    margin: 24px 20px;
+    background: var(--green-deep);
+    color: var(--cream);
+    border-radius: 18px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .overview-card::before {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: var(--hot);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+  .overview-flag {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 10px;
+  }
+  .overview-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 36px;
+    line-height: 0.95;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .overview-meta {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--cream-warm);
+    margin-bottom: 22px;
+  }
+  .overview-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 2;
+  }
+  .stat-box {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--green-mid);
+    padding: 12px 10px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 22px;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-family: 'Archivo', sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--brass);
+    font-weight: 700;
+  }
+  .overview-blurb {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--cream-warm);
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--green-mid);
+    padding-top: 18px;
+  }
+  .overview-blurb strong { color: var(--cream); font-weight: 700; }
+
+  /* ============ INTEL SECTION HEADER ============ */
+  .section-header {
+    padding: 32px 20px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .section-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 32px;
+    line-height: 0.95;
+    letter-spacing: 0.5px;
+    color: var(--green-deep);
+  }
+  .section-title .italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--hot);
+    letter-spacing: -1px;
+  }
+  .section-count {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    padding-bottom: 6px;
+  }
+
+  /* ============ HOLE CARDS ============ */
+  .holes-list {
+    padding: 8px 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .hole-card {
+    background: var(--cream-warm);
+    border: 1.5px solid var(--green-deep);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .hole-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(11, 33, 24, 0.15);
+  }
+  .hole-top {
+    display: flex;
+    align-items: stretch;
+    background: var(--green-deep);
+    color: var(--cream);
+  }
+  .hole-num-block {
+    flex: 0 0 88px;
+    padding: 18px 14px;
+    background: var(--hot);
+    color: var(--cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .hole-num-label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+  .hole-num {
+    font-family: 'Anton', sans-serif;
+    font-size: 42px;
+    line-height: 0.9;
+    margin: 2px 0;
+  }
+  .hole-par-yds {
+    flex: 1;
+    padding: 18px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+  .hole-par-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .hole-par {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  .hole-yds {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--cream);
+    letter-spacing: 0.5px;
+  }
+  .hole-name {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--cream-warm);
+    line-height: 1.2;
+  }
+
+  /* SVG diagram box */
+  .hole-diagram-wrap {
+    background: linear-gradient(160deg, #1F4A33 0%, #2D5C3F 100%);
+    padding: 14px 18px 18px;
+    border-bottom: 1px solid var(--green-deep);
+    position: relative;
+  }
+  .hole-diagram-label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 6px;
+  }
+  .hole-diagram {
+    width: 100%;
+    height: 140px;
+    display: block;
+  }
+
+  /* Intel rows */
+  .intel-body {
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .intel-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .intel-icon {
+    flex: 0 0 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--green-deep);
+    color: var(--cream);
+  }
+  .intel-icon.miss { background: var(--hot); }
+  .intel-icon.junior { background: var(--brass); }
+  .intel-icon svg { width: 16px; height: 16px; }
+  .intel-text { flex: 1; }
+  .intel-label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 3px;
+  }
+  .intel-label.miss { color: var(--hot); }
+  .intel-content {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--green-deep);
+    font-weight: 500;
+  }
+  .intel-content strong { font-weight: 800; }
+
+  /* Nine break */
+  .nine-break {
+    margin: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .nine-line { flex: 1; height: 1px; background: var(--green-deep); opacity: 0.25; }
+  .nine-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green-mid);
+  }
+
+  /* ============ SUBMIT INTEL CTA ============ */
+  .submit-cta {
+    margin: 40px 20px 32px;
+    background: var(--green-deep);
+    color: var(--cream);
+    border-radius: 18px;
+    padding: 36px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-cta::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 180px; height: 180px;
+    background: var(--hot);
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+  .submit-cta::after {
+    content: '';
+    position: absolute;
+    bottom: -50px; right: -50px;
+    width: 140px; height: 140px;
+    background: var(--brass);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+  .submit-flag {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--hot);
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 2;
+  }
+  .submit-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 40px;
+    line-height: 0.95;
+    letter-spacing: -0.5px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 2;
+  }
+  .submit-title .italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--brass);
+    letter-spacing: -1px;
+  }
+  .submit-body {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--cream-warm);
+    margin-bottom: 22px;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 2;
+  }
+  .submit-btn {
+    display: inline-block;
+    background: var(--hot);
+    color: var(--cream);
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    position: relative;
+    z-index: 2;
+  }
+  .submit-btn:hover { background: var(--cream); color: var(--green-deep); transform: translateY(-2px); }
+
+  /* ============ INTEL MODAL ============ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 33, 24, 0.7);
+    backdrop-filter: blur(6px);
+    z-index: 300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--cream);
+    border-radius: 18px;
+    padding: 28px 24px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green-deep);
+  }
+  .modal-close svg { width: 22px; height: 22px; }
+  .modal-flag {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--hot);
+    margin-bottom: 8px;
+  }
+  .modal-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    color: var(--green-deep);
+    margin-bottom: 18px;
+  }
+  .modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .modal-field label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-mid);
+  }
+  .modal-field input,
+  .modal-field select,
+  .modal-field textarea {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    color: var(--green-deep);
+    background: transparent;
+    border: 1.5px solid var(--green-deep);
+    border-radius: 10px;
+    padding: 12px 14px;
+    width: 100%;
+    font-weight: 500;
+  }
+  .modal-field textarea { min-height: 100px; resize: vertical; }
+  .modal-field input:focus,
+  .modal-field select:focus,
+  .modal-field textarea:focus { outline: 2px solid var(--hot); outline-offset: 0; }
+  .modal-submit {
+    width: 100%;
+    background: var(--green-deep);
+    color: var(--cream);
+    border: none;
+    padding: 16px;
+    border-radius: 100px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .modal-submit:hover { background: var(--hot); }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 40px 20px 24px;
+    margin-top: 40px;
+  }
+  .foot-mark {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+  .foot-mark .accent { color: var(--hot); }
+  .foot-lines {
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(239, 229, 204, 0.6);
+    line-height: 1.8;
+  }
+  .foot-lines a { color: var(--cream); text-decoration: none; }
+  .foot-lines a:hover { color: var(--hot); }
+
+  /* ============ BOTTOM NAV (mobile) ============ */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 64px;
+    background: var(--green-deep);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-top: 1px solid var(--green-mid);
+    z-index: 90;
+  }
+  .bottom-nav a {
+    color: rgba(239, 229, 204, 0.5);
+    text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 4px 12px;
+    transition: color 0.2s;
+  }
+  .bottom-nav a.active { color: var(--cream); }
+  .bottom-nav a:hover { color: var(--hot); }
+  .bottom-nav a svg { width: 22px; height: 22px; }
+  .bottom-nav a span {
+    font-family: 'Archivo', sans-serif; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
+  }
+
+  /* ============ TOAST ============ */
+  .toast {
+    position: fixed;
+    top: 80px; left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 12px 22px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    z-index: 999;
+    border: 2px solid var(--brass);
+    border-radius: 6px;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ============ DESKTOP (website-feel) ============ */
+  @media (min-width: 768px) {
+    body {
+      padding-bottom: 0;
+    }
+    .bottom-nav { display: none; }
+    .app-header {
+      padding: 16px 48px;
+    }
+    .app-header-title { font-size: 16px; }
+    .app-header-logo { width: 36px; height: 36px; }
+
+    .page-hero {
+      padding: 64px 48px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .page-title { font-size: 96px; }
+    .page-sub { font-size: 17px; max-width: 700px; }
+
+    .selector-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      top: 68px;
+    }
+    .selector-scroll { padding: 0 48px; flex-wrap: wrap; }
+    .course-chip { font-size: 13px; padding: 10px 18px; }
+
+    .overview-card {
+      margin: 36px 48px;
+      max-width: calc(1200px - 96px);
+      margin-left: auto;
+      margin-right: auto;
+      padding: 44px 44px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      grid-template-areas:
+        "head stats"
+        "blurb stats";
+      gap: 28px 40px;
+      align-items: start;
+    }
+    .overview-head { grid-area: head; }
+    .overview-stats {
+      grid-area: stats;
+      margin-bottom: 0;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .overview-blurb {
+      grid-area: blurb;
+      border-top: none;
+      padding-top: 0;
+      font-size: 15px;
+    }
+    .overview-name { font-size: 56px; }
+    .overview-meta { font-size: 20px; }
+    .stat-num { font-size: 28px; }
+
+    .section-header { padding: 48px 48px 16px; max-width: 1200px; margin: 0 auto; }
+    .section-title { font-size: 48px; }
+
+    .holes-list {
+      padding: 8px 48px 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .hole-card { gap: 0; }
+    .nine-break {
+      grid-column: 1 / -1;
+      margin: 12px 0;
+    }
+    .hole-num { font-size: 48px; }
+    .hole-num-block { flex: 0 0 100px; }
+
+    .submit-cta {
+      max-width: 1200px;
+      margin: 56px auto 48px;
+      padding: 56px 48px;
+    }
+    .submit-title { font-size: 56px; }
+
+    footer { padding: 56px 48px 32px; }
+    .foot-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 24px; }
+  }
+
+  @media (min-width: 1024px) {
+    .holes-list { grid-template-columns: repeat(3, 1fr); }
+    .nine-break { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ STICKY MOBILE HEADER ============ -->
+<header class="app-header">
+  <div class="app-header-left">
+    <img src="logo.png" alt="LDN GLF Club" class="app-header-logo" onerror="this.style.display='none'">
+    <div class="app-header-title">LDN GLF<span class="accent">.</span>CLUB</div>
+  </div>
+  <button class="menu-btn" onclick="document.getElementById('mobileMenu').classList.add('open')" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</header>
+
+<!-- ============ MOBILE MENU ============ -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="document.getElementById('mobileMenu').classList.remove('open')" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="index.html">Home</a>
+  <a href="member.html">My Club</a>
+  <a href="scorecard.html">Scorecard</a>
+  <a href="courses.html">Course Atlas</a>
+  <a href="caddie.html" class="active">Caddie</a>
+  <a href="code.html">Our Code</a>
+  <a href="parents.html">For Parents</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- ============ PAGE HERO ============ -->
+<section class="page-hero">
+  <p class="page-label">✦ Caddie — Hole By Hole</p>
+  <h1 class="page-title">Know the <span class="italic">course</span>.<br>Beat the <span class="italic">course.</span></h1>
+  <p class="page-sub">Pre-round intel for London's tracks. <strong>Where to aim. Where to miss. What the locals know.</strong> Built by members, for members — three full courses live, more being crowd-sourced every week.</p>
+</section>
+
+<!-- ============ COURSE SELECTOR ============ -->
+<div class="selector-wrap">
+  <div class="selector-label">Pick your course</div>
+  <div class="selector-scroll" id="courseSelector">
+    <button class="course-chip active" data-course="princes">Richmond Park — Prince's</button>
+    <button class="course-chip" data-course="dukes">Richmond Park — Duke's</button>
+    <button class="course-chip" data-course="shire">The Shire London</button>
+    <button class="course-chip locked"><span class="lock">✦</span> Beckenham Place — Coming</button>
+    <button class="course-chip locked"><span class="lock">✦</span> Trent Park — Coming</button>
+    <button class="course-chip locked"><span class="lock">✦</span> Lee Valley — Coming</button>
+    <button class="course-chip locked"><span class="lock">✦</span> Brent Valley — Coming</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ============ COURSE STAGE: PRINCE'S (default active) ======= -->
+<!-- ============================================================ -->
+<div class="course-stage active" id="stage-princes">
+
+  <!-- Overview -->
+  <div class="overview-card">
+    <div class="overview-head">
+      <div class="overview-flag">✦ Course 01 — South West London</div>
+      <h2 class="overview-name">Richmond Park —<br>Prince's Course</h2>
+      <p class="overview-meta">Opened 1923 · Designed by Fred Hawtree · Redesigned 2013</p>
+    </div>
+    <div class="overview-stats">
+      <div class="stat-box"><div class="stat-num">68</div><div class="stat-label">Par</div></div>
+      <div class="stat-box"><div class="stat-num">5,487</div><div class="stat-label">Yards (W)</div></div>
+      <div class="stat-box"><div class="stat-num">66.9</div><div class="stat-label">Course Rating</div></div>
+    </div>
+    <p class="overview-blurb">The shorter, more forgiving of Richmond Park's two courses — <strong>perfect for juniors, beginners and members getting comp-ready.</strong> Sits on the higher ground of the park. Big skies, mature oaks, the occasional deer wandering across a fairway. Don't let "Par 68" fool you: tight tree-lined corridors and small greens punish a sloppy round. The 2013 redesign added seven new greens and tightened the routing — this is a proper test in a smaller package.</p>
+  </div>
+
+  <!-- Front Nine -->
+  <div class="section-header">
+    <h3 class="section-title">Front <span class="italic">nine</span></h3>
+    <div class="section-count">Holes 1–9</div>
+  </div>
+  <div class="holes-list" id="princes-front">
+    <!-- Holes populated by JS for cleaner authoring -->
+  </div>
+
+  <div class="nine-break">
+    <div class="nine-line"></div>
+    <div class="nine-label">— Halfway Hut —</div>
+    <div class="nine-line"></div>
+  </div>
+
+  <!-- Back Nine -->
+  <div class="section-header">
+    <h3 class="section-title">Back <span class="italic">nine</span></h3>
+    <div class="section-count">Holes 10–18</div>
+  </div>
+  <div class="holes-list" id="princes-back"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ============ COURSE STAGE: DUKE'S =========================== -->
+<!-- ============================================================ -->
+<div class="course-stage" id="stage-dukes">
+
+  <div class="overview-card">
+    <div class="overview-head">
+      <div class="overview-flag">✦ Course 02 — South West London</div>
+      <h2 class="overview-name">Richmond Park —<br>Duke's Course</h2>
+      <p class="overview-meta">Opened 1925 · Designed by Fred Hawtree · The longer test</p>
+    </div>
+    <div class="overview-stats">
+      <div class="stat-box"><div class="stat-num">71</div><div class="stat-label">Par</div></div>
+      <div class="stat-box"><div class="stat-num">6,359</div><div class="stat-label">Yards (W)</div></div>
+      <div class="stat-box"><div class="stat-num">71.1</div><div class="stat-label">Course Rating</div></div>
+    </div>
+    <p class="overview-blurb">The grown-up sibling. <strong>Beverley Brook — the park's ancient stream — winds through holes 3–6 on the front and re-enters play on 12–14 on the back.</strong> Slope rating of 131 off the whites tells you everything: you need to think your way round. Longer par-4s, more carries, less margin. If Prince's is where you learn the game, Duke's is where you prove you've got it.</p>
+  </div>
+
+  <div class="section-header">
+    <h3 class="section-title">Front <span class="italic">nine</span></h3>
+    <div class="section-count">Holes 1–9</div>
+  </div>
+  <div class="holes-list" id="dukes-front"></div>
+
+  <div class="nine-break">
+    <div class="nine-line"></div>
+    <div class="nine-label">— Halfway Hut —</div>
+    <div class="nine-line"></div>
+  </div>
+
+  <div class="section-header">
+    <h3 class="section-title">Back <span class="italic">nine</span></h3>
+    <div class="section-count">Holes 10–18</div>
+  </div>
+  <div class="holes-list" id="dukes-back"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ============ COURSE STAGE: SHIRE LONDON ===================== -->
+<!-- ============================================================ -->
+<div class="course-stage" id="stage-shire">
+
+  <div class="overview-card">
+    <div class="overview-head">
+      <div class="overview-flag">✦ Course 03 — North London / Barnet</div>
+      <h2 class="overview-name">The Shire London —<br>Ballesteros Masters</h2>
+      <p class="overview-meta">Opened 2007 · Designed by Seve Ballesteros — his only UK course</p>
+    </div>
+    <div class="overview-stats">
+      <div class="stat-box"><div class="stat-num">72</div><div class="stat-label">Par</div></div>
+      <div class="stat-box"><div class="stat-num">7,028</div><div class="stat-label">Yards</div></div>
+      <div class="stat-box"><div class="stat-num">6/6/6</div><div class="stat-label">3s / 4s / 5s</div></div>
+    </div>
+    <p class="overview-blurb">Seve's masterpiece on the edge of London. <strong>Six par-3s, six par-4s, six par-5s — no two consecutive holes the same par.</strong> Twelve holes feature water. The signature par-3 8th plays over a lake. The closing 18th green is wrapped by an S-shaped lake — Seve literally signed his initial on the land. Built with soil excavated from Wembley, the Emirates and Wimbledon. A proper bucket-list round, ten miles from central London.</p>
+  </div>
+
+  <div class="section-header">
+    <h3 class="section-title">Front <span class="italic">nine</span></h3>
+    <div class="section-count">Holes 1–9</div>
+  </div>
+  <div class="holes-list" id="shire-front"></div>
+
+  <div class="nine-break">
+    <div class="nine-line"></div>
+    <div class="nine-label">— Halfway Hut —</div>
+    <div class="nine-line"></div>
+  </div>
+
+  <div class="section-header">
+    <h3 class="section-title">Back <span class="italic">nine</span></h3>
+    <div class="section-count">Holes 10–18</div>
+  </div>
+  <div class="holes-list" id="shire-back"></div>
+</div>
+
+<!-- ============ SUBMIT INTEL CTA ============ -->
+<section class="submit-cta">
+  <div class="submit-flag">✦ Crowd-sourced — Real members only</div>
+  <h2 class="submit-title">Played a hole?<br>Drop the <span class="italic">intel.</span></h2>
+  <p class="submit-body">If you've played a London course we haven't covered yet — or you've got better beta on a hole we have — share it. We verify every submission with at least one other member before it goes live. <strong>Your name gets credited on the card.</strong> This page only works if members build it.</p>
+  <button class="submit-btn" onclick="openIntelModal()">Submit Your Intel</button>
+</section>
+
+<!-- ============ INTEL MODAL ============ -->
+<div class="modal-overlay" id="intelModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeIntelModal()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-flag">✦ Submit Your Intel</div>
+    <h2 class="modal-title">Help us build<br>the caddie.</h2>
+    <form onsubmit="submitIntel(event)">
+      <div class="modal-field">
+        <label for="memberName">Your name + member #</label>
+        <input type="text" id="memberName" placeholder="e.g. Dylan H. — Member #001" required>
+      </div>
+      <div class="modal-field">
+        <label for="courseName">Course</label>
+        <input type="text" id="courseName" placeholder="e.g. Beckenham Place GC" required>
+      </div>
+      <div class="modal-field">
+        <label for="holeNum">Hole number</label>
+        <input type="text" id="holeNum" placeholder="e.g. 7 (or 'overview' for whole course')" required>
+      </div>
+      <div class="modal-field">
+        <label for="intelType">What's the intel?</label>
+        <select id="intelType" required>
+          <option value="">— Pick one —</option>
+          <option value="strategy">Strategy / where to aim</option>
+          <option value="miss">Where to miss</option>
+          <option value="junior">Junior / beginner tip</option>
+          <option value="general">General course beta</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label for="intelDetail">The detail</label>
+        <textarea id="intelDetail" placeholder="Be specific. Pin number, layup yardage, exact miss side. We verify with another member before publishing." required></textarea>
+      </div>
+      <div class="modal-field">
+        <label for="memberEmail">Email (for credit + verification)</label>
+        <input type="email" id="memberEmail" placeholder="optional but recommended">
+      </div>
+      <button type="submit" class="modal-submit">Send to the Caddie</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"></div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="foot-mark">LDN GLF<span class="accent">.</span>CLUB</div>
+      <div class="foot-lines">
+        London's golf club for the next generation.<br>
+        Built by <a href="member.html">Dylan Heer</a> · Founding Member #001
+      </div>
+    </div>
+    <div class="foot-lines">
+      <a href="index.html">Home</a> · <a href="courses.html">Atlas</a> · <a href="caddie.html">Caddie</a> · <a href="scorecard.html">Scorecard</a> · <a href="code.html">Code</a><br>
+      <a href="parents.html">Parents</a> · <a href="contact.html">Contact</a> · <a href="legal.html">Legal</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ BOTTOM NAV (mobile) ============ -->
+<nav class="bottom-nav">
+  <a href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="courses.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <span>Atlas</span>
+  </a>
+  <a href="caddie.html" class="active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <span>Caddie</span>
+  </a>
+  <a href="scorecard.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span>Play</span>
+  </a>
+  <a href="member.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Me</span>
+  </a>
+</nav>
+
+<script>
+// ============================================================
+// SVG DIAGRAM BUILDERS — schematic top-down hole views
+// ============================================================
+function diagDogleg(direction, hazards) {
+  // direction: 'left' or 'right'
+  // hazards: { water, bunkers, trees }
+  const path = direction === 'left'
+    ? 'M 40 130 Q 60 80, 140 60 Q 220 50, 280 30'
+    : 'M 40 130 Q 60 80, 160 70 Q 240 60, 280 30';
+  return `
+    <svg class="hole-diagram" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet">
+      <rect width="320" height="140" fill="none"/>
+      <!-- fairway -->
+      <path d="${path}" stroke="#D9C99E" stroke-width="32" fill="none" stroke-linecap="round" opacity="0.55"/>
+      <path d="${path}" stroke="#EFE5CC" stroke-width="20" fill="none" stroke-linecap="round" opacity="0.45"/>
+      <!-- tee -->
+      <rect x="32" y="124" width="16" height="12" fill="#C9A86A" rx="2"/>
+      <text x="40" y="120" font-family="Archivo, sans-serif" font-size="9" fill="#EFE5CC" text-anchor="middle" font-weight="700">T</text>
+      <!-- green -->
+      <ellipse cx="280" cy="30" rx="18" ry="14" fill="#0B2118" opacity="0.85"/>
+      <circle cx="280" cy="30" r="3" fill="#E84D2C"/>
+      <line x1="280" y1="30" x2="280" y2="14" stroke="#E84D2C" stroke-width="1.5"/>
+      <polygon points="280,14 288,17 280,20" fill="#E84D2C"/>
+      ${hazards.water ? '<ellipse cx="200" cy="100" rx="34" ry="14" fill="#6B9DC2" opacity="0.7"/>' : ''}
+      ${hazards.bunkers ? '<circle cx="255" cy="50" r="7" fill="#D9C99E"/><circle cx="295" cy="55" r="5" fill="#D9C99E"/>' : ''}
+      ${hazards.trees ? '<circle cx="100" cy="35" r="5" fill="#1F4A33"/><circle cx="130" cy="25" r="5" fill="#1F4A33"/><circle cx="220" cy="90" r="5" fill="#1F4A33"/>' : ''}
+    </svg>`;
+}
+
+function diagStraight(hazards) {
+  return `
+    <svg class="hole-diagram" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet">
+      <path d="M 40 110 L 280 30" stroke="#D9C99E" stroke-width="34" fill="none" stroke-linecap="round" opacity="0.55"/>
+      <path d="M 40 110 L 280 30" stroke="#EFE5CC" stroke-width="22" fill="none" stroke-linecap="round" opacity="0.45"/>
+      <rect x="32" y="104" width="16" height="12" fill="#C9A86A" rx="2"/>
+      <text x="40" y="100" font-family="Archivo" font-size="9" fill="#EFE5CC" text-anchor="middle" font-weight="700">T</text>
+      <ellipse cx="280" cy="30" rx="18" ry="14" fill="#0B2118" opacity="0.85"/>
+      <circle cx="280" cy="30" r="3" fill="#E84D2C"/>
+      <line x1="280" y1="30" x2="280" y2="14" stroke="#E84D2C" stroke-width="1.5"/>
+      <polygon points="280,14 288,17 280,20" fill="#E84D2C"/>
+      ${hazards.water ? '<rect x="140" y="80" width="60" height="14" fill="#6B9DC2" opacity="0.7" rx="6"/>' : ''}
+      ${hazards.bunkers ? '<circle cx="260" cy="55" r="7" fill="#D9C99E"/><circle cx="296" cy="48" r="5" fill="#D9C99E"/>' : ''}
+      ${hazards.trees ? '<circle cx="90" cy="45" r="5" fill="#1F4A33"/><circle cx="120" cy="30" r="5" fill="#1F4A33"/><circle cx="200" cy="100" r="5" fill="#1F4A33"/><circle cx="230" cy="115" r="5" fill="#1F4A33"/>' : ''}
+    </svg>`;
+}
+
+function diagPar3(hazards) {
+  return `
+    <svg class="hole-diagram" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet">
+      ${hazards.water ? '<rect x="80" y="40" width="180" height="60" fill="#6B9DC2" opacity="0.55" rx="20"/>' : '<path d="M 50 110 L 260 50" stroke="#D9C99E" stroke-width="34" fill="none" stroke-linecap="round" opacity="0.55"/>'}
+      <rect x="38" y="100" width="22" height="14" fill="#C9A86A" rx="2"/>
+      <text x="49" y="96" font-family="Archivo" font-size="9" fill="#EFE5CC" text-anchor="middle" font-weight="700">T</text>
+      <ellipse cx="262" cy="50" rx="26" ry="20" fill="#0B2118" opacity="0.9"/>
+      <circle cx="262" cy="50" r="4" fill="#E84D2C"/>
+      <line x1="262" y1="50" x2="262" y2="28" stroke="#E84D2C" stroke-width="1.5"/>
+      <polygon points="262,28 271,32 262,36" fill="#E84D2C"/>
+      ${hazards.bunkers ? '<circle cx="232" cy="78" r="8" fill="#D9C99E"/><circle cx="292" cy="68" r="7" fill="#D9C99E"/>' : ''}
+      <text x="160" y="135" font-family="Archivo Black" font-size="10" fill="#EFE5CC" text-anchor="middle" letter-spacing="2" opacity="0.6">PAR 3</text>
+    </svg>`;
+}
+
+function diagPar5(direction, hazards) {
+  const path = direction === 'right'
+    ? 'M 30 125 Q 80 110, 130 100 Q 200 85, 240 60 Q 270 40, 290 30'
+    : direction === 'left'
+    ? 'M 30 125 Q 80 110, 130 90 Q 200 75, 240 50 Q 270 35, 290 30'
+    : 'M 30 125 L 290 30';
+  return `
+    <svg class="hole-diagram" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet">
+      <path d="${path}" stroke="#D9C99E" stroke-width="30" fill="none" stroke-linecap="round" opacity="0.55"/>
+      <path d="${path}" stroke="#EFE5CC" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.45"/>
+      <rect x="22" y="120" width="16" height="12" fill="#C9A86A" rx="2"/>
+      <text x="30" y="116" font-family="Archivo" font-size="9" fill="#EFE5CC" text-anchor="middle" font-weight="700">T</text>
+      <ellipse cx="290" cy="30" rx="18" ry="14" fill="#0B2118" opacity="0.85"/>
+      <circle cx="290" cy="30" r="3" fill="#E84D2C"/>
+      <line x1="290" y1="30" x2="290" y2="14" stroke="#E84D2C" stroke-width="1.5"/>
+      <polygon points="290,14 298,17 290,20" fill="#E84D2C"/>
+      ${hazards.water ? '<ellipse cx="180" cy="115" rx="38" ry="10" fill="#6B9DC2" opacity="0.7"/>' : ''}
+      ${hazards.bunkers ? '<circle cx="265" cy="52" r="7" fill="#D9C99E"/><circle cx="155" cy="78" r="6" fill="#D9C99E"/>' : ''}
+      ${hazards.trees ? '<circle cx="85" cy="60" r="5" fill="#1F4A33"/><circle cx="220" cy="85" r="5" fill="#1F4A33"/>' : ''}
+      <text x="160" y="135" font-family="Archivo Black" font-size="9" fill="#EFE5CC" text-anchor="middle" letter-spacing="2" opacity="0.55">PAR 5</text>
+    </svg>`;
+}
+
+function diagIslandGreen() {
+  return `
+    <svg class="hole-diagram" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet">
+      <rect x="60" y="20" width="240" height="110" fill="#6B9DC2" opacity="0.55" rx="14"/>
+      <rect x="30" y="100" width="22" height="14" fill="#C9A86A" rx="2"/>
+      <text x="41" y="96" font-family="Archivo" font-size="9" fill="#EFE5CC" text-anchor="middle" font-weight="700">T</text>
+      <!-- island -->
+      <ellipse cx="200" cy="70" rx="42" ry="32" fill="#1F4A33"/>
+      <ellipse cx="200" cy="70" rx="32" ry="22" fill="#0B2118" opacity="0.7"/>
+      <circle cx="200" cy="70" r="4" fill="#E84D2C"/>
+      <line x1="200" y1="70" x2="200" y2="46" stroke="#E84D2C" stroke-width="1.5"/>
+      <polygon points="200,46 209,50 200,54" fill="#E84D2C"/>
+      <text x="160" y="135" font-family="Archivo Black" font-size="9" fill="#EFE5CC" text-anchor="middle" letter-spacing="2" opacity="0.6">ISLAND GREEN</text>
+    </svg>`;
+}
+
+function diagSLake() {
+  return `
+    <svg class="hole-diagram" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid meet">
+      <!-- fairway -->
+      <path d="M 30 120 Q 100 100, 160 80" stroke="#D9C99E" stroke-width="28" fill="none" stroke-linecap="round" opacity="0.55"/>
+      <path d="M 30 120 Q 100 100, 160 80" stroke="#EFE5CC" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.45"/>
+      <!-- S-shape lake wrapping the green -->
+      <path d="M 175 30 Q 240 30, 240 60 Q 240 80, 195 80 Q 165 80, 165 100 Q 165 125, 230 125 Q 295 125, 295 95"
+        stroke="#6B9DC2" stroke-width="22" fill="none" opacity="0.75" stroke-linecap="round"/>
+      <rect x="22" y="115" width="16" height="12" fill="#C9A86A" rx="2"/>
+      <text x="30" y="111" font-family="Archivo" font-size="9" fill="#EFE5CC" text-anchor="middle" font-weight="700">T</text>
+      <ellipse cx="225" cy="92" rx="18" ry="14" fill="#0B2118" opacity="0.9"/>
+      <circle cx="225" cy="92" r="3" fill="#E84D2C"/>
+      <line x1="225" y1="92" x2="225" y2="76" stroke="#E84D2C" stroke-width="1.5"/>
+      <polygon points="225,76 233,79 225,82" fill="#E84D2C"/>
+      <text x="240" y="50" font-family="Instrument Serif, serif" font-style="italic" font-size="34" fill="#6B9DC2" opacity="0.7" font-weight="400">S</text>
+    </svg>`;
+}
+
+// ============================================================
+// HOLE DATA — strategic intel, real research-grounded
+// Yardages from white tees (Prince's/Duke's) and Seve Masters
+// ============================================================
+
+// ---------- RICHMOND PARK PRINCE'S ----------
+// Par 68, 5,487 yds. Hawtree 1923, redesigned 2013.
+// Pars (typical W tees): 4-3-4-4-3-4-4-4-5 / 4-4-3-4-4-3-4-4-4 = 68
+const princesHoles = [
+  { num: 1, par: 4, yds: 343, name: "The Opener", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Wide opening tee shot — relax. Aim down the left half of the fairway to open up the approach. <strong>Driver isn't mandatory</strong>; a 3-wood keeps you in play and leaves a wedge in.",
+    miss: "Right. The treeline tightens fast on the right and you'll be punching out sideways. A pulled tee shot left has more room.",
+    junior: "Don't try to crush it on hole 1. A confident 7-iron, 7-iron, wedge plan can give you a par before nerves settle." },
+  { num: 2, par: 3, yds: 158, name: "Short stick test", diag: diagPar3({bunkers:true}),
+    strategy: "Mid-iron over a slight rise. Take <strong>one more club than you think</strong> — the green sits up and the prevailing wind is into your face from the SW.",
+    miss: "Long-left. Short-right brings the front bunker into play and a tough up-and-down. Long is grass; short-right is sand.",
+    junior: "Aim for the centre of the green every time. Forget the flag — get your par 3 routine going early." },
+  { num: 3, par: 4, yds: 367, name: "Avenue", diag: diagStraight({trees:true}),
+    strategy: "Tree-lined corridor — hit the fairway. <strong>Driver only if you're shaping it</strong>; otherwise hybrid leaves a comfortable 8-iron in.",
+    miss: "Left. The right side has a steep run-off that funnels balls deeper into trouble. Left rough is recoverable.",
+    junior: "Three shots to the green is a perfectly good plan. Don't take on a hero shot through trees." },
+  { num: 4, par: 4, yds: 312, name: "Driveable temptation", diag: diagDogleg('right',{bunkers:true,trees:true}),
+    strategy: "Short par-4 with a dogleg. Most players should <strong>lay back to 100 yards</strong> with a 5-iron and attack with a wedge. Only bombers can flirt with the green carry.",
+    miss: "Short of the green. Long is dead — there's a downslope behind. A lay-up well short leaves a full wedge, which is easier than 30 yards of fluff.",
+    junior: "Don't even look at the green from the tee. Picture the 100-yard marker — that's your target." },
+  { num: 5, par: 3, yds: 174, name: "Long iron", diag: diagPar3({bunkers:true,trees:true}),
+    strategy: "Longest par-3 on the front. The green slopes back-to-front so <strong>any pin above the hole is a four</strong>. Aim below the flag.",
+    miss: "Front-fringe. Better to be 20 ft chipping uphill than 15 ft putting down a slick green.",
+    junior: "Hybrid over a 3-iron every day. Get it airborne and let it run." },
+  { num: 6, par: 4, yds: 388, name: "The grinder", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Hardest par-4 on the front. Demands two solid shots. Tee shot favours the <strong>left-centre</strong> to open the green angle.",
+    miss: "Short of the green is fine — a bogey here is no disgrace. Long brings OB into the equation on certain wind directions.",
+    junior: "Play it as a par 5. Three shots to the green, two putts, walk off with a 6 and a smile." },
+  { num: 7, par: 4, yds: 305, name: "Birdie chance", diag: diagStraight({bunkers:true}),
+    strategy: "Shorter par-4 — an absolute chance. <strong>3-wood to the corner</strong>, full wedge in. Pin position dictates everything.",
+    miss: "Short. The green is well-protected by greenside bunkers; coming up short and pitching on is fine. Above the hole is awful.",
+    junior: "If you've been struggling, this is the hole to find rhythm. Smooth tempo wedge — commit to the number." },
+  { num: 8, par: 4, yds: 360, name: "Tight tee", diag: diagDogleg('left',{trees:true}),
+    strategy: "Subtle dogleg-left. Trees pinch the corner. <strong>Hit hybrid or 3-iron</strong> — driver brings the trees in play and saves only 20 yards.",
+    miss: "Right. Left side of the fairway is OB-adjacent in places; the right rough is the safer miss even though it lengthens the approach.",
+    junior: "Don't try to cut the corner. Hit it straight at the 150 marker." },
+  { num: 9, par: 5, yds: 477, name: "Reachable five", diag: diagPar5('right',{bunkers:true,trees:true}),
+    strategy: "Only par-5 on the front and <strong>genuinely reachable in two</strong> for longer hitters. For everyone else, lay up to a comfortable wedge yardage (60–90 yds).",
+    miss: "Right off the tee — the left has trees that block any second-shot route to the green. The right opens it up.",
+    junior: "Aim to be 100 yards out in three shots. A par 5 in 6 with no doubles is a great hole." },
+  { num: 10, par: 4, yds: 354, name: "Back nine opener", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Straightforward driver-wedge if you find the fairway. Greens on the back nine run firmer than the front — <strong>land it 5 yards short of pin</strong>.",
+    miss: "Short and right. Left of the green is short-sided to the prevailing pin positions.",
+    junior: "Big breath. Half the round to go. Find the fairway, then the green. One shot at a time." },
+  { num: 11, par: 4, yds: 333, name: "Position over distance", diag: diagDogleg('right',{trees:true,bunkers:true}),
+    strategy: "Slight dogleg-right. <strong>3-wood is the play</strong> — you don't need driver, and the corner is guarded by trees that punish anything pushed.",
+    miss: "Left-centre. The fade you want; the pull-hook is the killer here.",
+    junior: "Hit your most reliable club off the tee, even if it's a 5-iron. This hole rewards a ball in play." },
+  { num: 12, par: 3, yds: 142, name: "Short and dangerous", diag: diagPar3({bunkers:true}),
+    strategy: "Short par-3 protected on three sides by bunkers. <strong>Wedge or 9-iron</strong> — pick a yardage and commit. Sand on the wrong side is brutal.",
+    miss: "Long. The back of the green is the only safe miss. Anywhere short or sideways is sand.",
+    junior: "If you don't trust your sand game, aim long every time. Putting from the back fringe is fine." },
+  { num: 13, par: 4, yds: 401, name: "The big four", diag: diagStraight({trees:true}),
+    strategy: "Longest par-4 on the course. Just be there in two — <strong>par here is a stolen shot</strong>. Driver, long-iron or hybrid, two-putt.",
+    miss: "Short of the green is the smartest miss. A pitch up the slope is much easier than chipping back from over.",
+    junior: "Genuinely treat this like a par 5. Don't compound a bad tee shot — accept the bogey, move on." },
+  { num: 14, par: 4, yds: 322, name: "Bunker carry", diag: diagStraight({bunkers:true,trees:true}),
+    strategy: "Fairway bunkers at 230 from the tee — <strong>hybrid lays you up short of them</strong> and leaves a 9-iron in. Driver brings them into play.",
+    miss: "Right of the fairway. The left side is bunkers; right is rough but playable.",
+    junior: "5-iron, 7-iron, wedge plan. The bunkers don't reach you if you play short." },
+  { num: 15, par: 3, yds: 163, name: "Tester", diag: diagPar3({bunkers:true,trees:true}),
+    strategy: "Slightly downhill but the wind swirls through the trees. <strong>Take the club for a flat lie</strong> — don't add for downhill.",
+    miss: "Front-centre. The bunker behind the green is the worst possible miss; you're hitting back toward a fast-running green.",
+    junior: "Pick your most-trusted iron and hit it. Don't second-guess the club on a par 3." },
+  { num: 16, par: 4, yds: 378, name: "Strategic four", diag: diagDogleg('left',{trees:true,bunkers:true}),
+    strategy: "Tee shot to the <strong>right-centre</strong> opens the angle into a tucked green. Approach must hold a firm putting surface — land it short and run it on.",
+    miss: "Anywhere short of the green. Pin-high left is dead — short-sided to a downslope.",
+    junior: "Course management hole. Two safe shots, one putt for par, two for bogey, no shame." },
+  { num: 17, par: 4, yds: 296, name: "Birdie or bust", diag: diagStraight({bunkers:true}),
+    strategy: "Drivable in calm conditions for longer hitters — but <strong>the smart play is hybrid + wedge</strong> for everyone in single digits and above. Pin matters: front pin = attack, back pin = lay up.",
+    miss: "Short-right. Long is the worst miss. A short wedge in is always better than a 30-yard pitch from behind.",
+    junior: "Wedge to the green is a guaranteed two-putt-bogey at worst. Don't get fancy late in the round." },
+  { num: 18, par: 4, yds: 314, name: "Home", diag: diagStraight({bunkers:true,trees:true}),
+    strategy: "Closing hole back toward the clubhouse. Anything in the fairway leaves a short iron. <strong>Don't blow up</strong> — finish strong with two clean swings.",
+    miss: "Centre-right of the fairway. Long-left of the green is the only place that adds a stroke.",
+    junior: "Last hole. Take a breath. Two confident shots, two putts. Walk off proud." }
+];
+
+// ---------- RICHMOND PARK DUKE'S ----------
+// Par 71, 6,359 yds. Hawtree 1925. Beverley Brook crosses holes 3-6 and 12-14.
+// Pars (typical): 4-4-4-3-4-4-4-3-5 / 4-5-4-4-4-3-4-3-5  (adjust to total 71)
+const dukesHoles = [
+  { num: 1, par: 4, yds: 387, name: "Open with poise", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Longer opener than Prince's. <strong>Driver down the left half</strong> opens the green. Take a breath — a par here sets the round.",
+    miss: "Right. Left rough is recoverable. Right brings trees and a blind approach.",
+    junior: "Don't try to match the long hitter in your group. Hit your trusted club and walk off with a 5." },
+  { num: 2, par: 4, yds: 372, name: "Setup hole", diag: diagDogleg('right',{trees:true}),
+    strategy: "Subtle right-bender. <strong>Aim at the left edge of the fairway</strong> — a soft fade brings it back centre. Approach is a 7- or 8-iron.",
+    miss: "Left-centre. The right side is a forest. Left is the safe miss.",
+    junior: "Hybrid off the tee is plenty. You don't need driver — leave it in the bag." },
+  { num: 3, par: 4, yds: 369, name: "Brook in play", diag: diagStraight({water:true,trees:true}),
+    strategy: "First Beverley Brook crossing. The stream runs across the fairway around <strong>240–260 from the tee</strong>. Either send driver well past it or lay back with a 4-iron.",
+    miss: "Long of the brook is safe; short of the brook is fine if you're committing to lay-up. <strong>Half-measures get wet.</strong>",
+    junior: "Lay up. 6-iron off the tee, 6-iron over the brook, wedge in. A 5 here is a brilliant 5." },
+  { num: 4, par: 3, yds: 168, name: "Brook again", diag: diagPar3({water:true,bunkers:true}),
+    strategy: "Par 3 with Beverley Brook short of the green. <strong>Take enough club to clear the front edge by 10 yards.</strong> The green slopes back-to-front so don't be long.",
+    miss: "Long-left. Short is wet. Long-right is sand. Long-left rough is the only safe bail-out.",
+    junior: "Club up. Always. Better to chip back from the fringe than fish a ball out." },
+  { num: 5, par: 4, yds: 412, name: "The brutal four", diag: diagStraight({water:true,trees:true,bunkers:true}),
+    strategy: "Toughest par-4 on the front. <strong>Brook crosses again</strong> around 280 — driver still safe for most. Long iron / hybrid in to a well-protected green.",
+    miss: "Anywhere short of the green is fine. The bogey here is no embarrassment — play for bogey, accept par if it comes.",
+    junior: "Treat this as a par 5. Three swings to get there. Two-putt. Move on with a 6." },
+  { num: 6, par: 4, yds: 354, name: "Last of the brook", diag: diagDogleg('left',{water:true,trees:true}),
+    strategy: "Final Beverley Brook hole on the front. Dogleg-left around the stream. <strong>Hybrid to the corner</strong> — driver brings the brook into your second.",
+    miss: "Right of the dogleg. Long over the stream on the tee is OK; pulling it left is wet.",
+    junior: "Position over power. Find the corner of the fairway, wedge in, par try." },
+  { num: 7, par: 4, yds: 325, name: "Breath of relief", diag: diagStraight({bunkers:true}),
+    strategy: "Shorter, water-free. A confidence hole after the brook stretch. <strong>3-wood + wedge</strong> is the play.",
+    miss: "Short of the green. Long-left has run-off; short pitches up easy.",
+    junior: "After the tough stretch you just survived, give yourself this one. Don't get fancy." },
+  { num: 8, par: 3, yds: 148, name: "Picture postcard", diag: diagPar3({bunkers:true,trees:true}),
+    strategy: "Pretty hole framed by mature trees. Wedge or 9-iron. <strong>Below the hole always</strong> — fast downhill putts here.",
+    miss: "Front-fringe. Bunkers left, right and long all involve a tricky sand shot back to a downslope.",
+    junior: "Calm tempo. Half swing if it gets the right yardage. Don't lash at it." },
+  { num: 9, par: 5, yds: 480, name: "Up the hill", diag: diagPar5('straight',{trees:true,bunkers:true}),
+    strategy: "Slightly uphill par-5. <strong>Reachable in two only for the longest hitters</strong>. Most players lay up to 100 yards.",
+    miss: "Right of the fairway off the tee. Trees down the left mean a pull is dead. Right rough is benign.",
+    junior: "Three good swings — driver, 7-iron, 7-iron — puts you on or near. Par 5s are scoring chances." },
+  { num: 10, par: 4, yds: 396, name: "Back-nine opener", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Tough start to the back. <strong>Driver mandatory</strong>; even then a mid-iron in. Two-putt par is a win.",
+    miss: "Short of the green — the slope feeds short shots onto the front edge.",
+    junior: "Treat as a par 5. Driver, hybrid, wedge. Then putt. No blow-ups." },
+  { num: 11, par: 5, yds: 511, name: "Three-shotter", diag: diagPar5('left',{trees:true,bunkers:true}),
+    strategy: "Long par-5 — three shots for almost everyone. Lay up to a <strong>full-swing wedge yardage you love</strong> (75/85/95). Don't get cute.",
+    miss: "Right-centre of the fairway. Left has trees that block the second.",
+    junior: "Three smooth swings. This is your hole to make a par if everything has gone well so far." },
+  { num: 12, par: 4, yds: 359, name: "Brook returns", diag: diagStraight({water:true,trees:true}),
+    strategy: "Beverley Brook re-enters play. Stream crosses around 230–250. <strong>Send driver well past or hybrid to 200</strong>.",
+    miss: "Past the brook even if it means running through the fairway. Wet is the worst outcome.",
+    junior: "Two short irons short of the brook, then a wedge. Don't try to carry it." },
+  { num: 13, par: 4, yds: 344, name: "Drive over water", diag: diagStraight({water:true,bunkers:true}),
+    strategy: "Tee shot has a forced carry over the brook around <strong>140–160 from the white tees</strong>. Don't overthink — driver or 3-wood comfortably over.",
+    miss: "Anywhere across the brook on the fairway side. Long-left into rough is fine; short is wet.",
+    junior: "Pick the longest club you trust to fly 170+. Commit. Don't decelerate on the swing." },
+  { num: 14, par: 4, yds: 366, name: "Last brook hole", diag: diagDogleg('right',{water:true,trees:true}),
+    strategy: "Final Beverley Brook test. Stream curls down the right. <strong>Aim left-centre off the tee</strong> — even a 10-yard pull is fine; a 5-yard push is wet.",
+    miss: "Left of the fairway. The right side has the brook running parallel — a push or block is gone.",
+    junior: "Hit your safest tee club. Even a 6-iron in play beats a driver in the stream." },
+  { num: 15, par: 3, yds: 192, name: "Long iron", diag: diagPar3({bunkers:true,trees:true}),
+    strategy: "Longest par-3 on the course. Hybrid or long iron. <strong>Aim at the front-centre</strong> — bunkers protect the sides.",
+    miss: "Front-fringe. A 30-yard pitch from the back is harder than a putt from 50 ft on the front.",
+    junior: "Don't be ashamed of a 5-iron or 5-hybrid here. Get it airborne, on the green or just short." },
+  { num: 16, par: 4, yds: 388, name: "Late-round test", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Heart-rate hole. Long par-4 with bunkers in the landing zone. <strong>Driver down the right side</strong> avoids the left fairway bunker.",
+    miss: "Right rough — far better than left bunker. Long of the green is the only awful approach miss.",
+    junior: "Don't try to be a hero in the last three. Two safe swings, two putts." },
+  { num: 17, par: 3, yds: 156, name: "Penultimate", diag: diagPar3({bunkers:true}),
+    strategy: "9-iron or wedge. The green slopes hard back-to-front — <strong>any pin above mid-green is a tap-in if you stay below it</strong>.",
+    miss: "Front-centre. Long-anywhere is awful. Short is fine to pitch on.",
+    junior: "One smooth swing. You've come this far — don't change tempo because it's hole 17." },
+  { num: 18, par: 5, yds: 461, name: "Home", diag: diagPar5('straight',{bunkers:true,trees:true}),
+    strategy: "Closing par-5 with the clubhouse in view. <strong>Reachable in two</strong> for longer hitters; three-shot par for everyone else. Don't blow up on the last.",
+    miss: "Centre of everything. The pressure is the hazard, not the layout.",
+    junior: "Finish how you started — calm, committed swings. A 6 on the last is fine. A 9 is the one you'll remember." }
+];
+
+// ---------- THE SHIRE LONDON — BALLESTEROS MASTERS ----------
+// Par 72, 7,028 yds. 6 par 3s, 6 par 4s, 6 par 5s. No consecutive same par.
+// 12 holes feature water. Signature par-3 8th over lake. Par-5 5th ~600 yds. S-lake 18th.
+// Hole 1: island green par-3 (135 yds). 
+// Pattern: 3-4-5-4-5-3-4-5-3 / 4-5-3-4-5-3-4-5-4 = 72 (rotates to ensure no consecutive same par)
+const shireHoles = [
+  { num: 1, par: 3, yds: 135, name: "Island green opener", diag: diagIslandGreen(),
+    strategy: "Welcome to The Shire. <strong>The opening hole is a par-3 to an island green</strong> — completely surrounded by water. Wedge or 9-iron. Aim for the centre, take the par, walk to 2.",
+    miss: "There is no safe miss. <strong>Centre of the green is the only target.</strong> Short, long, left, right are all wet.",
+    junior: "Don't open with a hero shot. Pick a club you can hit 80% and aim at the fattest part of the green. A bogey is fine." },
+  { num: 2, par: 4, yds: 412, name: "Settle in", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Long par-4 after the dramatic opener. <strong>Driver to a generous fairway</strong>, mid-iron in. The green is large; centre is fine.",
+    miss: "Short of the green. The Shire's greens are quick — be below the hole.",
+    junior: "Forget what just happened on 1. Fresh start. Two solid swings, two putts." },
+  { num: 3, par: 5, yds: 538, name: "Reachable five", diag: diagPar5('right',{water:true,bunkers:true,trees:true}),
+    strategy: "First par-5 — and there's water short of the green. <strong>Long hitters can go in two</strong> but the smart play is lay up to 100 yards with a wedge.",
+    miss: "Lay up well short of the water on your second. Half-measures here are wet.",
+    junior: "Three-shot par-5. Driver, hybrid, wedge. Don't get tempted by the green in two." },
+  { num: 4, par: 4, yds: 425, name: "Strategic four", diag: diagDogleg('left',{water:true,trees:true}),
+    strategy: "Water down the left. <strong>Aim at the right-centre fairway bunker</strong> — anything that draws comes back to the middle. Anything that holds straight is in play right.",
+    miss: "Right rough. The water down the left swallows anything pulled or hooked.",
+    junior: "Hybrid off the tee. Take the water completely out of play with a shorter, safer club." },
+  { num: 5, par: 5, yds: 598, name: "Signature par-5 — the long one", diag: diagPar5('left',{water:true,bunkers:true,trees:true}),
+    strategy: "Just shy of 600 yards off the back — <strong>genuinely a three-shot hole for almost everyone</strong>. Seve designed this as a thinker's par-5. Lay up positions matter more than distance.",
+    miss: "Centre, centre, centre. Bunkers and water flank multiple landing zones.",
+    junior: "This is a par 7 for you. Smile about it. Three solid shots gets you to 100 yards. Wedge on, two putt, 6 or 7 is a win." },
+  { num: 6, par: 3, yds: 168, name: "Short carry", diag: diagPar3({water:true,bunkers:true}),
+    strategy: "Par-3 with water short. <strong>Mid-iron — take the club for the back yardage</strong> to ensure you carry. Below the hole.",
+    miss: "Long. Short is wet, sides are bunkered, long is rough. Long is your only friend.",
+    junior: "Club up one. The water is closer than it looks. A 7-iron at the back of the green is much better than a 9-iron in the lake." },
+  { num: 7, par: 4, yds: 386, name: "Quiet test", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Rare water-free hole. <strong>Driver, wedge or 9-iron</strong>. Use this hole to find rhythm before the signature 8th.",
+    miss: "Centre. Both sides have trees and bunkers but the fairway is plenty wide.",
+    junior: "Birdie chance. Aim 7 yards left of the pin — most pins lean right and the green slopes left-to-right." },
+  { num: 8, par: 5, yds: 552, name: "Mid-back par-5", diag: diagPar5('straight',{water:true,bunkers:true}),
+    strategy: "Reachable for the bombers. <strong>Lay up to 80–100 yards</strong> for everyone else. Water around the green on the approach side.",
+    miss: "Anything short of the water on your lay-up is a win. Don't try to carry it with your second.",
+    junior: "Three shots. Easy par-5 if you're patient. Forget the long hitters in your group." },
+  { num: 9, par: 3, yds: 195, name: "Long iron close", diag: diagPar3({water:true,bunkers:true}),
+    strategy: "Long par-3 to close the front. <strong>Hybrid or long iron with water in play.</strong> Front edge is the play — bunkers behind.",
+    miss: "Short of the water hazard if there is a forced carry; otherwise front-fringe of the green.",
+    junior: "Hybrid every time. Don't try to muscle a 4-iron. Get it airborne, let it run on." },
+  { num: 10, par: 4, yds: 408, name: "Back-nine opener", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Fresh nine. <strong>Driver to a wide fairway</strong>, short iron in. Greens roll faster on the back at The Shire — stay below the hole.",
+    miss: "Right-centre. The left half drops away to a hazard area.",
+    junior: "Catch your breath. Half the course done. Two solid swings here resets the round." },
+  { num: 11, par: 5, yds: 521, name: "Reachable three-shotter", diag: diagPar5('right',{bunkers:true,trees:true}),
+    strategy: "Shorter par-5 — <strong>genuinely reachable in two</strong>. Aim down the right side of the fairway off the tee for the best angle.",
+    miss: "Right rough is OK; left brings trees into the second shot.",
+    junior: "Best birdie chance on the back. Three smooth swings. Don't get greedy." },
+  { num: 12, par: 3, yds: 175, name: "Mid-iron test", diag: diagPar3({water:true,bunkers:true,trees:true}),
+    strategy: "Par-3 with water guarding the front-left. <strong>Mid-iron favouring the right side</strong> — the green slopes left-to-right back toward the water.",
+    miss: "Right-back. Anywhere on the right side of the green or fringe is safe.",
+    junior: "Aim at the right edge of the green — even a bad pull lands on the green. A perfect strike lands right of pin and feeds left." },
+  { num: 13, par: 4, yds: 432, name: "Long four", diag: diagStraight({trees:true,bunkers:true}),
+    strategy: "Tough par-4. Driver mandatory. <strong>Mid-iron approach to a deep green</strong> — club selection is critical based on pin depth.",
+    miss: "Centre of the green every time. Front and back add 10–12 yards each.",
+    junior: "Three-shot hole. Don't fight the yardage. Driver, hybrid, wedge, two-putt — 6 is a great score." },
+  { num: 14, par: 5, yds: 567, name: "Back-nine par-5", diag: diagPar5('left',{water:true,bunkers:true,trees:true}),
+    strategy: "Long par-5 with water in play near the green. <strong>Three-shot hole for almost everyone</strong>. Lay up to a love-it wedge yardage.",
+    miss: "Lay up well short of any water. A 95-yard wedge is easier than a 60-yard half-shot.",
+    junior: "Forget the green for two shots. Just get the ball forward, in play, in good positions. Then wedge on." },
+  { num: 15, par: 3, yds: 158, name: "Short stick", diag: diagPar3({water:true,bunkers:true}),
+    strategy: "Wedge or 9-iron over a water carry. <strong>Take the club for the back of the green</strong> to ensure clean carry.",
+    miss: "Long. The bunker behind is a much better miss than the lake in front.",
+    junior: "Club up. Always. The lake doesn't care if your name is on the scorecard." },
+  { num: 16, par: 4, yds: 379, name: "Position hole", diag: diagDogleg('right',{trees:true,bunkers:true}),
+    strategy: "Dogleg-right. <strong>3-wood to the corner is plenty</strong> — driver risks running through into trees. Mid-iron in.",
+    miss: "Left-centre off the tee. The right side gets tighter the further you go.",
+    junior: "Hybrid off the tee, 7-iron in. Don't make the closing stretch harder than it needs to be." },
+  { num: 17, par: 5, yds: 545, name: "Penultimate par-5", diag: diagPar5('straight',{water:true,bunkers:true}),
+    strategy: "Setup for the 18th finale. <strong>Don't blow up here</strong> — three steady shots, two putts, walk to 18 with momentum. Water in play near the green.",
+    miss: "Short of any water. A clean bogey is much better than a lost ball.",
+    junior: "Three good swings. Take your par-5 score and walk to the famous 18th feeling proud." },
+  { num: 18, par: 4, yds: 401, name: "The S-lake — Seve's signature", diag: diagSLake(),
+    strategy: "<strong>The closing green is wrapped by an S-shaped lake — Seve literally stamped his initial on the land.</strong> Tee shot to the fairway is wide. The approach is the moment of truth: clear the lake to a green with water on three sides.",
+    miss: "<strong>Bail-out right is acceptable on the approach</strong> — chip on, take your bogey, take a photo. The lake is not negotiable.",
+    junior: "Lay up short of the water on your second. Wedge on with your third. Even if you make a 6, you played the most famous closing hole in London. That's the story." }
+];
+
+// ============================================================
+// HOLE CARD RENDERER
+// ============================================================
+function renderHole(hole) {
+  return `
+    <article class="hole-card" id="hole-${hole.num}">
+      <div class="hole-top">
+        <div class="hole-num-block">
+          <div class="hole-num-label">Hole</div>
+          <div class="hole-num">${hole.num}</div>
+        </div>
+        <div class="hole-par-yds">
+          <div class="hole-par-row">
+            <span class="hole-par">Par ${hole.par}</span>
+            <span class="hole-yds">${hole.yds} yds</span>
+          </div>
+          <div class="hole-name">${hole.name}</div>
+        </div>
+      </div>
+      <div class="hole-diagram-wrap">
+        <div class="hole-diagram-label">✦ Schematic — not to scale</div>
+        ${hole.diag}
+      </div>
+      <div class="intel-body">
+        <div class="intel-row">
+          <div class="intel-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+          </div>
+          <div class="intel-text">
+            <div class="intel-label">Strategy</div>
+            <div class="intel-content">${hole.strategy}</div>
+          </div>
+        </div>
+        <div class="intel-row">
+          <div class="intel-icon miss">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 21h22L12 2 1 21z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div class="intel-text">
+            <div class="intel-label miss">Where to miss</div>
+            <div class="intel-content">${hole.miss}</div>
+          </div>
+        </div>
+        <div class="intel-row">
+          <div class="intel-icon junior">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="intel-text">
+            <div class="intel-label">Junior / beginner note</div>
+            <div class="intel-content">${hole.junior}</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+// ============================================================
+// POPULATE COURSES
+// ============================================================
+function populateCourse(prefix, holes) {
+  const front = holes.filter(h => h.num <= 9).map(renderHole).join('');
+  const back = holes.filter(h => h.num >= 10).map(renderHole).join('');
+  const frontEl = document.getElementById(prefix + '-front');
+  const backEl = document.getElementById(prefix + '-back');
+  if (frontEl) frontEl.innerHTML = front;
+  if (backEl) backEl.innerHTML = back;
+}
+
+populateCourse('princes', princesHoles);
+populateCourse('dukes', dukesHoles);
+populateCourse('shire', shireHoles);
+
+// ============================================================
+// COURSE SELECTOR LOGIC
+// ============================================================
+document.querySelectorAll('.course-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    if (chip.classList.contains('locked')) {
+      showToast('Coming soon — submit intel below ↓');
+      return;
+    }
+    const course = chip.dataset.course;
+    document.querySelectorAll('.course-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    document.querySelectorAll('.course-stage').forEach(s => s.classList.remove('active'));
+    document.getElementById('stage-' + course).classList.add('active');
+    window.scrollTo({ top: document.querySelector('.selector-wrap').offsetTop - 60, behavior: 'smooth' });
+  });
+});
+
+// ============================================================
+// INTEL MODAL
+// ============================================================
+function openIntelModal() {
+  document.getElementById('intelModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeIntelModal() {
+  document.getElementById('intelModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('intelModal').addEventListener('click', (e) => {
+  if (e.target.id === 'intelModal') closeIntelModal();
+});
+
+function submitIntel(e) {
+  e.preventDefault();
+  // Stash locally for now — backend integration to come
+  const intel = {
+    name: document.getElementById('memberName').value,
+    course: document.getElementById('courseName').value,
+    hole: document.getElementById('holeNum').value,
+    type: document.getElementById('intelType').value,
+    detail: document.getElementById('intelDetail').value,
+    email: document.getElementById('memberEmail').value,
+    submitted: new Date().toISOString()
+  };
+  const stored = JSON.parse(localStorage.getItem('ldn_glf_intel_submissions') || '[]');
+  stored.unshift(intel);
+  localStorage.setItem('ldn_glf_intel_submissions', JSON.stringify(stored));
+  closeIntelModal();
+  showToast('Intel received — we\'ll verify and credit you');
+  e.target.reset();
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+
+</body>
+</html>
