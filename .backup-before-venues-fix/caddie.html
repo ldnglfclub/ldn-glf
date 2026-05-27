@@ -1234,8 +1234,7 @@
       </div>
       <div class="modal-field">
         <label for="courseName">Course</label>
-        <input type="text" id="courseName" placeholder="Start typing a venue name..." list="ldnVenuesList" required autocomplete="off">
-        <datalist id="ldnVenuesList"></datalist>
+        <input type="text" id="courseName" placeholder="e.g. Beckenham Place GC" required>
       </div>
       <div class="modal-field">
         <label for="holeNum">Hole number</label>
@@ -1858,27 +1857,6 @@ function showToast(msg) {
 }
 </script>
 
-<script src="venues.js" defer></script>
 <script src="auth.js" defer></script>
-
-<script>
-// Populate the venue autocomplete in the intel modal from venues.js once loaded
-(function populateVenueAutocomplete() {
-  function fill() {
-    const list = document.getElementById('ldnVenuesList');
-    if (!list || !window.LDN_VENUES) return;
-    list.innerHTML = window.LDN_VENUES.map(v =>
-      '<option value="' + v.name + '">' + (v.town ? '(' + v.town + ')' : '') + '</option>'
-    ).join('');
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fill);
-  } else {
-    fill();
-  }
-  // Also fill once after a short delay in case venues.js is still loading (defer)
-  setTimeout(fill, 600);
-})();
-</script>
 </body>
 </html>

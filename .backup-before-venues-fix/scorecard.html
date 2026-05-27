@@ -554,32 +554,33 @@
 
 <script>
   // ============ COURSES (from Atlas) ============
-  // Pulled from venues.js — score-able formats only (courses + pitch-putt) plus the legacy 'Other course' fallback.
-  // Falls back to a minimal default if venues.js hasn't loaded yet.
-  const COURSES = (function() {
-    if (window.LDN_SCOREABLE_VENUES) {
-      const venues = window.LDN_SCOREABLE_VENUES();
-      // Group by region for display: London first, then UK regions
-      const regions = window.LDN_REGION_ORDER || ['london'];
-      const regionNames = window.LDN_VENUES_BY_REGION || {london:'Greater London'};
-      const grouped = [];
-      regions.forEach(r => {
-        const inRegion = venues.filter(v => v.region === r);
-        if (inRegion.length) {
-          // Use a __divider__ marker we'll render as an optgroup in the select
-          grouped.push({__divider__: true, label: regionNames[r] || r});
-          inRegion.forEach(v => grouped.push(v.name));
-        }
-      });
-      grouped.push("Other course (not listed)");
-      return grouped;
-    }
-    return ["Other course (not listed)"];
-  })();
+  const COURSES = [
+    "Topgolf Watford",
+    "Richmond Park GC",
+    "Greenwich Peninsula Range",
+    "Swingers West End",
+    "Puttshack Watford",
+    "World of Golf — New Malden",
+    "Metro Golf Centre",
+    "Dukes Meadows Golf",
+    "Playgolf London",
+    "BigShots Golf Northwick Park",
+    "The Shire London",
+    "Beckenham Place Golf",
+    "Pitch City Indoor Golf",
+    "Urban Golf — Soho",
+    "Brent Valley GC",
+    "Plonk Crazy Golf — Borough",
+    "Putt in the Park — Battersea",
+    "Lee Valley Golf",
+    "Trent Park Golf",
+    "Pitch & Putt — Various Boroughs",
+    "Other course (not listed)"
+  ];
 
   // ============ STATE ============
   let state = {
-    course: (function(){ for (const c of COURSES) { if (typeof c === "string") return c; } return ""; })(),
+    course: COURSES[0],
     holes: 9,
     players: [],
     scores: {},
@@ -602,7 +603,7 @@
   // ============ SETUP ============
   function initCourseSelect() {
     const select = document.getElementById('courseSelect');
-    select.innerHTML = (function(){ let html=""; let openGroup=false; COURSES.forEach(c => {   if (typeof c === "object" && c.__divider__) {     if (openGroup) html += "</optgroup>";     html += "<optgroup label=\"" + c.label + "\">";     openGroup = true;   } else {     html += "<option value=\"" + c + "\">" + c + "</option>";   } }); if (openGroup) html += "</optgroup>"; return html; })();
+    select.innerHTML = COURSES.map(c => `<option value="${c}">${c}</option>`).join('');
     select.addEventListener('change', e => state.course = e.target.value);
   }
 
@@ -897,7 +898,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-<script src="venues.js" defer></script>
 <script src="auth.js" defer></script>
 </body>
 </html>
