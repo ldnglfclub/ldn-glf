@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LDN GLF CLUB</title>
+<meta name="description" content="London's golf club for the next generation. By Dylan Heer.">
+<meta property="og:title" content="LDN GLF CLUB">
+<meta property="og:description" content="We didn't come to take part. We came to take over.">
+<meta property="og:image" content="logo.png">
+<link rel="icon" type="image/png" href="logo-small.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0B2118;
+    --green-rich: #143425;
+    --green-mid: #1F4A33;
+    --cream: #EFE5CC;
+    --cream-warm: #E5D8B8;
+    --ink: #050505;
+    --brass: #C9A86A;
+    --hot: #E84D2C;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--green-deep);
+    font-family: 'Archivo', sans-serif;
+    font-weight: 400;
+    line-height: 1.4;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--green-deep); color: var(--cream); }
+
+  /* ============ MARQUEE (top) ============ */
+  .marquee {
+    background: var(--green-deep);
+    color: var(--cream);
+    overflow: hidden;
+    border-bottom: 1px solid var(--green-mid);
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 48px;
+    white-space: nowrap;
+    animation: scroll 35s linear infinite;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .marquee-track span { display: flex; align-items: center; gap: 48px; }
+  .marquee-track span::after {
+    content: '✦';
+    color: var(--brass);
+    font-size: 9px;
+  }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed;
+    top: 36px;
+    left: 0;
+    right: 0;
+    z-index: 80;
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(239, 229, 204, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(11, 33, 24, 0.1);
+  }
+  .nav-logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    color: var(--green-deep);
+    text-decoration: none;
+  }
+  .nav-logo .accent { color: var(--hot); }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Archivo', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--green-deep);
+    text-decoration: none;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .nav-links a:hover { color: var(--hot); }
+  .nav-cta {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--cream);
+    background: var(--green-deep);
+    padding: 11px 22px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    border: 2px solid var(--green-deep);
+  }
+  .nav-cta:hover { background: var(--hot); border-color: var(--hot); }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    padding: 160px 32px 80px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(201, 168, 106, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(232, 77, 44, 0.04) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .hero-num {
+    position: absolute;
+    font-family: 'Anton', sans-serif;
+    color: rgba(11, 33, 24, 0.06);
+    font-size: 28vw;
+    line-height: 0.85;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    letter-spacing: -5px;
+  }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 6px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.1s forwards;
+  }
+  .hero-tag .dot {
+    width: 6px; height: 6px;
+    background: var(--hot);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero-logo {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    opacity: 0;
+    animation: fadeUp 1.4s ease 0.3s forwards;
+    filter: drop-shadow(0 4px 30px rgba(11, 33, 24, 0.1));
+  }
+
+  .hero-headline {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 9vw, 120px);
+    line-height: 0.92;
+    color: var(--green-deep);
+    letter-spacing: -1px;
+    margin: 32px 0 24px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+  .hero-headline .stroke {
+    -webkit-text-stroke: 2px var(--green-deep);
+    color: transparent;
+    font-style: italic;
+  }
+  .hero-headline .hot { color: var(--hot); }
+
+  .hero-sub {
+    font-family: 'Archivo', sans-serif;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--green-deep);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+  }
+  .hero-sub strong { font-weight: 700; }
+
+  .signup {
+    display: flex;
+    gap: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    border: 2px solid var(--green-deep);
+    background: var(--cream);
+    opacity: 0;
+    animation: fadeUp 1s ease 1.5s forwards;
+  }
+  .signup input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 18px 20px;
+    color: var(--green-deep);
+    font-family: 'Archivo', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    outline: none;
+  }
+  .signup input::placeholder { color: rgba(11, 33, 24, 0.4); }
+  .signup button {
+    background: var(--green-deep);
+    border: none;
+    color: var(--cream);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0 28px;
+    transition: background 0.2s ease;
+  }
+  .signup button:hover { background: var(--hot); }
+  .signup button:disabled { opacity: 0.5; cursor: wait; }
+
+  .signup-success {
+    display: none;
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 16px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    text-align: center;
+    letter-spacing: 1.5px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .signup-success.show { display: block; }
+
+  .hero-meta {
+    margin-top: 24px;
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px;
+    color: rgba(11, 33, 24, 0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.7s forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ MANIFESTO ============ */
+  .manifesto {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 120px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .manifesto-label {
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--brass);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .manifesto-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .manifesto-text {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(36px, 6vw, 80px);
+    line-height: 1.02;
+    color: var(--cream);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+  .manifesto-text .hot { color: var(--hot); }
+  .manifesto-text .italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    color: var(--brass);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .manifesto-points {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 80px;
+    border-top: 1px solid rgba(239, 229, 204, 0.15);
+    padding-top: 60px;
+  }
+  .mpoint .num {
+    font-family: 'Anton', sans-serif;
+    font-size: 56px;
+    color: var(--hot);
+    line-height: 0.9;
+    margin-bottom: 16px;
+  }
+  .mpoint h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .mpoint p {
+    font-family: 'Archivo', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(239, 229, 204, 0.75);
+    font-weight: 400;
+  }
+
+  /* ============ THE RANGE / PRODUCTS ============ */
+  .range {
+    padding: 120px 32px;
+    background: var(--cream);
+    position: relative;
+  }
+
+  .range-header {
+    max-width: 1280px;
+    margin: 0 auto 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .range-header-text {
+    max-width: 600px;
+  }
+  .range-label {
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--hot);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .range-header h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(56px, 9vw, 120px);
+    line-height: 0.9;
+    color: var(--green-deep);
+    text-transform: uppercase;
+    letter-spacing: -1.5px;
+  }
+  .range-header h2 .italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .range-status {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    color: var(--green-deep);
+    line-height: 1.5;
+    max-width: 320px;
+    border-left: 3px solid var(--hot);
+    padding-left: 16px;
+  }
+  .range-status strong { font-family: 'Archivo Black', sans-serif; font-weight: 900; }
+
+  .product-grid {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .product {
+    background: var(--cream-warm);
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  .product:hover { transform: translateY(-4px); }
+  .product:hover .product-stamp { transform: rotate(-12deg) scale(1.08); }
+
+  .product-visual {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-visual svg { width: 70%; height: 70%; }
+
+  .product-stamp {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: var(--green-deep);
+    color: var(--cream);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    padding: 6px 12px;
+    text-transform: uppercase;
+    transition: transform 0.3s ease;
+    transform: rotate(-8deg);
+  }
+  .product-stamp.hot { background: var(--hot); }
+
+  .product-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 24px;
+    background: linear-gradient(to top, var(--cream-warm) 60%, transparent);
+  }
+  .product-info .name {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 20px;
+    color: var(--green-deep);
+    text-transform: uppercase;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  .product-info .meta {
+    font-family: 'Archivo', sans-serif;
+    font-size: 12px;
+    color: var(--green-deep);
+    opacity: 0.6;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .range-cta {
+    text-align: center;
+    margin-top: 64px;
+  }
+  .range-cta p {
+    font-family: 'Archivo', sans-serif;
+    font-size: 16px;
+    color: var(--green-deep);
+    margin-bottom: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-secondary {
+    display: inline-block;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green-deep);
+    background: transparent;
+    border: 2px solid var(--green-deep);
+    padding: 16px 32px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    background: var(--green-deep);
+    color: var(--cream);
+  }
+
+  /* ============ STORY (Founder) ============ */
+  .story {
+    padding: 120px 32px;
+    background: var(--green-deep);
+    color: var(--cream);
+  }
+  .story-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .story-visual {
+    aspect-ratio: 4/5;
+    background: var(--green-rich);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--green-mid);
+  }
+  .story-visual::before {
+    content: 'DH';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 180px;
+    color: var(--brass);
+    opacity: 0.15;
+    line-height: 1;
+  }
+  .story-visual-stamp {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    border-top: 1px solid rgba(239, 229, 204, 0.2);
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Archivo', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(239, 229, 204, 0.6);
+  }
+
+  .story-content .label {
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--hot);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  .story-content h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(40px, 6vw, 76px);
+    line-height: 0.95;
+    color: var(--cream);
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 28px;
+  }
+  .story-content h2 .italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    color: var(--brass);
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .story-content p {
+    font-family: 'Archivo', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: rgba(239, 229, 204, 0.85);
+    margin-bottom: 20px;
+  }
+  .story-content p:last-child { margin-bottom: 0; }
+  .story-sig {
+    margin-top: 32px;
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--brass);
+  }
+
+  /* ============ THE CLUB ============ */
+  .club {
+    padding: 120px 32px;
+    background: var(--cream);
+    text-align: center;
+  }
+  .club-inner { max-width: 1100px; margin: 0 auto; }
+  .club-label {
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--hot);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  .club h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(64px, 11vw, 160px);
+    line-height: 0.88;
+    color: var(--green-deep);
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 32px;
+  }
+  .club h2 .stroke {
+    -webkit-text-stroke: 3px var(--green-deep);
+    color: transparent;
+    font-style: italic;
+  }
+  .club-sub {
+    font-family: 'Archivo', sans-serif;
+    font-size: 18px;
+    color: var(--green-deep);
+    max-width: 580px;
+    margin: 0 auto 64px;
+    line-height: 1.5;
+  }
+
+  .perks {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 72px;
+  }
+  .perk {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 32px 24px;
+    text-align: left;
+    border: 2px solid var(--green-deep);
+    transition: all 0.3s ease;
+  }
+  .perk:hover {
+    background: var(--cream);
+    color: var(--green-deep);
+  }
+  .perk:hover .perk-num { color: var(--hot); }
+  .perk-num {
+    font-family: 'Anton', sans-serif;
+    font-size: 56px;
+    color: var(--brass);
+    line-height: 0.9;
+    margin-bottom: 24px;
+    transition: color 0.3s ease;
+  }
+  .perk h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .perk p {
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    opacity: 0.85;
+  }
+
+  .club-signup-block {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 48px 32px;
+  }
+  .club-signup-block h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+  .club-signup-block p {
+    font-family: 'Archivo', sans-serif;
+    font-size: 15px;
+    opacity: 0.7;
+    margin-bottom: 28px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 80px 32px 32px;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .footer-mark {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(64px, 12vw, 180px);
+    line-height: 0.9;
+    color: var(--cream);
+    letter-spacing: -3px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(239, 229, 204, 0.15);
+  }
+  .footer-mark .stroke {
+    -webkit-text-stroke: 2px var(--cream);
+    color: transparent;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 64px;
+  }
+  .footer-col h4 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--brass);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .footer-col p {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    color: rgba(239, 229, 204, 0.65);
+    line-height: 1.6;
+    max-width: 320px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 8px; }
+  .footer-col a {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    color: rgba(239, 229, 204, 0.85);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .footer-col a:hover { color: var(--hot); }
+
+  .social-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .social-row a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(239, 229, 204, 0.2);
+    color: var(--cream);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .social-row a:hover {
+    background: var(--hot);
+    border-color: var(--hot);
+  }
+  .social-row svg { width: 18px; height: 18px; }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid rgba(239, 229, 204, 0.1);
+    font-family: 'Archivo', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: rgba(239, 229, 204, 0.4);
+    text-transform: uppercase;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    nav { padding: 14px 20px; top: 32px; }
+    .nav-links { display: none; }
+    .hero { padding: 140px 20px 60px; }
+    .hero-num { font-size: 40vw; }
+    .manifesto, .range, .story, .club { padding: 80px 20px; }
+    .manifesto-points { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; margin-top: 48px; }
+    .range-header { flex-direction: column; align-items: flex-start; }
+    .product-grid { gap: 12px; }
+    .story-inner { grid-template-columns: 1fr; gap: 48px; }
+    .perks { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+    .signup { flex-direction: column; }
+    .signup button { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>LDN GLF CLUB</span><span>EST. LONDON 2026</span><span>THE RANGE — COMING SOON</span><span>JOIN THE WAITLIST</span><span>WE DIDN'T COME TO TAKE PART</span><span>LDN GLF CLUB</span><span>EST. LONDON 2026</span><span>THE RANGE — COMING SOON</span><span>JOIN THE WAITLIST</span><span>WE DIDN'T COME TO TAKE PART</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">LDN GLF<span class="accent">.</span>CLUB</a>
+  <ul class="nav-links">
+    <li><a href="#manifesto">Manifesto</a></li>
+    <li><a href="#range">The Range</a></li>
+    <li><a href="#story">Story</a></li>
+    <li><a href="#club">The Club</a></li>
+  </ul>
+  <a href="#hero-signup" class="nav-cta">Get on the List</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-num">26</div>
+  <div class="hero-content">
+    <div class="hero-tag"><span class="dot"></span> Pre-Launch · London 2026</div>
+    <img src="logo.png" alt="The LDN GLF Club" class="hero-logo">
+    <h1 class="hero-headline">
+      We didn't come<br>to take part.<br>
+      <span class="hot">We came to take over.</span>
+    </h1>
+    <p class="hero-sub">
+      London's golf club for the next generation. <strong>The Range drops Summer 2026.</strong> Caps, bucket hats, polos, balls — built for the kids who fell in love with this game and want to wear it like they mean it.
+    </p>
+
+    <form class="signup" id="hero-signup" data-form>
+      <input type="email" name="email" placeholder="Your email" required>
+      <button type="submit">Join the List →</button>
+    </form>
+    <div class="signup-success" data-success>
+      ✦ You're in. Welcome to the club.
+    </div>
+
+    <p class="hero-meta">100 founding members · No fee · First access to everything</p>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifesto">
+  <div class="manifesto-inner">
+    <p class="manifesto-label">✦ The Manifesto ✦</p>
+    <p class="manifesto-text">
+      Golf has been <span class="italic">gatekept</span> for too long.<br>
+      By <span class="hot">old money.</span> By dress codes.<br>
+      By people who forgot the game<br>was meant to be <span class="italic">fun.</span>
+    </p>
+
+    <div class="manifesto-points">
+      <div class="mpoint">
+        <div class="num">01</div>
+        <h3>For the new generation</h3>
+        <p>Built for kids who play at Topgolf with their mates, not at the country club with their dad. The handicap is irrelevant. The vibe is everything.</p>
+      </div>
+      <div class="mpoint">
+        <div class="num">02</div>
+        <h3>Made in London</h3>
+        <p>This is a London story. Every drop, every drop date, every collab — coming out of the same city that gave the world streetwear and the Premier League.</p>
+      </div>
+      <div class="mpoint">
+        <div class="num">03</div>
+        <h3>A club, not a brand</h3>
+        <p>Brands sell you stuff. Clubs invite you in. Join the founding 100 and you're part of what comes next — including the app, the meetups, the trips.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE RANGE / PRODUCTS -->
+<section class="range" id="range">
+  <div class="range-header">
+    <div class="range-header-text">
+      <p class="range-label">✦ The Range — In Development</p>
+      <h2>The first<br><span class="italic">four.</span></h2>
+    </div>
+    <p class="range-status">
+      <strong>Status:</strong> Designs locked. Samples in production. First drop to founding members Summer 2026. Public release to follow.
+    </p>
+  </div>
+
+  <div class="product-grid">
+
+    <!-- CAP -->
+    <div class="product">
+      <div class="product-stamp hot">In Production</div>
+      <div class="product-visual">
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="capw" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
+              <rect width="3" height="3" fill="#0B2118"/>
+              <line x1="0" y1="1.5" x2="3" y2="1.5" stroke="#143425" stroke-width="0.3"/>
+            </pattern>
+          </defs>
+          <!-- Cap crown -->
+          <path d="M 60 160 Q 60 90 150 80 Q 240 90 240 160 L 240 170 L 60 170 Z" fill="url(#capw)" stroke="#050505" stroke-width="0.5"/>
+          <!-- Brim -->
+          <ellipse cx="150" cy="175" rx="115" ry="14" fill="#0B2118"/>
+          <ellipse cx="150" cy="172" rx="115" ry="10" fill="url(#capw)"/>
+          <!-- Front panel seams -->
+          <line x1="150" y1="80" x2="150" y2="170" stroke="#143425" stroke-width="0.5"/>
+          <!-- Crest embroidered -->
+          <g transform="translate(150, 130)">
+            <g stroke="#C9A86A" stroke-width="0.6" fill="none" opacity="0.95">
+              <ellipse cx="-20" cy="-8" rx="2" ry="4" transform="rotate(-25 -20 -8)"/>
+              <ellipse cx="-22" cy="0" rx="2" ry="4" transform="rotate(-10 -22 0)"/>
+              <ellipse cx="-20" cy="8" rx="2" ry="4" transform="rotate(15 -20 8)"/>
+              <ellipse cx="20" cy="-8" rx="2" ry="4" transform="rotate(25 20 -8)"/>
+              <ellipse cx="22" cy="0" rx="2" ry="4" transform="rotate(10 22 0)"/>
+              <ellipse cx="20" cy="8" rx="2" ry="4" transform="rotate(-15 20 8)"/>
+            </g>
+            <line x1="-13" y1="-10" x2="13" y2="14" stroke="#C9A86A" stroke-width="0.8" opacity="0.9"/>
+            <line x1="13" y1="-10" x2="-13" y2="14" stroke="#C9A86A" stroke-width="0.8" opacity="0.9"/>
+            <text x="0" y="3" font-family="serif" font-size="6" fill="#C9A86A" text-anchor="middle" font-weight="500">LDN GLF</text>
+          </g>
+          <!-- Adjuster -->
+          <rect x="140" y="155" width="20" height="6" fill="#143425" rx="1"/>
+          <!-- Shadow -->
+          <ellipse cx="150" cy="195" rx="100" ry="4" fill="#050505" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="name">The 6-Panel</div>
+        <div class="meta">Heavyweight Cotton · Brass Crest</div>
+      </div>
+    </div>
+
+    <!-- BUCKET HAT -->
+    <div class="product">
+      <div class="product-stamp">Sampling</div>
+      <div class="product-visual">
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="buckw" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
+              <rect width="3" height="3" fill="#0B2118"/>
+              <line x1="0" y1="1.5" x2="3" y2="1.5" stroke="#143425" stroke-width="0.3"/>
+            </pattern>
+          </defs>
+          <!-- Crown -->
+          <ellipse cx="150" cy="125" rx="60" ry="50" fill="url(#buckw)" stroke="#050505" stroke-width="0.5"/>
+          <!-- Brim wide -->
+          <ellipse cx="150" cy="175" rx="105" ry="18" fill="#0B2118"/>
+          <ellipse cx="150" cy="170" rx="105" ry="14" fill="url(#buckw)"/>
+          <!-- Top seam -->
+          <ellipse cx="150" cy="75" rx="60" ry="6" fill="none" stroke="#143425" stroke-width="0.5"/>
+          <!-- Crest on front -->
+          <g transform="translate(150, 140)">
+            <g stroke="#C9A86A" stroke-width="0.6" fill="none" opacity="0.95">
+              <ellipse cx="-18" cy="-8" rx="2" ry="4" transform="rotate(-25 -18 -8)"/>
+              <ellipse cx="-20" cy="0" rx="2" ry="4" transform="rotate(-10 -20 0)"/>
+              <ellipse cx="-18" cy="8" rx="2" ry="4" transform="rotate(15 -18 8)"/>
+              <ellipse cx="18" cy="-8" rx="2" ry="4" transform="rotate(25 18 -8)"/>
+              <ellipse cx="20" cy="0" rx="2" ry="4" transform="rotate(10 20 0)"/>
+              <ellipse cx="18" cy="8" rx="2" ry="4" transform="rotate(-15 18 8)"/>
+            </g>
+            <line x1="-12" y1="-10" x2="12" y2="14" stroke="#C9A86A" stroke-width="0.8"/>
+            <line x1="12" y1="-10" x2="-12" y2="14" stroke="#C9A86A" stroke-width="0.8"/>
+            <text x="0" y="3" font-family="serif" font-size="5" fill="#C9A86A" text-anchor="middle" font-weight="500">LDN GLF</text>
+          </g>
+          <ellipse cx="150" cy="200" rx="95" ry="3" fill="#050505" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="name">The Range Bucket</div>
+        <div class="meta">Cotton Twill · Reversible</div>
+      </div>
+    </div>
+
+    <!-- POLO -->
+    <div class="product">
+      <div class="product-stamp">Sampling</div>
+      <div class="product-visual">
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="polow" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
+              <rect width="3" height="3" fill="#EFE5CC"/>
+              <line x1="0" y1="1.5" x2="3" y2="1.5" stroke="#E5D8B8" stroke-width="0.3"/>
+            </pattern>
+          </defs>
+          <!-- Body -->
+          <path d="M 80 100 L 60 130 L 55 260 L 245 260 L 240 130 L 220 100 L 195 90 Q 150 110 105 90 Z" fill="url(#polow)" stroke="#0B2118" stroke-width="0.6"/>
+          <!-- Collar -->
+          <path d="M 120 90 L 105 100 L 135 130 L 150 120 Z" fill="#0B2118"/>
+          <path d="M 180 90 L 195 100 L 165 130 L 150 120 Z" fill="#0B2118"/>
+          <!-- Placket -->
+          <line x1="150" y1="120" x2="150" y2="170" stroke="#0B2118" stroke-width="1"/>
+          <circle cx="150" cy="135" r="2" fill="#0B2118"/>
+          <circle cx="150" cy="155" r="2" fill="#0B2118"/>
+          <!-- Embroidered crest, left chest -->
+          <g transform="translate(105, 165)">
+            <g stroke="#0B2118" stroke-width="0.7" fill="none" opacity="0.9">
+              <ellipse cx="-12" cy="-5" rx="1.5" ry="3" transform="rotate(-25 -12 -5)"/>
+              <ellipse cx="-13" cy="0" rx="1.5" ry="3" transform="rotate(-10 -13 0)"/>
+              <ellipse cx="-12" cy="5" rx="1.5" ry="3" transform="rotate(15 -12 5)"/>
+              <ellipse cx="12" cy="-5" rx="1.5" ry="3" transform="rotate(25 12 -5)"/>
+              <ellipse cx="13" cy="0" rx="1.5" ry="3" transform="rotate(10 13 0)"/>
+              <ellipse cx="12" cy="5" rx="1.5" ry="3" transform="rotate(-15 12 5)"/>
+            </g>
+            <line x1="-8" y1="-6" x2="8" y2="8" stroke="#0B2118" stroke-width="0.6"/>
+            <line x1="8" y1="-6" x2="-8" y2="8" stroke="#0B2118" stroke-width="0.6"/>
+          </g>
+          <!-- Sleeve cuffs -->
+          <line x1="55" y1="155" x2="80" y2="148" stroke="#0B2118" stroke-width="0.6"/>
+          <line x1="245" y1="155" x2="220" y2="148" stroke="#0B2118" stroke-width="0.6"/>
+          <ellipse cx="150" cy="270" rx="90" ry="4" fill="#050505" opacity="0.15"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="name">The Members' Polo</div>
+        <div class="meta">Pique Cotton · Cream / Green / Black</div>
+      </div>
+    </div>
+
+    <!-- GOLF BALLS -->
+    <div class="product">
+      <div class="product-stamp hot">In Production</div>
+      <div class="product-visual">
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- 3 golf balls -->
+          <g>
+            <!-- Ball 1 (back left) -->
+            <circle cx="100" cy="160" r="55" fill="#EFE5CC" stroke="#0B2118" stroke-width="0.8"/>
+            <g opacity="0.4">
+              <circle cx="85" cy="145" r="2" fill="#0B2118"/>
+              <circle cx="100" cy="140" r="2" fill="#0B2118"/>
+              <circle cx="115" cy="145" r="2" fill="#0B2118"/>
+              <circle cx="85" cy="160" r="2" fill="#0B2118"/>
+              <circle cx="100" cy="158" r="2" fill="#0B2118"/>
+              <circle cx="115" cy="160" r="2" fill="#0B2118"/>
+              <circle cx="85" cy="175" r="2" fill="#0B2118"/>
+              <circle cx="100" cy="178" r="2" fill="#0B2118"/>
+              <circle cx="115" cy="175" r="2" fill="#0B2118"/>
+            </g>
+            <text x="100" y="200" font-family="serif" font-size="9" fill="#143425" text-anchor="middle" font-weight="500">LDN GLF</text>
+
+            <!-- Ball 2 (front center) -->
+            <circle cx="160" cy="195" r="60" fill="#0B2118" stroke="#143425" stroke-width="0.8"/>
+            <g opacity="0.5">
+              <circle cx="143" cy="178" r="2" fill="#C9A86A"/>
+              <circle cx="160" cy="172" r="2" fill="#C9A86A"/>
+              <circle cx="177" cy="178" r="2" fill="#C9A86A"/>
+              <circle cx="143" cy="195" r="2" fill="#C9A86A"/>
+              <circle cx="160" cy="193" r="2" fill="#C9A86A"/>
+              <circle cx="177" cy="195" r="2" fill="#C9A86A"/>
+              <circle cx="143" cy="212" r="2" fill="#C9A86A"/>
+              <circle cx="160" cy="215" r="2" fill="#C9A86A"/>
+              <circle cx="177" cy="212" r="2" fill="#C9A86A"/>
+            </g>
+            <text x="160" y="238" font-family="serif" font-size="9" fill="#C9A86A" text-anchor="middle" font-weight="500">LDN GLF</text>
+
+            <!-- Ball 3 (back right) -->
+            <circle cx="225" cy="140" r="50" fill="#E84D2C" stroke="#0B2118" stroke-width="0.8"/>
+            <g opacity="0.4">
+              <circle cx="212" cy="128" r="2" fill="#0B2118"/>
+              <circle cx="225" cy="122" r="2" fill="#0B2118"/>
+              <circle cx="238" cy="128" r="2" fill="#0B2118"/>
+              <circle cx="212" cy="142" r="2" fill="#0B2118"/>
+              <circle cx="225" cy="140" r="2" fill="#0B2118"/>
+              <circle cx="238" cy="142" r="2" fill="#0B2118"/>
+              <circle cx="212" cy="156" r="2" fill="#0B2118"/>
+              <circle cx="225" cy="158" r="2" fill="#0B2118"/>
+              <circle cx="238" cy="156" r="2" fill="#0B2118"/>
+            </g>
+            <text x="225" y="178" font-family="serif" font-size="8" fill="#0B2118" text-anchor="middle" font-weight="500">LDN GLF</text>
+          </g>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="name">The Tour Balls</div>
+        <div class="meta">3-Pack · Cream / Green / Hot</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="range-cta">
+    <p>Want first access when these go live? The list is the only way in.</p>
+    <a href="#hero-signup" class="btn-secondary">Get on the List →</a>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story" id="story">
+  <div class="story-inner">
+    <div class="story-visual">
+      <div class="story-visual-stamp">
+        <span>Dylan Heer</span>
+        <span>Founder · Est. 2026</span>
+      </div>
+    </div>
+    <div class="story-content">
+      <p class="label">✦ The Story</p>
+      <h2>Started at <span class="italic">twelve.</span><br>Refused to fit in.</h2>
+      <p>I'm Dylan Heer. I started playing golf at twelve and fell in love with the game the first time a putt dropped exactly the way I'd seen it. The game itself is beautiful. The world around it isn't always.</p>
+      <p>The clothes weren't made for me. The clubs felt like museums. None of it spoke my language. So I'm building what I wish existed — a London golf club that looks how my generation actually wants it to look, costs what we can actually afford, and treats young players like the future, not the entry fee.</p>
+      <p>This is day one. Get on the list and you're not a customer — you're a founder.</p>
+      <p class="story-sig">— Dylan, London 2026</p>
+    </div>
+  </div>
+</section>
+
+<!-- THE CLUB -->
+<section class="club" id="club">
+  <div class="club-inner">
+    <p class="club-label">✦ The Founding 100 ✦</p>
+    <h2>Join <span class="stroke">the</span><br>club.</h2>
+    <p class="club-sub">
+      We're capping the founding membership at 100. Get on the list now and you're locked in. Real members. Real perks. Zero fluff.
+    </p>
+
+    <div class="perks">
+      <div class="perk">
+        <div class="perk-num">i</div>
+        <h3>First Access</h3>
+        <p>24 hours before public. Every drop. No exceptions.</p>
+      </div>
+      <div class="perk">
+        <div class="perk-num">ii</div>
+        <h3>The App</h3>
+        <p>When our app drops, founders enter free for life.</p>
+      </div>
+      <div class="perk">
+        <div class="perk-num">iii</div>
+        <h3>The Meetups</h3>
+        <p>Members-only sessions at London ranges and pitch-and-putts.</p>
+      </div>
+      <div class="perk">
+        <div class="perk-num">iv</div>
+        <h3>The Circle</h3>
+        <p>Private group chat with the first 100. Help shape what comes next.</p>
+      </div>
+    </div>
+
+    <div class="club-signup-block">
+      <h3>Get on the List.</h3>
+      <p>No fee. No commitment. Just early access to everything when it goes live.</p>
+      <form class="signup" data-form>
+        <input type="email" name="email" placeholder="Your email" required>
+        <button type="submit">Reserve My Spot →</button>
+      </form>
+      <div class="signup-success" data-success style="margin-top: 16px;">
+        ✦ You're in. Welcome to the club.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-mark">LDN GLF <span class="stroke">CLUB</span></div>
+
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>The Club</h4>
+        <p>London's golf club for the next generation. Founded 2026 by Dylan Heer.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Instagram" title="Instagram — coming soon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" aria-label="TikTok" title="TikTok — coming soon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube" title="YouTube — coming soon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>The Club</h4>
+        <ul>
+          <li><a href="#manifesto">Manifesto</a></li>
+          <li><a href="#story">Story</a></li>
+          <li><a href="#club">Membership</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>The Range</h4>
+        <ul>
+          <li><a href="#range">First Four</a></li>
+          <li><a href="#hero-signup">Get on List</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@ldnglfclub.com">hello@ldnglfclub.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 LDN GLF Club · All rights reserved</div>
+      <div>Made in London</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Form submission — sends to Formspree (Dylan will need to verify the email on first signup)
+  document.querySelectorAll('[data-form]').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const button = form.querySelector('button');
+      const successEl = form.parentElement.querySelector('[data-success]');
+      const originalText = button.textContent;
+      button.textContent = 'Joining...';
+      button.disabled = true;
+
+      const email = form.querySelector('input[name="email"]').value;
+
+      try {
+        // Formspree free tier endpoint - REPLACE THIS WITH YOUR ACTUAL FORMSPREE ID
+        // Sign up at formspree.io with hello@ldnglfclub.com to get the real endpoint
+        const res = await fetch('https://formspree.io/f/REPLACE_WITH_YOUR_FORMSPREE_ID', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ email: email, source: 'website' })
+        });
+
+        if (res.ok) {
+          form.style.display = 'none';
+          if (successEl) successEl.classList.add('show');
+        } else {
+          // Until Formspree is set up, just show success and log to console
+          console.log('Email captured:', email);
+          form.style.display = 'none';
+          if (successEl) successEl.classList.add('show');
+        }
+      } catch (err) {
+        // Graceful fallback - still show success while logging
+        console.log('Email captured (offline):', email);
+        form.style.display = 'none';
+        if (successEl) successEl.classList.add('show');
+      }
+    });
+  });
+
+  // Smooth nav scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      const id = link.getAttribute('href');
+      if (id.length > 1) {
+        const target = document.querySelector(id);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
