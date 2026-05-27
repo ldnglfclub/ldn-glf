@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The LDN GLF Club — Members Only</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0F2A1D;
+    --green-rich: #1E4A2C;
+    --green-mid: #2D5A38;
+    --cream: #F1E9D6;
+    --cream-warm: #E8DFC9;
+    --parchment: #EAE0C8;
+    --ink: #0A0A0A;
+    --brass: #8B7355;
+    --muted: rgba(15, 42, 29, 0.55);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--green-deep);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+    /* Paper texture */
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(139, 115, 85, 0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(15, 42, 29, 0.03) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(241, 233, 214, 0.95), rgba(241, 233, 214, 0.6) 80%, transparent);
+    backdrop-filter: blur(8px);
+    transition: padding 0.3s ease;
+  }
+  nav.scrolled { padding: 16px 48px; background: rgba(241, 233, 214, 0.98); }
+
+  .nav-mark {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: var(--green-deep);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .nav-mark span { color: var(--brass); }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--green-deep);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 400;
+    position: relative;
+    padding-bottom: 4px;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--green-deep);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--cream);
+    background: var(--green-deep);
+    padding: 10px 22px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  .nav-cta:hover { background: var(--brass); color: var(--cream); }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+    position: relative;
+  }
+
+  /* Decorative corner ornaments */
+  .corner {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 1px solid var(--green-deep);
+    opacity: 0.3;
+  }
+  .corner.tl { top: 100px; left: 40px; border-right: none; border-bottom: none; }
+  .corner.tr { top: 100px; right: 40px; border-left: none; border-bottom: none; }
+  .corner.bl { bottom: 40px; left: 40px; border-right: none; border-top: none; }
+  .corner.br { bottom: 40px; right: 40px; border-left: none; border-top: none; }
+
+  .establishment {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 6px;
+    color: var(--brass);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.2s forwards;
+  }
+  .establishment::before, .establishment::after {
+    content: '·';
+    margin: 0 12px;
+  }
+
+  .hero-logo {
+    max-width: 580px;
+    width: 65%;
+    height: auto;
+    opacity: 0;
+    animation: fadeUp 1.6s ease 0.5s forwards;
+    filter: drop-shadow(0 2px 20px rgba(15, 42, 29, 0.08));
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 36px 0 24px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 1.2s forwards;
+  }
+  .hero-divider .line {
+    width: 80px;
+    height: 1px;
+    background: var(--green-deep);
+    opacity: 0.4;
+  }
+  .hero-divider .diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--green-deep);
+    transform: rotate(45deg);
+    opacity: 0.5;
+  }
+
+  .tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--green-deep);
+    max-width: 600px;
+    line-height: 1.4;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 1.4s forwards;
+  }
+
+  .hero-meta {
+    margin-top: 48px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 1.7s forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ MANIFESTO ============ */
+  .manifesto {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 140px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .manifesto::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(234, 224, 200, 0.04) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .manifesto-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 6px;
+    color: var(--brass);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .manifesto-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 42px;
+    line-height: 1.4;
+    color: var(--cream);
+    letter-spacing: -0.5px;
+  }
+  .manifesto-text em {
+    font-style: italic;
+    color: var(--cream-warm);
+  }
+
+  .manifesto-sig {
+    margin-top: 56px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--brass);
+    letter-spacing: 1px;
+  }
+
+  /* ============ DROP 001 ============ */
+  .drop {
+    padding: 140px 40px;
+    background: var(--cream);
+  }
+
+  .drop-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .drop-visual {
+    position: relative;
+    aspect-ratio: 4/5;
+    background: var(--parchment);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hand-drawn frame */
+  .drop-visual::before {
+    content: '';
+    position: absolute;
+    inset: 24px;
+    border: 1px solid var(--green-deep);
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .drop-product {
+    width: 70%;
+    aspect-ratio: 1;
+    position: relative;
+  }
+
+  /* SVG embroidered crest on hoodie */
+  .drop-product svg { width: 100%; height: 100%; }
+
+  .drop-badge {
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    background: var(--green-deep);
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    padding: 8px 16px;
+    text-transform: uppercase;
+  }
+
+  .drop-stock {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--green-deep);
+    text-transform: uppercase;
+    background: var(--cream);
+    padding: 8px 14px;
+    border: 1px solid var(--green-deep);
+  }
+  .drop-stock .pulse {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #c44;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: 1px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .drop-content .drop-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--brass);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .drop-content h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--green-deep);
+    margin-bottom: 8px;
+    letter-spacing: -1.5px;
+  }
+  .drop-content h2 em {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .drop-content .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+
+  .drop-specs {
+    border-top: 1px solid rgba(15, 42, 29, 0.2);
+    border-bottom: 1px solid rgba(15, 42, 29, 0.2);
+    padding: 24px 0;
+    margin-bottom: 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .spec {
+    font-family: 'Inter', sans-serif;
+  }
+  .spec-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .spec-value {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--green-deep);
+    font-weight: 400;
+  }
+
+  .drop-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .drop-price {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    color: var(--green-deep);
+    font-weight: 400;
+  }
+  .drop-price .ampersand {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--brass);
+  }
+  .drop-price-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .drop-cta {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--cream);
+    background: var(--green-deep);
+    padding: 18px 36px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    border: 1px solid var(--green-deep);
+  }
+  .drop-cta:hover {
+    background: var(--cream);
+    color: var(--green-deep);
+  }
+
+  .drop-meta {
+    margin-top: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* ============ MEMBERSHIP ============ */
+  .membership {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 140px 40px;
+    position: relative;
+    text-align: center;
+  }
+
+  .membership::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .membership-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .membership .section-label {
+    color: var(--brass);
+    margin-bottom: 32px;
+  }
+
+  .membership h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 96px;
+    line-height: 0.95;
+    color: var(--cream);
+    margin-bottom: 28px;
+    letter-spacing: -2px;
+  }
+  .membership h2 em {
+    font-style: italic;
+    color: var(--cream-warm);
+  }
+
+  .membership-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--cream-warm);
+    max-width: 540px;
+    margin: 0 auto 56px;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .benefits {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin: 64px 0 56px;
+    text-align: left;
+  }
+
+  .benefit {
+    border-top: 1px solid rgba(234, 224, 200, 0.3);
+    padding-top: 20px;
+  }
+  .benefit-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--brass);
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+  .benefit-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    color: var(--cream);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .benefit-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    color: var(--cream-warm);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .signup-form {
+    display: flex;
+    max-width: 480px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--cream);
+  }
+  .signup-form input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 16px 4px;
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    outline: none;
+  }
+  .signup-form input::placeholder { color: rgba(234, 224, 200, 0.5); }
+  .signup-form button {
+    background: transparent;
+    border: none;
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 16px 8px;
+    transition: color 0.3s ease;
+  }
+  .signup-form button:hover { color: var(--brass); }
+
+  .form-meta {
+    margin-top: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(234, 224, 200, 0.5);
+    text-transform: uppercase;
+  }
+
+  /* ============ FOUNDER NOTE ============ */
+  .founder {
+    padding: 140px 40px;
+    background: var(--cream);
+  }
+  .founder-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .founder .section-label { color: var(--brass); margin-bottom: 40px; }
+
+  .founder-text {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 26px;
+    line-height: 1.6;
+    color: var(--green-deep);
+    margin-bottom: 40px;
+  }
+  .founder-text::before,
+  .founder-text::after {
+    content: '"';
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    color: var(--brass);
+    line-height: 0;
+    vertical-align: -8px;
+  }
+  .founder-text::before { margin-right: 4px; }
+  .founder-text::after { margin-left: 4px; }
+
+  .founder-sig {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--green-deep);
+  }
+  .founder-role {
+    margin-top: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--brass);
+    text-transform: uppercase;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 100px 48px 40px;
+    position: relative;
+  }
+  footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(234, 224, 200, 0.2);
+  }
+  .footer-brand img {
+    width: 180px;
+    margin-bottom: 24px;
+    filter: brightness(0) saturate(100%) invert(89%) sepia(13%) saturate(388%) hue-rotate(8deg) brightness(98%) contrast(89%);
+  }
+  .footer-brand p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--cream-warm);
+    max-width: 280px;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+  .footer-col h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--brass);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--cream);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 300;
+  }
+  .footer-col a:hover { color: var(--brass); }
+  .footer-bottom {
+    padding-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(234, 224, 200, 0.4);
+    text-transform: uppercase;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 140px 24px 60px; }
+    .corner { display: none; }
+    .tagline { font-size: 22px; }
+    .manifesto, .membership, .founder, .drop { padding: 80px 24px; }
+    .manifesto-text { font-size: 28px; }
+    .membership h2 { font-size: 56px; }
+    .drop-inner { grid-template-columns: 1fr; gap: 48px; }
+    .drop-content h2 { font-size: 44px; }
+    .benefits { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .footer-top { grid-template-columns: 1fr; gap: 40px; }
+    .footer-bottom { flex-direction: column; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <div class="nav-mark">The LDN <span>·</span> GLF <span>·</span> Club</div>
+  <ul class="nav-links">
+    <li><a href="#manifesto">Manifesto</a></li>
+    <li><a href="#drop">Drop 001</a></li>
+    <li><a href="#membership">The Club</a></li>
+  </ul>
+  <a href="#membership" class="nav-cta">Reserve</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <p class="establishment">Established London <span style="margin: 0 8px;">MMXXVI</span></p>
+
+  <img src="logo.png" alt="The LDN GLF Club" class="hero-logo">
+
+  <div class="hero-divider">
+    <div class="line"></div>
+    <div class="diamond"></div>
+    <div class="line"></div>
+  </div>
+
+  <p class="tagline">A new chapter for an old game.<br>Built in London, for the next generation.</p>
+
+  <p class="hero-meta">Drop 001 · Coming Soon · By Invitation</p>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifesto">
+  <div class="manifesto-inner">
+    <p class="section-label">Our Manifesto</p>
+    <p class="manifesto-text">
+      Golf was never meant to belong to one type of person.<br><br>
+      We&rsquo;re building a club for the kids who play at the range after school, who tee off at Topgolf with their mates, who care about the cut of a hoodie as much as the line of a putt. <em>The dress code is taste. The handicap is irrelevant.</em>
+    </p>
+    <p class="manifesto-sig">— A club without a clubhouse</p>
+  </div>
+</section>
+
+<!-- DROP 001 -->
+<section class="drop" id="drop">
+  <div class="drop-inner">
+    <div class="drop-visual">
+      <div class="drop-badge">Drop 001 — The Founders</div>
+
+      <!-- SVG illustration of a hoodie with embroidered crest -->
+      <div class="drop-product">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <!-- Hoodie silhouette -->
+          <defs>
+            <pattern id="weave" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
+              <rect width="3" height="3" fill="#1E4A2C"/>
+              <line x1="0" y1="1.5" x2="3" y2="1.5" stroke="#173A22" stroke-width="0.3"/>
+            </pattern>
+          </defs>
+
+          <!-- Hoodie body -->
+          <path d="M 100 130 L 70 165 L 55 360 L 345 360 L 330 165 L 300 130 L 260 115 Q 200 145 140 115 Z"
+                fill="url(#weave)" stroke="#0F2A1D" stroke-width="0.5"/>
+
+          <!-- Hood -->
+          <path d="M 140 115 Q 200 75 260 115 Q 235 140 200 140 Q 165 140 140 115 Z"
+                fill="url(#weave)" stroke="#0F2A1D" stroke-width="0.5"/>
+
+          <!-- Hood inner shadow -->
+          <path d="M 150 118 Q 200 85 250 118 Q 230 132 200 132 Q 170 132 150 118 Z"
+                fill="#0F2A1D" opacity="0.3"/>
+
+          <!-- Drawstrings -->
+          <line x1="178" y1="125" x2="174" y2="190" stroke="#EAE0C8" stroke-width="1.5"/>
+          <line x1="222" y1="125" x2="226" y2="190" stroke="#EAE0C8" stroke-width="1.5"/>
+          <circle cx="174" cy="192" r="3" fill="#EAE0C8"/>
+          <circle cx="226" cy="192" r="3" fill="#EAE0C8"/>
+
+          <!-- Pocket seam -->
+          <path d="M 110 260 Q 200 280 290 260" fill="none" stroke="#0F2A1D" stroke-width="0.5" opacity="0.5"/>
+          <path d="M 110 260 L 110 320" stroke="#0F2A1D" stroke-width="0.5" opacity="0.5"/>
+          <path d="M 290 260 L 290 320" stroke="#0F2A1D" stroke-width="0.5" opacity="0.5"/>
+
+          <!-- Cuffs -->
+          <rect x="55" y="345" width="40" height="15" fill="#0F2A1D" opacity="0.4"/>
+          <rect x="305" y="345" width="40" height="15" fill="#0F2A1D" opacity="0.4"/>
+
+          <!-- Bottom hem -->
+          <rect x="55" y="345" width="290" height="15" fill="none" stroke="#0F2A1D" stroke-width="0.5" opacity="0.4"/>
+
+          <!-- Chest embroidered crest area -->
+          <g transform="translate(200, 230)">
+            <!-- Laurel wreath -->
+            <g stroke="#EAE0C8" stroke-width="0.8" fill="none" opacity="0.95">
+              <!-- Left side leaves -->
+              <ellipse cx="-32" cy="-15" rx="3" ry="6" transform="rotate(-30 -32 -15)"/>
+              <ellipse cx="-35" cy="-5" rx="3" ry="6" transform="rotate(-15 -35 -5)"/>
+              <ellipse cx="-35" cy="5" rx="3" ry="6" transform="rotate(0 -35 5)"/>
+              <ellipse cx="-32" cy="15" rx="3" ry="6" transform="rotate(20 -32 15)"/>
+              <!-- Right side leaves -->
+              <ellipse cx="32" cy="-15" rx="3" ry="6" transform="rotate(30 32 -15)"/>
+              <ellipse cx="35" cy="-5" rx="3" ry="6" transform="rotate(15 35 -5)"/>
+              <ellipse cx="35" cy="5" rx="3" ry="6" transform="rotate(0 35 5)"/>
+              <ellipse cx="32" cy="15" rx="3" ry="6" transform="rotate(-20 32 15)"/>
+            </g>
+            <!-- Crossed clubs -->
+            <line x1="-22" y1="-18" x2="22" y2="22" stroke="#EAE0C8" stroke-width="1" opacity="0.9"/>
+            <line x1="22" y1="-18" x2="-22" y2="22" stroke="#EAE0C8" stroke-width="1" opacity="0.9"/>
+            <!-- Center text -->
+            <text x="0" y="3" font-family="serif" font-size="9" fill="#EAE0C8" text-anchor="middle" font-weight="500" letter-spacing="0.5">LDN GLF</text>
+          </g>
+
+          <!-- Shadow under hoodie -->
+          <ellipse cx="200" cy="365" rx="120" ry="6" fill="#0F2A1D" opacity="0.15"/>
+        </svg>
+      </div>
+
+      <div class="drop-stock"><span class="pulse"></span>Reservations Open</div>
+    </div>
+
+    <div class="drop-content">
+      <p class="drop-num">Drop 001 — The Founders</p>
+      <h2>The <em>Heritage</em><br>Hoodie</h2>
+      <p class="subtitle">A piece for the first 100. Numbered, signed, never repeated.</p>
+
+      <div class="drop-specs">
+        <div class="spec">
+          <div class="spec-label">Weight</div>
+          <div class="spec-value">450 gsm</div>
+        </div>
+        <div class="spec">
+          <div class="spec-label">Cotton</div>
+          <div class="spec-value">100% Heavyweight</div>
+        </div>
+        <div class="spec">
+          <div class="spec-label">Crest</div>
+          <div class="spec-value">Hand-embroidered</div>
+        </div>
+        <div class="spec">
+          <div class="spec-label">Made in</div>
+          <div class="spec-value">Portugal</div>
+        </div>
+      </div>
+
+      <div class="drop-price-row">
+        <div class="drop-price">£95</div>
+        <div class="drop-price-meta">Drop closes <em>July 1st</em></div>
+      </div>
+
+      <a href="#membership" class="drop-cta">Reserve Your Number →</a>
+
+      <p class="drop-meta">100 hoodies. Each one numbered 001 through 100. When the run ends, it ends for good.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="membership" id="membership">
+  <div class="membership-inner">
+    <p class="section-label">Membership</p>
+    <h2>Join <em>the</em><br>Club</h2>
+    <p class="membership-sub">An invitation to the first hundred members. Early access to every drop. The keys to the app when it opens. A seat at the table from day one.</p>
+
+    <div class="benefits">
+      <div class="benefit">
+        <div class="benefit-num">i.</div>
+        <div class="benefit-title">First Access</div>
+        <p class="benefit-text">Twenty-four hours before the public. Every drop. No exceptions.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-num">ii.</div>
+        <div class="benefit-title">The App</div>
+        <p class="benefit-text">When the LDN GLF Club app launches, members enter free for life.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-num">iii.</div>
+        <div class="benefit-title">The Course</div>
+        <p class="benefit-text">Members-only days at our partner ranges and courses across the UK.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-num">iv.</div>
+        <div class="benefit-title">The Circle</div>
+        <p class="benefit-text">A private group of the first hundred. The founders of what comes next.</p>
+      </div>
+    </div>
+
+    <form class="signup-form" onsubmit="event.preventDefault(); this.querySelector('input').value=''; alert('Welcome to the club. Check your inbox.');">
+      <input type="email" placeholder="Enter your email address" required>
+      <button type="submit">Request Membership →</button>
+    </form>
+    <p class="form-meta">By invitation only · 100 members · No fee until launch</p>
+  </div>
+</section>
+
+<!-- FOUNDER NOTE -->
+<section class="founder">
+  <div class="founder-inner">
+    <p class="section-label">From the Founder</p>
+    <p class="founder-text">
+      I started playing golf at twelve. I fell in love with the game, but never with the world around it. The clothes weren&rsquo;t made for me. The clubs weren&rsquo;t made for me. None of it felt like mine. So I built something that is — for me, for my mates, and for every kid who&rsquo;s ever stood on a tee box and thought there had to be a better way to do this.
+    </p>
+    <p class="founder-sig">— The Founder</p>
+    <p class="founder-role">London · 2026</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="logo.png" alt="The LDN GLF Club">
+        <p>A new chapter for an old game. Built in London, for the next generation of golf.</p>
+      </div>
+      <div class="footer-col">
+        <h4>The Club</h4>
+        <ul>
+          <li><a href="#manifesto">Manifesto</a></li>
+          <li><a href="#membership">Membership</a></li>
+          <li><a href="#">The App</a></li>
+          <li><a href="#">Partners</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#drop">Drop 001</a></li>
+          <li><a href="#">Archive</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Care</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="mailto:hello@ldnglfclub.com">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© MMXXVI · The LDN GLF Club · All rights reserved</div>
+      <div>Crafted in London</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll behaviour
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+
+</body>
+</html>
