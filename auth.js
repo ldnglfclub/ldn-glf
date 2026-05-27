@@ -118,19 +118,27 @@
     .ldn-parent-block {
       background: rgba(11, 33, 24, 0.05);
       border-radius: 10px;
-      padding: 12px 14px;
+      padding: 14px 14px 4px;
       margin-bottom: 14px;
       display: none;
+      border-left: 3px solid #C9A86A;
     }
     .ldn-parent-block.show { display: block; }
+    .ldn-parent-block.show:not(.soft) { border-left-color: #E84D2C; background: rgba(232, 77, 44, 0.06); }
+    .ldn-parent-block.show.soft { border-left-color: #C9A86A; background: rgba(201, 168, 106, 0.08); }
     .ldn-parent-block p {
       font-family: 'Archivo', sans-serif;
-      font-size: 12px;
+      font-size: 12.5px;
       color: #1F4A33;
       line-height: 1.5;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-weight: 500;
     }
+    .ldn-parent-block p strong { color: #0B2118; }
+    .ldn-parent-block-strict { display: none; }
+    .ldn-parent-block-soft { display: none; }
+    .ldn-parent-block.show:not(.soft) .ldn-parent-block-strict { display: block; }
+    .ldn-parent-block.show.soft .ldn-parent-block-soft { display: block; }
     .ldn-submit {
       width: 100%;
       background: #E84D2C;
@@ -255,6 +263,36 @@
     .ldn-back-btn:hover { color: #E84D2C; }
     .ldn-back-btn svg { width: 14px; height: 14px; }
 
+    /* Code-acknowledgement & parent-consent tickbox rows */
+    .ldn-checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 0;
+      cursor: pointer;
+    }
+    .ldn-checkbox-row input[type="checkbox"] {
+      flex: 0 0 auto;
+      width: 20px; height: 20px;
+      margin-top: 2px;
+      accent-color: #E84D2C;
+      cursor: pointer;
+    }
+    .ldn-checkbox-text {
+      flex: 1;
+      font-family: 'Archivo', sans-serif;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: #1F4A33;
+      font-weight: 500;
+    }
+    .ldn-checkbox-text a {
+      color: #E84D2C;
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    .ldn-checkbox-text strong { color: #0B2118; font-weight: 800; }
+
     /* Desktop nav: small text "Sign In" link to the LEFT of the Sign Up CTA */
     .nav-signin-link {
       font-family: 'Archivo', sans-serif;
@@ -286,6 +324,54 @@
       transition: all 0.18s;
     }
     .ldnx-mobile-signin:hover { background: #C9A86A; color: #0B2118; }
+
+    /* Discreet safeguarding strip — always visible footer above bottom nav */
+    #ldnReportStrip {
+      width: 100%;
+      background: rgba(11, 33, 24, 0.04);
+      border-top: 1px solid rgba(11, 33, 24, 0.08);
+      border-bottom: 1px solid rgba(11, 33, 24, 0.08);
+      padding: 12px 20px;
+      text-align: center;
+      margin-top: 24px;
+      margin-bottom: 0;
+      position: relative;
+      z-index: 50;
+    }
+    .ldn-report-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #1F4A33;
+      text-decoration: none;
+      font-family: 'Archivo', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .ldn-report-link:hover { color: #E84D2C; }
+    .ldn-report-link svg { width: 14px; height: 14px; color: #E84D2C; }
+    .ldn-report-link strong {
+      font-family: 'Archivo Black', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+    /* On mobile, sit above the bottom nav */
+    @media (max-width: 767px) {
+      #ldnReportStrip {
+        position: fixed;
+        bottom: 64px;
+        left: 0; right: 0;
+        margin-top: 0;
+        background: rgba(239, 229, 204, 0.94);
+        backdrop-filter: blur(6px);
+        padding: 8px 16px;
+      }
+      body { padding-bottom: 110px; }
+    }
 
     /* Welcome state (post-signup) */
     .ldn-welcome {
@@ -453,7 +539,7 @@
           </button>
           <div class="ldn-modal-flag">✦ Free · 100 Founding Members</div>
           <h2 class="ldn-modal-title">Join the <span class="italic">club.</span></h2>
-          <p class="ldn-modal-sub">No card details. No commitment. Just your <strong>name, email and DOB</strong>.</p>
+          <p class="ldn-modal-sub">No card details. No commitment. We just need <strong>your name, email and DOB</strong>. Under 13? We'll also ask for a parent or guardian's contact — UK law requires it.</p>
 
           <form id="ldnSignupFormEl" onsubmit="LDN.handleSignup(event)">
             <div class="ldn-field">
@@ -467,13 +553,26 @@
             <div class="ldn-field">
               <label for="ldnDob">Date of birth</label>
               <input type="date" id="ldnDob" required>
-              <div class="ldn-field-hint">Under 16? We'll ask for a parent contact below.</div>
+              <div class="ldn-field-hint">Under 13? We'll need a parent or guardian's contact below.</div>
             </div>
             <div class="ldn-parent-block" id="ldnParentBlock">
-              <p><strong>You're under 16</strong> — we need a parent or guardian's email so we can let them know you've joined and share the safeguarding info.</p>
-              <div class="ldn-field" style="margin-bottom: 0;">
+              <div class="ldn-parent-block-strict">
+                <p><strong>You're under 13.</strong> UK law requires a parent or guardian to give consent for you to use a service like this. We need their contact details so we can let them know, share our safeguarding info, and they can ask us anything.</p>
+              </div>
+              <div class="ldn-parent-block-soft">
+                <p><strong>Under 18?</strong> We don't strictly need a parent's contact at your age, but it's how we keep parents in the loop about events, trips and anything safety-related. <em>Strongly recommended.</em></p>
+              </div>
+              <div class="ldn-field">
+                <label for="ldnParentName">Parent / guardian name</label>
+                <input type="text" id="ldnParentName" placeholder="Their full name">
+              </div>
+              <div class="ldn-field">
                 <label for="ldnParentEmail">Parent / guardian email</label>
                 <input type="email" id="ldnParentEmail" placeholder="parent@email.com">
+              </div>
+              <div class="ldn-field" style="margin-bottom: 0;">
+                <label for="ldnParentPhone">Parent / guardian phone <em style="font-weight:500;text-transform:none;letter-spacing:0;opacity:0.6;">(optional)</em></label>
+                <input type="tel" id="ldnParentPhone" placeholder="07xxx xxx xxx" autocomplete="tel">
               </div>
             </div>
             <div class="ldn-field">
@@ -481,6 +580,20 @@
               <input type="text" id="ldnFriendCode" placeholder="e.g. LDN-001-AB12" maxlength="14">
               <div class="ldn-field-hint">Got invited by a member? Paste their code.</div>
             </div>
+
+            <label class="ldn-checkbox-row">
+              <input type="checkbox" id="ldnAgreeCode" required>
+              <span class="ldn-checkbox-text">
+                I've read <a href="code.html" target="_blank">our Code</a> and agree to the <a href="legal.html" target="_blank">terms &amp; privacy policy</a>. I understand this is a community for golfers of all ages and I'll treat everyone with respect.
+              </span>
+            </label>
+            <label class="ldn-checkbox-row" id="ldnParentConsentRow" style="display: none;">
+              <input type="checkbox" id="ldnParentConsent">
+              <span class="ldn-checkbox-text">
+                <strong>Parent / guardian to tick:</strong> I confirm I'm the parent or guardian of the named child, I consent to them joining, and I understand we'll be contacted about safeguarding matters and major events.
+              </span>
+            </label>
+
             <button type="submit" class="ldn-submit">Join the Club →</button>
           </form>
         </div>
@@ -547,7 +660,7 @@
     wrap.innerHTML = modalHtml;
     document.body.appendChild(wrap);
 
-    // DOB change → show parent block if under 16
+    // DOB change → show parent block if under 13 (UK GDPR threshold)
     const dobInput = document.getElementById('ldnDob');
     if (dobInput) {
       dobInput.addEventListener('change', () => {
@@ -555,12 +668,29 @@
         const age = (Date.now() - dob.getTime()) / (365.25 * 24 * 60 * 60 * 1000);
         const block = document.getElementById('ldnParentBlock');
         const parentEmail = document.getElementById('ldnParentEmail');
-        if (age < 16 && age > 5) {
+        const parentName = document.getElementById('ldnParentName');
+        const parentConsentRow = document.getElementById('ldnParentConsentRow');
+        const parentConsentBox = document.getElementById('ldnParentConsent');
+        if (age < 13 && age > 5) {
           block.classList.add('show');
+          block.classList.remove('soft');
           parentEmail.required = true;
-        } else {
-          block.classList.remove('show');
+          if (parentName) parentName.required = true;
+          if (parentConsentRow) parentConsentRow.style.display = 'flex';
+          if (parentConsentBox) parentConsentBox.required = true;
+        } else if (age >= 13 && age < 18) {
+          // 13-17: parent email recommended, not required
+          block.classList.add('show', 'soft');
           parentEmail.required = false;
+          if (parentName) parentName.required = false;
+          if (parentConsentRow) parentConsentRow.style.display = 'none';
+          if (parentConsentBox) parentConsentBox.required = false;
+        } else {
+          block.classList.remove('show', 'soft');
+          parentEmail.required = false;
+          if (parentName) parentName.required = false;
+          if (parentConsentRow) parentConsentRow.style.display = 'none';
+          if (parentConsentBox) parentConsentBox.required = false;
         }
       });
     }
@@ -570,6 +700,9 @@
 
     // Hide/swap signup CTAs based on auth state
     refreshAuthVisibility();
+
+    // Inject a discreet "Report a Concern" strip on every page (except the report page itself)
+    injectReportStrip();
 
     // Wire all "data-signup" triggers (any element with this attribute opens modal)
     document.querySelectorAll('[data-signup]').forEach(el => {
@@ -593,10 +726,25 @@
 
     // Check if this page requires login
     const path = window.location.pathname.split('/').pop() || 'index.html';
-    if (LOCKED_PAGES.includes(path) && !getMember()) {
-      // Show signup modal immediately, dim the page underneath
-      document.body.style.overflow = 'hidden';
-      setTimeout(() => LDN.openSignup({ locked: true, returnTo: path }), 50);
+    if (LOCKED_PAGES.includes(path)) {
+      const m = getMember();
+      if (!m) {
+        // No member at all → show signup modal
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => LDN.openSignup({ locked: true, returnTo: path }), 50);
+      } else if (m.status === 'pending_parent_verification') {
+        // Under-13 in pending state → block with explanatory modal
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+          const modal = document.getElementById('ldnSignupModal');
+          modal.classList.add('open');
+          setView('welcome');
+          const flag = document.getElementById('ldnWelcomeFlag');
+          const title = document.getElementById('ldnWelcomeTitle');
+          if (flag) flag.innerHTML = '✦ Waiting on parent';
+          if (title) title.innerHTML = 'Almost <span class="italic">unlocked.</span>';
+        }, 50);
+      }
     }
   });
 
@@ -741,6 +889,26 @@
     }
   }
 
+  // ============ REPORT-A-CONCERN STRIP ============
+  // Discreet safeguarding link injected above the bottom nav on every page.
+  // Quiet styling — present, not screaming.
+  function injectReportStrip() {
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    if (path === 'report.html') return; // already on it
+    if (document.getElementById('ldnReportStrip')) return; // already injected
+
+    const strip = document.createElement('aside');
+    strip.id = 'ldnReportStrip';
+    strip.innerHTML = `
+      <a href="report.html" class="ldn-report-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Safeguarding · <strong>Report a concern</strong></span>
+      </a>
+    `;
+    // Append to body — CSS pins it discreetly above bottom nav on mobile, in flow on desktop
+    document.body.appendChild(strip);
+  }
+
   // ============ TOAST ============
   function showToast(msg) {
     const t = document.getElementById('ldnToast');
@@ -814,19 +982,57 @@
       const name = document.getElementById('ldnName').value.trim();
       const email = document.getElementById('ldnEmail').value.trim();
       const dob = document.getElementById('ldnDob').value;
+      const parentName = document.getElementById('ldnParentName').value.trim();
       const parentEmail = document.getElementById('ldnParentEmail').value.trim();
+      const parentPhone = document.getElementById('ldnParentPhone').value.trim();
       const referrer = document.getElementById('ldnFriendCode').value.trim().toUpperCase();
+      const agreeCode = document.getElementById('ldnAgreeCode').checked;
+      const parentConsentBox = document.getElementById('ldnParentConsent');
+      const parentConsentRow = document.getElementById('ldnParentConsentRow');
+      const parentConsentVisible = parentConsentRow && parentConsentRow.style.display !== 'none';
+      const parentConsent = parentConsentBox ? parentConsentBox.checked : false;
 
       if (!name || !email || !dob) return;
+      if (!agreeCode) {
+        showToast('You need to tick the Code box to continue');
+        return;
+      }
+
+      // Age check
+      const dobDate = new Date(dob);
+      const age = (Date.now() - dobDate.getTime()) / (365.25 * 24 * 60 * 60 * 1000);
+      if (age < 5) {
+        showToast('That date of birth looks off');
+        return;
+      }
+
+      // Under-13 = require parent contact + parent consent tick
+      if (age < 13) {
+        if (!parentName || !parentEmail) {
+          showToast('Parent name and email are required for under-13s');
+          return;
+        }
+        if (parentConsentVisible && !parentConsent) {
+          showToast('A parent or guardian needs to tick the consent box');
+          return;
+        }
+      }
 
       const memberNum = nextMemberNumber();
       const friendCode = generateFriendCode(memberNum);
       const member = {
         name, email, dob,
+        parentName: parentName || null,
         parentEmail: parentEmail || null,
+        parentPhone: parentPhone || null,
+        parentConsent: age < 13 ? !!parentConsent : null,
+        codeAcknowledged: true,
+        codeAcknowledgedAt: new Date().toISOString(),
         referrer: referrer || null,
         memberNum, friendCode,
-        joinedAt: new Date().toISOString()
+        joinedAt: new Date().toISOString(),
+        // For under-13s, account is pending until parent verifies (Tier 2 will wire this)
+        status: age < 13 ? 'pending_parent_verification' : 'active'
       };
       saveMember(member);
 
@@ -840,8 +1046,27 @@
       // Show welcome state
       const flag = document.getElementById('ldnWelcomeFlag');
       const title = document.getElementById('ldnWelcomeTitle');
-      if (flag) flag.innerHTML = '✦ You\'re in.';
-      if (title) title.innerHTML = 'Welcome to the <span class="italic">club.</span>';
+      if (age < 13) {
+        if (flag) flag.innerHTML = '✦ Almost there.';
+        if (title) title.innerHTML = 'One <span class="italic">last step.</span>';
+        // Add a parent-verify notice
+        const num = document.getElementById('ldnWelcomeNum');
+        if (num && num.parentElement) {
+          let notice = document.getElementById('ldnParentVerifyNotice');
+          if (!notice) {
+            notice = document.createElement('div');
+            notice.id = 'ldnParentVerifyNotice';
+            notice.style.cssText = 'background: rgba(232, 77, 44, 0.1); border-left: 3px solid #E84D2C; padding: 14px 16px; border-radius: 8px; margin-bottom: 14px; font-family: Archivo, sans-serif; font-size: 13px; line-height: 1.5; color: #0B2118;';
+            notice.innerHTML = '<strong>Your parent or guardian still needs to confirm.</strong> We\'ve recorded their contact — once we have email verification live, they\'ll get a link to approve. For now your member number is reserved and the locked pages stay locked until then. <a href="parents.html" style="color: #E84D2C; font-weight: 700;">Read what they\'ll see →</a>';
+            num.parentElement.parentElement.insertBefore(notice, num.parentElement);
+          }
+        }
+      } else {
+        if (flag) flag.innerHTML = '✦ You\'re in.';
+        if (title) title.innerHTML = 'Welcome to the <span class="italic">club.</span>';
+        const notice = document.getElementById('ldnParentVerifyNotice');
+        if (notice) notice.remove();
+      }
       document.getElementById('ldnWelcomeNum').textContent = '#' + String(memberNum).padStart(3, '0');
       document.getElementById('ldnWelcomeCode').textContent = friendCode;
       setView('welcome');
