@@ -157,60 +157,177 @@
   }
   .page-sub strong { color: var(--green-deep); font-weight: 800; }
 
-  /* ============ COURSE SELECTOR (sticky chip row) ============ */
+  /* ============ COURSE DROPDOWN BANNER ============ */
   .selector-wrap {
     position: sticky;
     top: 60px;
-    z-index: 90;
+    z-index: 95;
     background: var(--cream);
     border-bottom: 1px solid rgba(11, 33, 24, 0.12);
-    padding: 14px 0 14px;
+    padding: 14px 20px 14px;
   }
-  .selector-label {
-    padding: 0 20px 8px;
+  .dropdown {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .dropdown-trigger {
+    width: 100%;
+    background: var(--green-deep);
+    color: var(--cream);
+    border: none;
+    padding: 16px 18px;
+    border-radius: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    transition: background 0.2s;
+    font-family: 'Archivo', sans-serif;
+  }
+  .dropdown-trigger:hover { background: var(--green-rich); }
+  .dropdown-trigger-text { flex: 1; min-width: 0; }
+  .dropdown-trigger-label {
     font-family: 'Archivo', sans-serif;
     font-weight: 800;
-    font-size: 10px;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 3px;
+  }
+  .dropdown-trigger-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    color: var(--cream);
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dropdown-chevron {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease;
+    color: var(--hot);
+  }
+  .dropdown-chevron svg { width: 20px; height: 20px; }
+  .dropdown.open .dropdown-chevron { transform: rotate(180deg); }
+
+  .dropdown-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: var(--cream);
+    border: 1.5px solid var(--green-deep);
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(11, 33, 24, 0.22);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  .dropdown.open .dropdown-panel {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .dropdown-group {
+    padding: 8px 0;
+  }
+  .dropdown-group + .dropdown-group {
+    border-top: 1px solid rgba(11, 33, 24, 0.12);
+  }
+  .dropdown-group-label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 9px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: var(--green-mid);
+    padding: 10px 18px 6px;
   }
-  .selector-scroll {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 0 20px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .selector-scroll::-webkit-scrollbar { display: none; }
-  .course-chip {
-    flex: 0 0 auto;
+  .dropdown-item {
+    width: 100%;
     background: transparent;
-    border: 1.5px solid var(--green-deep);
-    color: var(--green-deep);
-    padding: 9px 16px;
-    border-radius: 100px;
-    font-family: 'Archivo', sans-serif;
-    font-weight: 700;
-    font-size: 12px;
-    letter-spacing: 0.5px;
+    border: none;
+    padding: 14px 18px;
+    text-align: left;
     cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: background 0.15s, padding-left 0.15s;
+    font-family: 'Archivo', sans-serif;
+    color: var(--green-deep);
   }
-  .course-chip:hover { background: var(--green-mid); color: var(--cream); border-color: var(--green-mid); }
-  .course-chip.active { background: var(--green-deep); color: var(--cream); }
-  .course-chip.locked {
-    border-color: rgba(11, 33, 24, 0.25);
-    color: rgba(11, 33, 24, 0.45);
-    cursor: not-allowed;
+  .dropdown-item:hover {
+    background: var(--cream-warm);
+    padding-left: 22px;
   }
-  .course-chip.locked:hover { background: transparent; color: rgba(11, 33, 24, 0.45); border-color: rgba(11, 33, 24, 0.25); }
-  .course-chip .lock {
-    display: inline-block;
-    margin-right: 4px;
-    font-size: 10px;
+  .dropdown-item-text { flex: 1; min-width: 0; }
+  .dropdown-item-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    color: var(--green-deep);
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .dropdown-item-meta {
+    font-family: 'Archivo', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: var(--green-mid);
+    font-weight: 600;
+  }
+  .dropdown-item-tick {
+    flex: 0 0 auto;
+    color: var(--hot);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .dropdown-item-tick svg { width: 18px; height: 18px; display: block; }
+  .dropdown-item.active .dropdown-item-tick { opacity: 1; }
+  .dropdown-item.active .dropdown-item-name { color: var(--hot); }
+
+  .dropdown-item.locked { cursor: not-allowed; }
+  .dropdown-item.locked .dropdown-item-name { color: rgba(11, 33, 24, 0.45); }
+  .dropdown-item.locked .dropdown-item-meta { color: rgba(11, 33, 24, 0.4); }
+  .dropdown-item.locked:hover { background: transparent; padding-left: 18px; }
+  .dropdown-item-badge {
+    flex: 0 0 auto;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--brass);
+    background: rgba(201, 168, 106, 0.15);
+    padding: 4px 9px;
+    border-radius: 100px;
+  }
+
+  /* dim background body when dropdown open for focus */
+  .dropdown.open::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 33, 24, 0.18);
+    z-index: -1;
+    pointer-events: none;
   }
 
   /* ============ COURSE STAGE ============ */
@@ -778,12 +895,15 @@
     .page-sub { font-size: 17px; max-width: 700px; }
 
     .selector-wrap {
-      max-width: 1200px;
-      margin: 0 auto;
       top: 68px;
+      padding: 20px 48px;
     }
-    .selector-scroll { padding: 0 48px; flex-wrap: wrap; }
-    .course-chip { font-size: 13px; padding: 10px 18px; }
+    .dropdown { max-width: 720px; }
+    .dropdown-trigger { padding: 20px 24px; }
+    .dropdown-trigger-name { font-size: 18px; }
+    .dropdown-item { padding: 16px 22px; }
+    .dropdown-item:hover { padding-left: 28px; }
+    .dropdown-item-name { font-size: 15px; }
 
     .overview-card {
       margin: 36px 48px;
@@ -887,17 +1007,88 @@
   <p class="page-sub">Pre-round intel for London's tracks. <strong>Where to aim. Where to miss. What the locals know.</strong> Built by members, for members — three full courses live, more being crowd-sourced every week.</p>
 </section>
 
-<!-- ============ COURSE SELECTOR ============ -->
+<!-- ============ COURSE DROPDOWN BANNER ============ -->
 <div class="selector-wrap">
-  <div class="selector-label">Pick your course</div>
-  <div class="selector-scroll" id="courseSelector">
-    <button class="course-chip active" data-course="princes">Richmond Park — Prince's</button>
-    <button class="course-chip" data-course="dukes">Richmond Park — Duke's</button>
-    <button class="course-chip" data-course="shire">The Shire London</button>
-    <button class="course-chip locked"><span class="lock">✦</span> Beckenham Place — Coming</button>
-    <button class="course-chip locked"><span class="lock">✦</span> Trent Park — Coming</button>
-    <button class="course-chip locked"><span class="lock">✦</span> Lee Valley — Coming</button>
-    <button class="course-chip locked"><span class="lock">✦</span> Brent Valley — Coming</button>
+  <div class="dropdown" id="courseDropdown">
+    <button class="dropdown-trigger" id="dropdownTrigger" aria-haspopup="listbox" aria-expanded="false">
+      <span class="dropdown-trigger-text">
+        <span class="dropdown-trigger-label">✦ Pick your course</span>
+        <span class="dropdown-trigger-name" id="dropdownTriggerName">Richmond Park — Prince's</span>
+      </span>
+      <span class="dropdown-chevron">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </span>
+    </button>
+    <div class="dropdown-panel" id="dropdownPanel" role="listbox">
+      <div class="dropdown-group">
+        <div class="dropdown-group-label">Live — Full intel available</div>
+        <button class="dropdown-item active" data-course="princes" role="option">
+          <span class="dropdown-item-text">
+            <span class="dropdown-item-name">Richmond Park — Prince's</span>
+            <span class="dropdown-item-meta">Par 68 · 5,487 yds · 18 holes</span>
+          </span>
+          <span class="dropdown-item-tick">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+        </button>
+        <button class="dropdown-item" data-course="dukes" role="option">
+          <span class="dropdown-item-text">
+            <span class="dropdown-item-name">Richmond Park — Duke's</span>
+            <span class="dropdown-item-meta">Par 71 · 6,359 yds · 18 holes</span>
+          </span>
+          <span class="dropdown-item-tick">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+        </button>
+        <button class="dropdown-item" data-course="shire" role="option">
+          <span class="dropdown-item-text">
+            <span class="dropdown-item-name">The Shire London — Ballesteros Masters</span>
+            <span class="dropdown-item-meta">Par 72 · 7,028 yds · 18 holes</span>
+          </span>
+          <span class="dropdown-item-tick">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+        </button>
+      </div>
+      <div class="dropdown-group">
+        <div class="dropdown-group-label">Coming soon — Submit intel below ↓</div>
+        <button class="dropdown-item locked" role="option" aria-disabled="true">
+          <span class="dropdown-item-text">
+            <span class="dropdown-item-name">Beckenham Place GC</span>
+            <span class="dropdown-item-meta">Par 70 · South-East London · 18 holes</span>
+          </span>
+          <span class="dropdown-item-badge">Soon</span>
+        </button>
+        <button class="dropdown-item locked" role="option" aria-disabled="true">
+          <span class="dropdown-item-text">
+            <span class="dropdown-item-name">Trent Park Golf Club</span>
+            <span class="dropdown-item-meta">North London · 18 + 9 holes</span>
+          </span>
+          <span class="dropdown-item-badge">Soon</span>
+        </button>
+        <button class="dropdown-item locked" role="option" aria-disabled="true">
+          <span class="dropdown-item-text">
+            <span class="dropdown-item-name">Lee Valley Golf Course</span>
+            <span class="dropdown-item-meta">North-East London · 18 holes</span>
+          </span>
+          <span class="dropdown-item-badge">Soon</span>
+        </button>
+        <button class="dropdown-item locked" role="option" aria-disabled="true">
+          <span class="dropdown-item-text">
+            <span class="dropdown-item-name">Brent Valley Golf Course</span>
+            <span class="dropdown-item-meta">West London · 9 holes</span>
+          </span>
+          <span class="dropdown-item-badge">Soon</span>
+        </button>
+        <button class="dropdown-item locked" role="option" aria-disabled="true">
+          <span class="dropdown-item-text">
+            <span class="dropdown-item-name">Dukes Meadows Golf</span>
+            <span class="dropdown-item-meta">West London · 9 holes + range</span>
+          </span>
+          <span class="dropdown-item-badge">Soon</span>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1550,20 +1741,73 @@ populateCourse('dukes', dukesHoles);
 populateCourse('shire', shireHoles);
 
 // ============================================================
-// COURSE SELECTOR LOGIC
+// COURSE DROPDOWN LOGIC
 // ============================================================
-document.querySelectorAll('.course-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    if (chip.classList.contains('locked')) {
+const COURSE_NAMES = {
+  princes: "Richmond Park — Prince's",
+  dukes: "Richmond Park — Duke's",
+  shire: "The Shire London — Ballesteros Masters"
+};
+
+const dropdown = document.getElementById('courseDropdown');
+const dropdownTrigger = document.getElementById('dropdownTrigger');
+const dropdownPanel = document.getElementById('dropdownPanel');
+const dropdownTriggerName = document.getElementById('dropdownTriggerName');
+
+function openDropdown() {
+  dropdown.classList.add('open');
+  dropdownTrigger.setAttribute('aria-expanded', 'true');
+}
+function closeDropdown() {
+  dropdown.classList.remove('open');
+  dropdownTrigger.setAttribute('aria-expanded', 'false');
+}
+function toggleDropdown() {
+  if (dropdown.classList.contains('open')) closeDropdown();
+  else openDropdown();
+}
+
+dropdownTrigger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  toggleDropdown();
+});
+
+// click-outside to close
+document.addEventListener('click', (e) => {
+  if (dropdown.classList.contains('open') && !dropdown.contains(e.target)) {
+    closeDropdown();
+  }
+});
+
+// escape to close
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && dropdown.classList.contains('open')) closeDropdown();
+});
+
+document.querySelectorAll('.dropdown-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (item.classList.contains('locked')) {
+      closeDropdown();
       showToast('Coming soon — submit intel below ↓');
+      // scroll to the submit CTA so the prompt is clear
+      setTimeout(() => {
+        document.querySelector('.submit-cta').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
       return;
     }
-    const course = chip.dataset.course;
-    document.querySelectorAll('.course-chip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
+    const course = item.dataset.course;
+    // update active state
+    document.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    // update trigger label
+    dropdownTriggerName.textContent = COURSE_NAMES[course];
+    // swap stages
     document.querySelectorAll('.course-stage').forEach(s => s.classList.remove('active'));
     document.getElementById('stage-' + course).classList.add('active');
-    window.scrollTo({ top: document.querySelector('.selector-wrap').offsetTop - 60, behavior: 'smooth' });
+    closeDropdown();
+    // scroll to top of new course
+    window.scrollTo({ top: document.querySelector('.selector-wrap').offsetTop - 70, behavior: 'smooth' });
   });
 });
 
