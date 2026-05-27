@@ -550,25 +550,26 @@
     overflow: hidden;
     border: 1px solid var(--green-mid);
   }
-  .story-visual::before {
-    content: 'DH';
+  .story-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: contrast(1.05) saturate(0.95);
+  }
+  .story-visual::after {
+    content: '';
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Anton', sans-serif;
-    font-size: 180px;
-    color: var(--brass);
-    opacity: 0.15;
-    line-height: 1;
+    background: linear-gradient(to bottom, transparent 50%, rgba(11, 33, 24, 0.85));
+    pointer-events: none;
   }
   .story-visual-stamp {
     position: absolute;
     bottom: 24px;
     left: 24px;
     right: 24px;
-    border-top: 1px solid rgba(239, 229, 204, 0.2);
+    border-top: 1px solid rgba(239, 229, 204, 0.35);
     padding-top: 16px;
     display: flex;
     justify-content: space-between;
@@ -576,7 +577,8 @@
     font-size: 10px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: rgba(239, 229, 204, 0.6);
+    color: var(--cream);
+    z-index: 2;
   }
 
   .story-content .label {
@@ -1126,6 +1128,7 @@
 <section class="story" id="story">
   <div class="story-inner">
     <div class="story-visual">
+      <img src="dh.jpg" alt="Dylan Heer, Founder">
       <div class="story-visual-stamp">
         <span>Dylan Heer</span>
         <span>Founder · Est. 2026</span>
