@@ -1,0 +1,26 @@
+{
+  "name": "The LDN GLF Club",
+  "short_name": "LDN GLF",
+  "description": "A movement for the next generation of London golfers. Built by young people, for young people.",
+  "start_url": "/member.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B2118",
+  "theme_color": "#0B2118",
+  "icons": [
+    {
+      "src": "logo-small.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["sports", "lifestyle", "social"]
+}

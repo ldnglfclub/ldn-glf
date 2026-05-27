@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Scorecard · The LDN GLF Club</title>
+<meta name="theme-color" content="#0B2118">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LDN GLF">
+<link rel="apple-touch-icon" href="logo-small.png">
+<link rel="icon" type="image/png" href="logo-small.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0B2118; --green-rich: #143425; --green-mid: #1F4A33;
+    --cream: #EFE5CC; --cream-warm: #E5D8B8; --ink: #050505;
+    --brass: #C9A86A; --hot: #E84D2C;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--cream); color: var(--green-deep);
+    font-family: 'Archivo', sans-serif; line-height: 1.4;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    padding-bottom: 80px;
+  }
+  ::selection { background: var(--green-deep); color: var(--cream); }
+
+  /* APP HEADER */
+  .app-header {
+    background: var(--green-deep); color: var(--cream);
+    padding-top: calc(env(safe-area-inset-top, 12px) + 16px);
+    padding: calc(env(safe-area-inset-top, 12px) + 16px) 24px 16px;
+    position: sticky; top: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--green-mid);
+  }
+  .app-header-left { display: flex; align-items: center; gap: 12px; }
+  .app-header-logo {
+    height: 36px; width: auto;
+    filter: brightness(0) saturate(100%) invert(89%) sepia(13%) saturate(388%) hue-rotate(8deg) brightness(98%) contrast(89%);
+  }
+  .app-header-title {
+    font-family: 'Archivo Black', sans-serif; font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+  .app-header-title .accent { color: var(--brass); }
+  .menu-btn {
+    background: transparent; border: 1.5px solid var(--cream);
+    color: var(--cream); width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+  }
+  .menu-btn svg { width: 18px; height: 18px; }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    display: none; position: fixed; inset: 0;
+    background: var(--green-deep); z-index: 200;
+    flex-direction: column; padding: 80px 32px 32px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu-close {
+    position: absolute; top: 24px; right: 24px;
+    background: transparent; border: 2px solid var(--cream); color: var(--cream);
+    width: 44px; height: 44px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mobile-menu-close svg { width: 20px; height: 20px; }
+  .mobile-menu a {
+    font-family: 'Anton', sans-serif; font-size: 36px;
+    color: var(--cream); text-decoration: none; text-transform: uppercase;
+    letter-spacing: -0.5px; padding: 16px 0;
+    border-bottom: 1px solid rgba(239, 229, 204, 0.15); display: block;
+  }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--hot); }
+
+  /* PAGE TITLE */
+  .page-title-wrap {
+    background: var(--green-deep); color: var(--cream);
+    padding: 0 24px 32px;
+    border-bottom: 1px solid var(--green-mid);
+  }
+  .page-title-label {
+    font-family: 'Archivo', sans-serif; font-size: 9px;
+    letter-spacing: 2px; color: var(--brass); text-transform: uppercase;
+    font-weight: 700; margin-bottom: 8px;
+  }
+  .page-title {
+    font-family: 'Anton', sans-serif; font-size: 40px;
+    line-height: 0.95; text-transform: uppercase; letter-spacing: -1px;
+  }
+  .page-title .italic {
+    font-family: 'Instrument Serif', serif; font-style: italic;
+    font-weight: 400; letter-spacing: 0; color: var(--brass);
+  }
+
+  /* STAGES */
+  .stage { display: none; padding: 24px; }
+  .stage.active { display: block; }
+
+  /* SETUP STAGE */
+  .field-group { margin-bottom: 20px; }
+  .field-label {
+    font-family: 'Archivo Black', sans-serif; font-size: 10px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--green-deep); margin-bottom: 8px; display: block;
+  }
+  select, input[type="text"], input[type="email"], input[type="number"] {
+    width: 100%; background: var(--cream-warm);
+    border: 1.5px solid var(--green-deep); padding: 14px;
+    font-family: 'Archivo', sans-serif; font-size: 16px;
+    color: var(--green-deep); outline: none;
+    -webkit-appearance: none; appearance: none;
+  }
+  select:focus, input:focus { border-color: var(--hot); }
+  select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%230B2118' d='M6 8L0 0h12z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+  }
+
+  .holes-toggle { display: flex; gap: 8px; }
+  .holes-toggle .hole-option {
+    flex: 1; padding: 14px; text-align: center;
+    background: var(--cream-warm); border: 1.5px solid var(--green-deep);
+    font-family: 'Archivo Black', sans-serif; font-size: 13px;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+  }
+  .holes-toggle .hole-option.active {
+    background: var(--green-deep); color: var(--cream);
+  }
+
+  /* PLAYERS LIST */
+  .player-row {
+    background: var(--cream-warm); border: 1.5px solid var(--green-deep);
+    padding: 14px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .player-num {
+    font-family: 'Anton', sans-serif; font-size: 24px;
+    color: var(--brass); line-height: 1; min-width: 24px;
+  }
+  .player-fields { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .player-fields input {
+    padding: 8px 10px; font-size: 14px; background: var(--cream);
+  }
+  .player-remove {
+    background: transparent; border: 1.5px solid var(--green-deep);
+    color: var(--green-deep); width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .player-remove svg { width: 14px; height: 14px; }
+
+  .add-player {
+    width: 100%; padding: 14px;
+    background: transparent; border: 1.5px dashed var(--green-deep);
+    font-family: 'Archivo Black', sans-serif; font-size: 12px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--green-deep); cursor: pointer; margin-top: 8px;
+  }
+  .add-player:hover { background: var(--cream-warm); }
+
+  /* BTN */
+  .btn-primary {
+    width: 100%; padding: 18px;
+    background: var(--hot); color: var(--cream); border: 2px solid var(--hot);
+    font-family: 'Archivo Black', sans-serif; font-size: 14px;
+    letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+    margin-top: 16px;
+  }
+  .btn-primary:disabled { background: var(--green-mid); border-color: var(--green-mid); }
+  .btn-secondary {
+    width: 100%; padding: 14px;
+    background: transparent; color: var(--green-deep); border: 2px solid var(--green-deep);
+    font-family: 'Archivo Black', sans-serif; font-size: 13px;
+    letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+    margin-top: 8px;
+  }
+
+  /* PLAYING STAGE */
+  .play-header {
+    background: var(--green-rich); color: var(--cream);
+    padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
+    position: sticky; top: 64px; z-index: 50;
+  }
+  .play-header .course-name {
+    font-family: 'Archivo Black', sans-serif; font-size: 13px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .play-header .hole-indicator {
+    font-family: 'Anton', sans-serif; font-size: 24px;
+    color: var(--brass);
+  }
+
+  .hole-progress {
+    display: flex; gap: 4px; padding: 12px 24px; background: var(--green-rich);
+    border-bottom: 1px solid var(--green-mid);
+    overflow-x: auto;
+  }
+  .hole-pip {
+    width: 20px; height: 20px; flex-shrink: 0;
+    background: rgba(239, 229, 204, 0.15);
+    color: rgba(239, 229, 204, 0.6); border: 1px solid var(--green-mid);
+    font-family: 'Archivo Black', sans-serif; font-size: 9px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .hole-pip.done { background: var(--brass); color: var(--green-deep); border-color: var(--brass); }
+  .hole-pip.current { background: var(--hot); color: var(--cream); border-color: var(--hot); }
+
+  .hole-card {
+    padding: 24px;
+  }
+  .hole-card .hole-num {
+    font-family: 'Anton', sans-serif; font-size: 96px;
+    line-height: 0.9; color: var(--green-deep); letter-spacing: -3px;
+    text-align: center; margin-bottom: 8px;
+  }
+  .hole-card .hole-par {
+    text-align: center; font-family: 'Archivo Black', sans-serif;
+    font-size: 12px; letter-spacing: 2px; color: var(--green-rich);
+    text-transform: uppercase; margin-bottom: 24px;
+  }
+  .hole-par-select {
+    text-align: center; margin-bottom: 24px;
+  }
+  .hole-par-select select {
+    display: inline-block; width: auto; min-width: 120px; text-align: center;
+  }
+
+  /* SCORE INPUTS */
+  .score-list { display: flex; flex-direction: column; gap: 10px; }
+  .score-row {
+    background: var(--cream-warm); border: 1.5px solid var(--green-deep);
+    padding: 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .score-player {
+    flex: 1; min-width: 0;
+  }
+  .score-player-name {
+    font-family: 'Archivo Black', sans-serif; font-size: 14px;
+    color: var(--green-deep); letter-spacing: 0.3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .score-player-meta {
+    font-family: 'Archivo', sans-serif; font-size: 10px;
+    color: var(--green-rich); letter-spacing: 1px; text-transform: uppercase;
+  }
+  .score-controls {
+    display: flex; gap: 4px; align-items: center;
+  }
+  .score-btn {
+    width: 36px; height: 36px; background: var(--green-deep); color: var(--cream);
+    border: none; font-family: 'Archivo Black', sans-serif; font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .score-btn:active { background: var(--hot); }
+  .score-value {
+    width: 48px; height: 36px; text-align: center;
+    font-family: 'Anton', sans-serif; font-size: 24px;
+    background: var(--cream); border-top: 1.5px solid var(--green-deep); border-bottom: 1.5px solid var(--green-deep);
+    color: var(--green-deep); display: flex; align-items: center; justify-content: center;
+  }
+
+  /* NAV BUTTONS */
+  .hole-nav {
+    display: flex; gap: 8px; padding: 0 24px 24px;
+  }
+  .hole-nav button {
+    flex: 1; padding: 16px; border: 2px solid var(--green-deep);
+    font-family: 'Archivo Black', sans-serif; font-size: 12px;
+    letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+  }
+  .hole-nav .prev { background: transparent; color: var(--green-deep); }
+  .hole-nav .next { background: var(--green-deep); color: var(--cream); }
+  .hole-nav .next.finish { background: var(--hot); border-color: var(--hot); }
+
+  /* SUMMARY STAGE */
+  .summary-wrap { padding: 16px; }
+  .summary-card {
+    background: var(--green-deep); color: var(--cream);
+    padding: 24px 20px; position: relative; overflow: hidden;
+    border: 3px solid var(--brass);
+  }
+  .summary-card::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background-image: radial-gradient(circle, rgba(201, 168, 106, 0.1) 0%, transparent 70%);
+  }
+  .summary-card-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 20px; position: relative; z-index: 2;
+  }
+  .summary-card-brand {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .summary-card-mark {
+    font-family: 'Archivo Black', sans-serif; font-size: 10px;
+    letter-spacing: 2px; color: var(--brass); text-transform: uppercase;
+  }
+  .summary-card-mark .crest::before { content: '✦'; margin-right: 6px; color: var(--hot); }
+  .summary-card-name {
+    font-family: 'Anton', sans-serif; font-size: 18px;
+    letter-spacing: -0.3px; text-transform: uppercase; line-height: 1;
+  }
+  .summary-card-date {
+    text-align: right;
+    font-family: 'Archivo', sans-serif; font-size: 10px;
+    letter-spacing: 1.5px; color: var(--brass); text-transform: uppercase;
+  }
+  .summary-card-title {
+    font-family: 'Anton', sans-serif; font-size: 36px;
+    line-height: 0.95; margin-bottom: 6px; letter-spacing: -1px;
+    text-transform: uppercase; position: relative; z-index: 2;
+  }
+  .summary-card-title .italic {
+    font-family: 'Instrument Serif', serif; font-style: italic;
+    color: var(--brass); font-weight: 400; letter-spacing: 0;
+  }
+  .summary-card-sub {
+    font-family: 'Archivo', sans-serif; font-size: 12px;
+    color: rgba(239, 229, 204, 0.7); letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 24px; position: relative; z-index: 2;
+  }
+  .summary-divider {
+    height: 1px; background: var(--green-mid); margin-bottom: 20px;
+    position: relative; z-index: 2;
+  }
+
+  .summary-scores { position: relative; z-index: 2; margin-bottom: 20px; }
+  .summary-score-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid var(--green-mid);
+  }
+  .summary-score-row:last-child { border-bottom: none; }
+  .summary-score-name {
+    font-family: 'Archivo Black', sans-serif; font-size: 13px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    flex: 1; min-width: 0; padding-right: 12px;
+  }
+  .summary-score-name .winner-badge {
+    display: inline-block;
+    background: var(--hot); color: var(--cream); padding: 2px 6px;
+    font-size: 8px; letter-spacing: 1px; margin-right: 6px;
+  }
+  .summary-score-num {
+    font-family: 'Anton', sans-serif; font-size: 32px;
+    color: var(--brass); line-height: 0.9; letter-spacing: -1px;
+  }
+  .summary-score-vs {
+    font-family: 'Archivo', sans-serif; font-size: 9px;
+    color: rgba(239, 229, 204, 0.5); margin-left: 8px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  .summary-foot {
+    position: relative; z-index: 2;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 16px; border-top: 1px solid var(--green-mid);
+  }
+  .summary-foot-left {
+    font-family: 'Archivo', sans-serif; font-size: 9px;
+    letter-spacing: 1.5px; color: rgba(239, 229, 204, 0.5);
+    text-transform: uppercase;
+  }
+  .summary-foot-right {
+    font-family: 'Instrument Serif', serif; font-style: italic;
+    font-size: 13px; color: var(--brass);
+  }
+
+  /* SUMMARY ACTIONS */
+  .summary-actions {
+    margin-top: 24px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .summary-actions button, .summary-actions a {
+    width: 100%; padding: 16px; text-align: center;
+    font-family: 'Archivo Black', sans-serif; font-size: 13px;
+    letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+    text-decoration: none; border: 2px solid var(--green-deep);
+  }
+  .summary-actions .share {
+    background: var(--green-deep); color: var(--cream);
+  }
+  .summary-actions .email-others {
+    background: transparent; color: var(--green-deep);
+  }
+  .summary-actions .new-round {
+    background: var(--hot); color: var(--cream); border-color: var(--hot);
+  }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--green-deep); color: var(--cream);
+    padding: 12px 8px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0));
+    display: flex; justify-content: space-around;
+    border-top: 1px solid var(--green-mid); z-index: 90;
+  }
+  .bottom-nav a {
+    color: rgba(239, 229, 204, 0.5);
+    text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 4px 12px;
+  }
+  .bottom-nav a.active { color: var(--cream); }
+  .bottom-nav a svg { width: 22px; height: 22px; }
+  .bottom-nav a span {
+    font-family: 'Archivo', sans-serif; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
+    background: var(--green-deep); color: var(--cream);
+    padding: 12px 20px; opacity: 0; transition: all 0.3s ease;
+    font-family: 'Archivo Black', sans-serif; font-size: 12px;
+    letter-spacing: 1.5px; text-transform: uppercase; z-index: 999;
+    border: 2px solid var(--brass);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* DESKTOP */
+  @media (min-width: 768px) {
+    body { padding-bottom: 0; max-width: 480px; margin: 0 auto; box-shadow: 0 0 40px rgba(11, 33, 24, 0.1); min-height: 100vh; }
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header-left">
+    <img src="logo.png" alt="LDN GLF Club" class="app-header-logo">
+    <div class="app-header-title">LDN GLF<span class="accent">.</span>CLUB</div>
+  </div>
+  <button class="menu-btn" onclick="document.getElementById('mobileMenu').classList.add('open')" aria-label="Menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="document.getElementById('mobileMenu').classList.remove('open')" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="index.html">Home</a>
+  <a href="member.html">My Club</a>
+  <a href="scorecard.html" class="active">Scorecard</a>
+  <a href="courses.html">Course Atlas</a>
+  <a href="code.html">Our Code</a>
+  <a href="parents.html">For Parents</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- SETUP STAGE -->
+<div class="stage active" id="setupStage">
+  <div class="page-title-wrap">
+    <p class="page-title-label">✦ Scorecard</p>
+    <h1 class="page-title">New <span class="italic">round.</span></h1>
+  </div>
+
+  <div style="padding: 24px;">
+    <div class="field-group">
+      <label class="field-label">Course</label>
+      <select id="courseSelect"></select>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">How Many Holes?</label>
+      <div class="holes-toggle">
+        <div class="hole-option active" data-holes="9" onclick="selectHoles(9)">9 Holes</div>
+        <div class="hole-option" data-holes="18" onclick="selectHoles(18)">18 Holes</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Players</label>
+      <div id="playersList"></div>
+      <button class="add-player" onclick="addPlayer()">+ Add Player</button>
+    </div>
+
+    <button class="btn-primary" onclick="startRound()">Tee Off →</button>
+  </div>
+</div>
+
+<!-- PLAYING STAGE -->
+<div class="stage" id="playStage">
+  <div class="play-header">
+    <div class="course-name" id="playCourseName"></div>
+    <div class="hole-indicator" id="playHoleIndicator"></div>
+  </div>
+
+  <div class="hole-progress" id="holeProgress"></div>
+
+  <div class="hole-card">
+    <div class="hole-num" id="holeNum">1</div>
+    <div class="hole-par-select">
+      <label class="field-label" style="display: inline-block; margin-right: 8px;">Par</label>
+      <select id="parSelect" onchange="setPar(this.value)">
+        <option value="3">Par 3</option>
+        <option value="4" selected>Par 4</option>
+        <option value="5">Par 5</option>
+      </select>
+    </div>
+
+    <div class="score-list" id="scoreList"></div>
+  </div>
+
+  <div class="hole-nav">
+    <button class="prev" onclick="prevHole()" id="prevBtn">← Prev</button>
+    <button class="next" id="nextBtn" onclick="nextHole()">Next Hole →</button>
+  </div>
+</div>
+
+<!-- SUMMARY STAGE -->
+<div class="stage" id="summaryStage">
+  <div class="summary-wrap">
+    <div class="summary-card" id="summaryCard">
+      <!-- Built by JS -->
+    </div>
+
+    <div class="summary-actions">
+      <button class="share" onclick="downloadCard()">↓ Download Card to Share</button>
+      <button class="email-others" onclick="emailNonMembers()" id="emailBtn" style="display:none">Email Card to Others</button>
+      <a href="member.html" class="new-round" style="text-decoration: none;">Done → Back to My Club</a>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="courses.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <span>Atlas</span>
+  </a>
+  <a href="scorecard.html" class="active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span>Play</span>
+  </a>
+  <a href="member.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Me</span>
+  </a>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ============ COURSES (from Atlas) ============
+  const COURSES = [
+    "Topgolf Watford",
+    "Richmond Park GC",
+    "Greenwich Peninsula Range",
+    "Swingers West End",
+    "Puttshack Watford",
+    "World of Golf — New Malden",
+    "Metro Golf Centre",
+    "Dukes Meadows Golf",
+    "Playgolf London",
+    "BigShots Golf Northwick Park",
+    "The Shire London",
+    "Beckenham Place Golf",
+    "Pitch City Indoor Golf",
+    "Urban Golf — Soho",
+    "Brent Valley GC",
+    "Plonk Crazy Golf — Borough",
+    "Putt in the Park — Battersea",
+    "Lee Valley Golf",
+    "Trent Park Golf",
+    "Pitch & Putt — Various Boroughs",
+    "Other course (not listed)"
+  ];
+
+  // ============ STATE ============
+  let state = {
+    course: COURSES[0],
+    holes: 9,
+    players: [],
+    scores: {},
+    pars: {},
+    currentHole: 1
+  };
+
+  // ============ PROFILE ACCESS ============
+  function getProfile() {
+    const stored = localStorage.getItem('ldn_glf_profile');
+    if (stored) return JSON.parse(stored);
+    return null;
+  }
+  function saveRound(round) {
+    const rounds = JSON.parse(localStorage.getItem('ldn_glf_rounds') || '[]');
+    rounds.unshift(round);
+    localStorage.setItem('ldn_glf_rounds', JSON.stringify(rounds));
+  }
+
+  // ============ SETUP ============
+  function initCourseSelect() {
+    const select = document.getElementById('courseSelect');
+    select.innerHTML = COURSES.map(c => `<option value="${c}">${c}</option>`).join('');
+    select.addEventListener('change', e => state.course = e.target.value);
+  }
+
+  function selectHoles(n) {
+    state.holes = n;
+    document.querySelectorAll('.hole-option').forEach(el => {
+      el.classList.toggle('active', parseInt(el.dataset.holes) === n);
+    });
+  }
+
+  function renderPlayers() {
+    const list = document.getElementById('playersList');
+    list.innerHTML = state.players.map((p, i) => `
+      <div class="player-row">
+        <div class="player-num">${String(i + 1).padStart(2, '0')}</div>
+        <div class="player-fields">
+          <input type="text" placeholder="${p.isMember ? 'Member name' : 'Player name'}"
+            value="${p.name}" oninput="updatePlayer(${i}, 'name', this.value)">
+          ${!p.isMember ? `<input type="email" placeholder="Email (optional, get card after)" value="${p.email}" oninput="updatePlayer(${i}, 'email', this.value)">` : ''}
+        </div>
+        ${i > 0 ? `<button class="player-remove" onclick="removePlayer(${i})" aria-label="Remove">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>` : ''}
+      </div>
+    `).join('');
+  }
+
+  function addPlayer() {
+    if (state.players.length >= 4) {
+      showToast('Max 4 players');
+      return;
+    }
+    state.players.push({ name: '', email: '', isMember: false });
+    renderPlayers();
+  }
+
+  function updatePlayer(i, field, value) {
+    state.players[i][field] = value;
+  }
+
+  function removePlayer(i) {
+    state.players.splice(i, 1);
+    renderPlayers();
+  }
+
+  function initSetup() {
+    initCourseSelect();
+    // Add member as first player
+    const profile = getProfile();
+    const memberName = profile?.name || 'You';
+    state.players = [{ name: memberName, email: '', isMember: true }];
+    renderPlayers();
+  }
+
+  // ============ START ROUND ============
+  function startRound() {
+    // Validate
+    if (state.players.some(p => !p.name.trim())) {
+      showToast('Add a name for each player');
+      return;
+    }
+
+    // Init scores object
+    state.scores = {};
+    state.pars = {};
+    for (let h = 1; h <= state.holes; h++) {
+      state.scores[h] = {};
+      state.pars[h] = 4;
+      state.players.forEach((p, i) => {
+        state.scores[h][i] = 0;
+      });
+    }
+    state.currentHole = 1;
+
+    // Show play stage
+    document.getElementById('setupStage').classList.remove('active');
+    document.getElementById('playStage').classList.add('active');
+    document.getElementById('playCourseName').textContent = state.course;
+    renderPlay();
+  }
+
+  // ============ PLAY ============
+  function renderPlay() {
+    const h = state.currentHole;
+    document.getElementById('playHoleIndicator').textContent = `Hole ${h}/${state.holes}`;
+    document.getElementById('holeNum').textContent = h;
+    document.getElementById('parSelect').value = state.pars[h] || 4;
+
+    // Progress pips
+    const pips = document.getElementById('holeProgress');
+    pips.innerHTML = '';
+    for (let i = 1; i <= state.holes; i++) {
+      const pip = document.createElement('div');
+      pip.className = 'hole-pip' + (i < h ? ' done' : (i === h ? ' current' : ''));
+      pip.textContent = i;
+      pip.onclick = () => { state.currentHole = i; renderPlay(); };
+      pips.appendChild(pip);
+    }
+
+    // Score rows
+    const scoreList = document.getElementById('scoreList');
+    scoreList.innerHTML = state.players.map((p, i) => {
+      const total = totalScore(i);
+      return `
+        <div class="score-row">
+          <div class="score-player">
+            <div class="score-player-name">${p.name || 'Player ' + (i + 1)}</div>
+            <div class="score-player-meta">${p.isMember ? 'Member' : 'Guest'} · Total: ${total}</div>
+          </div>
+          <div class="score-controls">
+            <button class="score-btn" onclick="adjustScore(${i}, -1)">−</button>
+            <div class="score-value">${state.scores[h][i] || 0}</div>
+            <button class="score-btn" onclick="adjustScore(${i}, 1)">+</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Nav buttons
+    const nextBtn = document.getElementById('nextBtn');
+    if (h === state.holes) {
+      nextBtn.textContent = 'Finish Round ✓';
+      nextBtn.classList.add('finish');
+    } else {
+      nextBtn.textContent = 'Next Hole →';
+      nextBtn.classList.remove('finish');
+    }
+    document.getElementById('prevBtn').style.opacity = h === 1 ? '0.4' : '1';
+  }
+
+  function setPar(p) { state.pars[state.currentHole] = parseInt(p); }
+
+  function adjustScore(playerIdx, delta) {
+    const h = state.currentHole;
+    state.scores[h][playerIdx] = Math.max(0, (state.scores[h][playerIdx] || 0) + delta);
+    renderPlay();
+  }
+
+  function totalScore(playerIdx) {
+    let total = 0;
+    for (let h = 1; h <= state.holes; h++) {
+      total += state.scores[h]?.[playerIdx] || 0;
+    }
+    return total;
+  }
+
+  function prevHole() {
+    if (state.currentHole > 1) {
+      state.currentHole--;
+      renderPlay();
+    }
+  }
+
+  function nextHole() {
+    if (state.currentHole === state.holes) {
+      finishRound();
+    } else {
+      state.currentHole++;
+      renderPlay();
+    }
+  }
+
+  // ============ FINISH ============
+  function finishRound() {
+    const profile = getProfile();
+    const memberScore = totalScore(0);
+
+    // Save round to member's history
+    const round = {
+      id: 'r' + Date.now(),
+      date: new Date().toISOString(),
+      course: state.course,
+      holes: state.holes,
+      total: memberScore,
+      playerCount: state.players.length,
+      players: state.players.map((p, i) => ({
+        name: p.name, email: p.email, isMember: p.isMember, score: totalScore(i)
+      })),
+      pars: state.pars,
+      scores: state.scores
+    };
+    saveRound(round);
+
+    // Render summary
+    renderSummary(round);
+    document.getElementById('playStage').classList.remove('active');
+    document.getElementById('summaryStage').classList.add('active');
+  }
+
+  function renderSummary(round) {
+    const date = new Date(round.date);
+    const dateStr = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
+    const profile = getProfile();
+    const memberNum = profile?.memberNum || '001';
+
+    // Find winner (lowest score, but must have at least 1 stroke)
+    const playerScores = round.players.map((p, i) => ({ ...p, idx: i }));
+    const validScores = playerScores.filter(p => p.score > 0);
+    const lowest = validScores.length > 0 ? Math.min(...validScores.map(p => p.score)) : null;
+
+    // Pars total
+    let parTotal = 0;
+    for (let h = 1; h <= round.holes; h++) parTotal += round.pars[h] || 4;
+    const memberVsPar = round.total - parTotal;
+    const parDisplay = memberVsPar === 0 ? 'Even par' : (memberVsPar > 0 ? `+${memberVsPar} over par` : `${memberVsPar} under par`);
+
+    document.getElementById('summaryCard').innerHTML = `
+      <div class="summary-card-header">
+        <div class="summary-card-brand">
+          <div class="summary-card-mark"><span class="crest">LDN GLF · CLUB</span></div>
+          <div class="summary-card-name">${round.course}</div>
+        </div>
+        <div class="summary-card-date">
+          ${dateStr}<br>
+          <span style="opacity: 0.7;">Member #${memberNum}</span>
+        </div>
+      </div>
+
+      <h2 class="summary-card-title">${round.holes} Holes.<br><span class="italic">${parDisplay}.</span></h2>
+      <p class="summary-card-sub">A round of the LDN GLF Club</p>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-scores">
+        ${playerScores.sort((a, b) => {
+          if (a.score === 0 && b.score === 0) return 0;
+          if (a.score === 0) return 1;
+          if (b.score === 0) return -1;
+          return a.score - b.score;
+        }).map(p => `
+          <div class="summary-score-row">
+            <div class="summary-score-name">
+              ${lowest && p.score === lowest ? '<span class="winner-badge">WIN</span>' : ''}
+              ${p.name}
+            </div>
+            <div class="summary-score-num">${p.score || '—'}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="summary-foot">
+        <div class="summary-foot-left">ldnglfclub · est. 2026</div>
+        <div class="summary-foot-right">Built for young golfers.</div>
+      </div>
+    `;
+
+    // Show email button if there are non-member emails
+    const hasNonMemberEmails = round.players.some(p => !p.isMember && p.email);
+    if (hasNonMemberEmails) {
+      document.getElementById('emailBtn').style.display = 'block';
+    }
+  }
+
+  // ============ DOWNLOAD CARD (as image via html2canvas-like SVG approach) ============
+  async function downloadCard() {
+    const card = document.getElementById('summaryCard');
+    // Use the browser to take a screenshot — fallback to copying card link
+    if (window.html2canvas) {
+      const canvas = await html2canvas(card, { backgroundColor: '#0B2118', scale: 2 });
+      const link = document.createElement('a');
+      link.download = 'LDN-GLF-Round-' + Date.now() + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } else {
+      showToast('Use share / screenshot to save');
+    }
+  }
+
+  function emailNonMembers() {
+    const rounds = JSON.parse(localStorage.getItem('ldn_glf_rounds') || '[]');
+    const latest = rounds[0];
+    if (!latest) return;
+
+    const emails = latest.players.filter(p => !p.isMember && p.email).map(p => p.email);
+    if (emails.length === 0) { showToast('No emails to send to'); return; }
+
+    const subject = `Your round at ${latest.course}`;
+    const body = `Hey — your scorecard from the round at ${latest.course} on ${new Date(latest.date).toLocaleDateString('en-GB')} is ready.\n\nFinal scores:\n${latest.players.map(p => `${p.name}: ${p.score}`).join('\n')}\n\n— The LDN GLF Club\nA movement for the next generation of golf.\nhttps://ldn-glf.vercel.app`;
+    window.location.href = `mailto:${emails.join(',')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ============ INIT ============
+  initSetup();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</body>
+</html>

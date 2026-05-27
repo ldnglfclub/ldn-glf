@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Member · The LDN GLF Club</title>
+<meta name="description" content="Your LDN GLF Club member dashboard.">
+<meta name="theme-color" content="#0B2118">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LDN GLF">
+<link rel="apple-touch-icon" href="logo-small.png">
+<link rel="icon" type="image/png" href="logo-small.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0B2118; --green-rich: #143425; --green-mid: #1F4A33;
+    --cream: #EFE5CC; --cream-warm: #E5D8B8; --ink: #050505;
+    --brass: #C9A86A; --hot: #E84D2C;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream); color: var(--green-deep);
+    font-family: 'Archivo', sans-serif; line-height: 1.4;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    padding-bottom: 80px;
+  }
+  ::selection { background: var(--green-deep); color: var(--cream); }
+
+  /* APP-STYLE HEADER */
+  .app-header {
+    background: var(--green-deep); color: var(--cream);
+    padding: env(safe-area-inset-top, 12px) 24px 16px;
+    padding-top: calc(env(safe-area-inset-top, 12px) + 16px);
+    position: sticky; top: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--green-mid);
+  }
+  .app-header-left { display: flex; align-items: center; gap: 12px; }
+  .app-header-logo {
+    height: 36px; width: auto;
+    filter: brightness(0) saturate(100%) invert(89%) sepia(13%) saturate(388%) hue-rotate(8deg) brightness(98%) contrast(89%);
+  }
+  .app-header-title {
+    font-family: 'Archivo Black', sans-serif; font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+  .app-header-title .accent { color: var(--brass); }
+  .menu-btn {
+    background: transparent; border: 1.5px solid var(--cream);
+    color: var(--cream); width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+  }
+  .menu-btn svg { width: 18px; height: 18px; }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    display: none; position: fixed; inset: 0;
+    background: var(--green-deep); z-index: 200;
+    flex-direction: column; padding: 80px 32px 32px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu-close {
+    position: absolute; top: 24px; right: 24px;
+    background: transparent; border: 2px solid var(--cream); color: var(--cream);
+    width: 44px; height: 44px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+  }
+  .mobile-menu-close svg { width: 20px; height: 20px; }
+  .mobile-menu a {
+    font-family: 'Anton', sans-serif; font-size: 36px;
+    color: var(--cream); text-decoration: none; text-transform: uppercase;
+    letter-spacing: -0.5px; padding: 16px 0;
+    border-bottom: 1px solid rgba(239, 229, 204, 0.15); display: block;
+  }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--hot); }
+
+  /* PROFILE HERO */
+  .profile-hero {
+    background: var(--green-deep); color: var(--cream);
+    padding: 32px 24px 48px;
+    position: relative; overflow: hidden;
+  }
+  .profile-hero::before {
+    content: 'LDN'; position: absolute;
+    top: 50%; right: -40px; transform: translateY(-50%);
+    font-family: 'Anton', sans-serif; font-size: 280px; line-height: 0.85;
+    color: rgba(201, 168, 106, 0.06); pointer-events: none; user-select: none;
+  }
+  .profile-stack { display: flex; gap: 20px; align-items: center; position: relative; z-index: 2; }
+  .profile-pic-wrap {
+    position: relative; flex-shrink: 0;
+  }
+  .profile-pic {
+    width: 96px; height: 96px; border-radius: 50%;
+    background: var(--green-mid); border: 2px solid var(--brass);
+    object-fit: cover; display: block;
+  }
+  .profile-pic-placeholder {
+    width: 96px; height: 96px; border-radius: 50%;
+    background: var(--green-mid); border: 2px solid var(--brass);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Anton', sans-serif; font-size: 36px; color: var(--brass);
+  }
+  .profile-pic-upload {
+    position: absolute; bottom: -2px; right: -2px;
+    width: 32px; height: 32px; background: var(--hot); color: var(--cream);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: 2px solid var(--green-deep);
+  }
+  .profile-pic-upload svg { width: 14px; height: 14px; }
+  .profile-pic-upload input { display: none; }
+
+  .profile-info { flex: 1; min-width: 0; }
+  .profile-label {
+    font-family: 'Archivo', sans-serif; font-size: 9px;
+    letter-spacing: 2px; color: var(--brass); text-transform: uppercase;
+    font-weight: 700; margin-bottom: 4px;
+  }
+  .profile-name {
+    font-family: 'Anton', sans-serif; font-size: 28px;
+    line-height: 1.05; text-transform: uppercase; letter-spacing: -0.5px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    word-break: break-word;
+  }
+  .profile-name .italic {
+    font-family: 'Instrument Serif', serif; font-style: italic;
+    font-weight: 400; letter-spacing: 0; color: var(--brass);
+  }
+  .profile-number {
+    font-family: 'Archivo', sans-serif; font-size: 12px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(239, 229, 204, 0.6);
+  }
+  .profile-number .num { color: var(--hot); font-family: 'Archivo Black', sans-serif; }
+
+  /* FRIEND CODE STRIP */
+  .friend-strip {
+    background: var(--green-rich); border-top: 1px solid var(--green-mid);
+    border-bottom: 1px solid var(--green-mid);
+    padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
+    gap: 16px;
+  }
+  .friend-code-block { flex: 1; min-width: 0; }
+  .friend-code-label {
+    font-family: 'Archivo', sans-serif; font-size: 9px; letter-spacing: 2px;
+    color: var(--brass); text-transform: uppercase; font-weight: 700; margin-bottom: 2px;
+  }
+  .friend-code {
+    font-family: 'Archivo Black', sans-serif; font-size: 18px;
+    letter-spacing: 2px; color: var(--cream);
+  }
+  .friend-copy {
+    background: var(--cream); color: var(--green-deep); border: none;
+    padding: 10px 16px; font-family: 'Archivo Black', sans-serif; font-size: 11px;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+    white-space: nowrap;
+  }
+  .friend-copy:active { background: var(--hot); color: var(--cream); }
+  .friend-copy.copied { background: var(--hot); color: var(--cream); }
+
+  /* QUICK ACTIONS */
+  .quick-actions {
+    padding: 24px;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+  }
+  .quick-action {
+    background: var(--green-deep); color: var(--cream);
+    padding: 20px 16px; text-decoration: none;
+    display: flex; flex-direction: column; gap: 8px;
+    border: 2px solid var(--green-deep); transition: all 0.2s ease;
+  }
+  .quick-action.hot { background: var(--hot); border-color: var(--hot); }
+  .quick-action:active { transform: scale(0.97); }
+  .quick-action .qa-icon {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .quick-action .qa-icon svg { width: 24px; height: 24px; }
+  .quick-action .qa-label {
+    font-family: 'Archivo Black', sans-serif; font-size: 12px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .quick-action .qa-sub {
+    font-family: 'Archivo', sans-serif; font-size: 11px;
+    opacity: 0.7;
+  }
+
+  /* SECTION */
+  .section { padding: 8px 24px 24px; }
+  .section-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Archivo Black', sans-serif; font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--green-deep);
+  }
+  .section-action {
+    font-family: 'Archivo', sans-serif; font-size: 11px;
+    color: var(--hot); text-decoration: none; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* STATS GRID */
+  .stats {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+  }
+  .stat {
+    background: var(--cream-warm); padding: 16px;
+    border: 1.5px solid var(--green-deep);
+  }
+  .stat-label {
+    font-family: 'Archivo', sans-serif; font-size: 9px;
+    letter-spacing: 1.5px; color: var(--green-rich);
+    text-transform: uppercase; font-weight: 700; margin-bottom: 6px;
+  }
+  .stat-value {
+    font-family: 'Anton', sans-serif; font-size: 36px;
+    line-height: 0.9; color: var(--green-deep); letter-spacing: -1px;
+  }
+  .stat-value .italic {
+    font-family: 'Instrument Serif', serif; font-style: italic;
+    color: var(--hot); font-weight: 400; letter-spacing: 0;
+  }
+  .stat-sub {
+    font-family: 'Archivo', sans-serif; font-size: 10px;
+    color: var(--green-rich); margin-top: 4px; letter-spacing: 0.5px;
+  }
+
+  /* RECENT ROUNDS */
+  .rounds-list { display: flex; flex-direction: column; gap: 8px; }
+  .round {
+    background: var(--cream-warm); padding: 16px;
+    border: 1.5px solid var(--green-deep);
+    display: flex; align-items: center; gap: 16px;
+    text-decoration: none; color: var(--green-deep);
+  }
+  .round-date {
+    background: var(--green-deep); color: var(--cream);
+    padding: 8px 10px; min-width: 56px; text-align: center;
+    border-right: 3px solid var(--brass);
+  }
+  .round-day {
+    font-family: 'Anton', sans-serif; font-size: 24px; line-height: 1;
+  }
+  .round-month {
+    font-family: 'Archivo', sans-serif; font-size: 9px;
+    letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px;
+  }
+  .round-body { flex: 1; min-width: 0; }
+  .round-course {
+    font-family: 'Archivo Black', sans-serif; font-size: 14px;
+    letter-spacing: 0.5px; margin-bottom: 4px;
+  }
+  .round-meta {
+    font-family: 'Archivo', sans-serif; font-size: 11px;
+    color: var(--green-rich); letter-spacing: 0.5px;
+  }
+  .round-score {
+    font-family: 'Anton', sans-serif; font-size: 32px;
+    color: var(--hot); line-height: 0.9;
+  }
+
+  .rounds-empty {
+    text-align: center; padding: 40px 24px;
+    background: var(--cream-warm); border: 1.5px dashed var(--green-rich);
+  }
+  .rounds-empty h3 {
+    font-family: 'Anton', sans-serif; font-size: 24px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .rounds-empty p {
+    font-family: 'Archivo', sans-serif; font-size: 14px;
+    color: var(--green-rich); margin-bottom: 16px;
+  }
+  .rounds-empty a {
+    display: inline-block;
+    background: var(--green-deep); color: var(--cream);
+    padding: 12px 20px; font-family: 'Archivo Black', sans-serif; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none;
+  }
+
+  /* EVENT BANNER */
+  .event-card {
+    background: var(--hot); color: var(--cream);
+    padding: 20px; position: relative; overflow: hidden;
+  }
+  .event-card::before {
+    content: '✦'; position: absolute; top: 12px; right: 16px;
+    font-size: 16px; color: rgba(239, 229, 204, 0.3);
+  }
+  .event-card .label {
+    font-family: 'Archivo Black', sans-serif; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px;
+    color: rgba(239, 229, 204, 0.8);
+  }
+  .event-card .title {
+    font-family: 'Anton', sans-serif; font-size: 26px;
+    line-height: 1; text-transform: uppercase; margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .event-card .title .italic {
+    font-family: 'Instrument Serif', serif; font-style: italic;
+    font-weight: 400; letter-spacing: 0;
+  }
+  .event-card .meta {
+    font-family: 'Archivo', sans-serif; font-size: 12px;
+    margin-bottom: 16px; opacity: 0.95;
+  }
+  .event-card .cta {
+    display: inline-block;
+    background: var(--cream); color: var(--hot);
+    padding: 10px 16px; font-family: 'Archivo Black', sans-serif; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none;
+  }
+
+  /* BOTTOM NAV (app feel) */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--green-deep); color: var(--cream);
+    padding: 12px 8px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0));
+    display: flex; justify-content: space-around;
+    border-top: 1px solid var(--green-mid); z-index: 90;
+  }
+  .bottom-nav a {
+    color: rgba(239, 229, 204, 0.5);
+    text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 4px 12px;
+  }
+  .bottom-nav a.active { color: var(--cream); }
+  .bottom-nav a svg { width: 22px; height: 22px; }
+  .bottom-nav a span {
+    font-family: 'Archivo', sans-serif; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
+  }
+
+  /* NAME EDIT MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(11, 33, 24, 0.85); z-index: 300;
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--cream); padding: 32px;
+    max-width: 360px; width: 100%;
+    border: 2px solid var(--green-deep);
+  }
+  .modal h3 {
+    font-family: 'Anton', sans-serif; font-size: 28px;
+    text-transform: uppercase; margin-bottom: 16px; letter-spacing: -0.5px;
+  }
+  .modal input {
+    width: 100%; background: var(--cream-warm);
+    border: 1.5px solid var(--green-deep); padding: 14px;
+    font-family: 'Archivo', sans-serif; font-size: 16px;
+    color: var(--green-deep); margin-bottom: 16px; outline: none;
+  }
+  .modal-actions { display: flex; gap: 8px; }
+  .modal-actions button {
+    flex: 1; padding: 14px; border: 2px solid var(--green-deep);
+    font-family: 'Archivo Black', sans-serif; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+  }
+  .modal-actions .save {
+    background: var(--green-deep); color: var(--cream);
+  }
+  .modal-actions .cancel {
+    background: transparent; color: var(--green-deep);
+  }
+
+  /* DESKTOP */
+  @media (min-width: 768px) {
+    body { padding-bottom: 0; max-width: 480px; margin: 0 auto; box-shadow: 0 0 40px rgba(11, 33, 24, 0.1); min-height: 100vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- APP HEADER -->
+<header class="app-header">
+  <div class="app-header-left">
+    <img src="logo.png" alt="LDN GLF Club" class="app-header-logo">
+    <div class="app-header-title">LDN GLF<span class="accent">.</span>CLUB</div>
+  </div>
+  <button class="menu-btn" onclick="document.getElementById('mobileMenu').classList.add('open')" aria-label="Menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="document.getElementById('mobileMenu').classList.remove('open')" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="index.html">Home</a>
+  <a href="member.html" class="active">My Club</a>
+  <a href="scorecard.html">Scorecard</a>
+  <a href="courses.html">Course Atlas</a>
+  <a href="code.html">Our Code</a>
+  <a href="parents.html">For Parents</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- PROFILE HERO -->
+<section class="profile-hero">
+  <div class="profile-stack">
+    <div class="profile-pic-wrap">
+      <div id="picContainer">
+        <div class="profile-pic-placeholder" id="picPlaceholder">DH</div>
+      </div>
+      <label class="profile-pic-upload" aria-label="Upload photo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <input type="file" accept="image/*" id="picInput">
+      </label>
+    </div>
+    <div class="profile-info">
+      <p class="profile-label">Founding Member</p>
+      <h1 class="profile-name" id="profileName" onclick="openNameModal()">Tap to set <span class="italic">your name</span></h1>
+      <p class="profile-number">Member <span class="num" id="memberNum">#001</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- FRIEND CODE STRIP -->
+<div class="friend-strip">
+  <div class="friend-code-block">
+    <div class="friend-code-label">✦ Your Friend Code</div>
+    <div class="friend-code" id="friendCode">LDN-001-XXXX</div>
+  </div>
+  <button class="friend-copy" id="copyBtn" onclick="copyCode()">Copy</button>
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="quick-actions">
+  <a href="scorecard.html" class="quick-action hot">
+    <div class="qa-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+    </div>
+    <div class="qa-label">New Round</div>
+    <div class="qa-sub">Start a scorecard</div>
+  </a>
+  <a href="courses.html" class="quick-action">
+    <div class="qa-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    </div>
+    <div class="qa-label">Course Atlas</div>
+    <div class="qa-sub">Find where to play</div>
+  </a>
+</div>
+
+<!-- STATS -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">✦ Your Stats</div>
+  </div>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Rounds Played</div>
+      <div class="stat-value" id="statRounds">0</div>
+      <div class="stat-sub">All time</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Best Score</div>
+      <div class="stat-value" id="statBest">—</div>
+      <div class="stat-sub">9 / 18 holes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Courses Played</div>
+      <div class="stat-value" id="statCourses">0</div>
+      <div class="stat-sub">From the Atlas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Mates Recruited</div>
+      <div class="stat-value">0</div>
+      <div class="stat-sub">Share your code</div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT EVENT -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">✦ Next Event</div>
+  </div>
+  <div class="event-card">
+    <div class="label">Parent &amp; Child Day</div>
+    <div class="title">Topgolf <span class="italic">Watford</span></div>
+    <div class="meta">Saturday 12 July · 10am · 14 spots left</div>
+    <a href="contact.html" class="cta">Reserve Spot →</a>
+  </div>
+</section>
+
+<!-- RECENT ROUNDS -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">✦ Recent Rounds</div>
+    <a href="scorecard.html" class="section-action">Log Round →</a>
+  </div>
+  <div id="roundsList"></div>
+</section>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="courses.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <span>Atlas</span>
+  </a>
+  <a href="scorecard.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span>Play</span>
+  </a>
+  <a href="member.html" class="active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Me</span>
+  </a>
+</nav>
+
+<!-- NAME MODAL -->
+<div class="modal-overlay" id="nameModal">
+  <div class="modal">
+    <h3>Your name</h3>
+    <input type="text" id="nameInput" placeholder="Dylan Heer" maxlength="40">
+    <div class="modal-actions">
+      <button class="cancel" onclick="closeNameModal()">Cancel</button>
+      <button class="save" onclick="saveName()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============ PROFILE STATE (saved to browser) ============
+  const PROFILE_KEY = 'ldn_glf_profile';
+  const ROUNDS_KEY = 'ldn_glf_rounds';
+
+  function getProfile() {
+    const stored = localStorage.getItem(PROFILE_KEY);
+    if (stored) return JSON.parse(stored);
+    // Generate fresh member
+    const memberNum = String(Math.floor(Math.random() * 100) + 1).padStart(3, '0');
+    const codeSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const profile = {
+      name: '',
+      memberNum: memberNum,
+      friendCode: 'LDN-' + memberNum + '-' + codeSuffix,
+      picData: null,
+      joinedAt: new Date().toISOString()
+    };
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+    return profile;
+  }
+
+  function saveProfile(p) {
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(p));
+  }
+
+  function getRounds() {
+    const stored = localStorage.getItem(ROUNDS_KEY);
+    return stored ? JSON.parse(stored) : [];
+  }
+
+  function renderProfile() {
+    const p = getProfile();
+    document.getElementById('profileName').innerHTML = p.name
+      ? p.name.replace(/^(\S+)\s+(.+)$/, '$1 <span class="italic">$2</span>')
+      : 'Tap to set <span class="italic">your name</span>';
+    document.getElementById('memberNum').textContent = '#' + p.memberNum;
+    document.getElementById('friendCode').textContent = p.friendCode;
+
+    const container = document.getElementById('picContainer');
+    if (p.picData) {
+      container.innerHTML = `<img src="${p.picData}" class="profile-pic" alt="Profile">`;
+    } else {
+      const initials = p.name
+        ? p.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+        : 'DH';
+      container.innerHTML = `<div class="profile-pic-placeholder">${initials}</div>`;
+    }
+  }
+
+  function renderStats() {
+    const rounds = getRounds();
+    document.getElementById('statRounds').textContent = rounds.length;
+
+    if (rounds.length > 0) {
+      const best = Math.min(...rounds.map(r => r.total));
+      document.getElementById('statBest').textContent = best;
+      const courses = new Set(rounds.map(r => r.course));
+      document.getElementById('statCourses').textContent = courses.size;
+    } else {
+      document.getElementById('statBest').innerHTML = '<span class="italic">—</span>';
+    }
+  }
+
+  function renderRounds() {
+    const rounds = getRounds().slice(0, 5);
+    const list = document.getElementById('roundsList');
+
+    if (rounds.length === 0) {
+      list.innerHTML = `
+        <div class="rounds-empty">
+          <h3>No rounds yet</h3>
+          <p>Start your first scorecard and it'll show up here.</p>
+          <a href="scorecard.html">Start Scoring →</a>
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = '<div class="rounds-list">' + rounds.map(r => {
+      const date = new Date(r.date);
+      const day = date.getDate();
+      const month = date.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase();
+      return `
+        <a href="scorecard.html?view=${r.id}" class="round">
+          <div class="round-date">
+            <div class="round-day">${day}</div>
+            <div class="round-month">${month}</div>
+          </div>
+          <div class="round-body">
+            <div class="round-course">${r.course}</div>
+            <div class="round-meta">${r.holes} holes · ${r.playerCount || 1} ${(r.playerCount || 1) === 1 ? 'player' : 'players'}</div>
+          </div>
+          <div class="round-score">${r.total}</div>
+        </a>
+      `;
+    }).join('') + '</div>';
+  }
+
+  // NAME MODAL
+  function openNameModal() {
+    const p = getProfile();
+    document.getElementById('nameInput').value = p.name;
+    document.getElementById('nameModal').classList.add('open');
+    setTimeout(() => document.getElementById('nameInput').focus(), 100);
+  }
+  function closeNameModal() {
+    document.getElementById('nameModal').classList.remove('open');
+  }
+  function saveName() {
+    const name = document.getElementById('nameInput').value.trim();
+    const p = getProfile();
+    p.name = name;
+    saveProfile(p);
+    renderProfile();
+    closeNameModal();
+  }
+
+  // PROFILE PICTURE UPLOAD
+  document.getElementById('picInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const p = getProfile();
+      p.picData = event.target.result;
+      saveProfile(p);
+      renderProfile();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // FRIEND CODE COPY
+  function copyCode() {
+    const code = document.getElementById('friendCode').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  // INIT
+  renderProfile();
+  renderStats();
+  renderRounds();
+</script>
+
+</body>
+</html>
