@@ -159,6 +159,134 @@
     }
     .ldn-modal-fineprint a { color: #E84D2C; text-decoration: none; font-weight: 700; }
 
+    /* Sign-in note has more body copy and a left-aligned warning tone */
+    .ldn-signin-note {
+      text-align: left;
+      background: rgba(232, 77, 44, 0.08);
+      border-left: 3px solid #E84D2C;
+      padding: 12px 14px;
+      border-radius: 6px;
+      opacity: 1;
+      margin-top: 14px;
+    }
+    .ldn-signin-note strong { color: #0B2118; }
+
+    /* Choice stack on landing */
+    .ldn-choice-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 22px 0 18px;
+    }
+    .ldn-choice-btn {
+      width: 100%;
+      border: 2px solid #0B2118;
+      background: transparent;
+      padding: 18px 20px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      text-align: left;
+      transition: all 0.18s;
+      font-family: 'Archivo', sans-serif;
+    }
+    .ldn-choice-btn.primary {
+      background: #0B2118;
+      color: #EFE5CC;
+      border-color: #0B2118;
+    }
+    .ldn-choice-btn.primary:hover {
+      background: #E84D2C;
+      border-color: #E84D2C;
+      transform: translateY(-2px);
+    }
+    .ldn-choice-btn.secondary {
+      background: transparent;
+      color: #0B2118;
+    }
+    .ldn-choice-btn.secondary:hover {
+      background: #0B2118;
+      color: #EFE5CC;
+      transform: translateY(-2px);
+    }
+    .ldn-choice-label {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 800;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.65;
+    }
+    .ldn-choice-btn.primary .ldn-choice-label { color: #C9A86A; opacity: 1; }
+    .ldn-choice-title {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+    .ldn-choice-meta {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: -0.3px;
+      opacity: 0.75;
+    }
+
+    /* Back arrow on signup/signin sub-views */
+    .ldn-back-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #1F4A33;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 8px 6px 0;
+      margin-bottom: 6px;
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .ldn-back-btn:hover { color: #E84D2C; }
+    .ldn-back-btn svg { width: 14px; height: 14px; }
+
+    /* Desktop nav: small text "Sign In" link to the LEFT of the Sign Up CTA */
+    .nav-signin-link {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+      color: #0B2118;
+      text-decoration: none;
+      margin-right: 16px;
+      padding: 6px 0;
+      transition: color 0.15s;
+      cursor: pointer;
+    }
+    .nav-signin-link:hover { color: #E84D2C; }
+
+    /* Mobile menu: Sign In button below the orange Sign Up button */
+    .ldnx-mobile-signin {
+      background: transparent;
+      color: #EFE5CC;
+      border: 1.5px solid #C9A86A;
+      padding: 12px 18px;
+      border-radius: 100px;
+      cursor: pointer;
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 8px;
+      transition: all 0.18s;
+    }
+    .ldnx-mobile-signin:hover { background: #C9A86A; color: #0B2118; }
+
     /* Welcome state (post-signup) */
     .ldn-welcome {
       text-align: center;
@@ -299,10 +427,33 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
 
-        <div id="ldnSignupForm">
+        <!-- LANDING: pick Sign Up or Sign In -->
+        <div id="ldnLanding">
+          <div class="ldn-modal-flag">✦ The Club</div>
+          <h2 class="ldn-modal-title" id="ldnModalTitle">Members <span class="italic">only.</span></h2>
+          <p class="ldn-modal-sub" id="ldnLandingSub">Sign up to unlock <strong>Scorecards, the Caddie and your member dashboard</strong>. Already a member? Sign in to restore your profile on this device.</p>
+          <div class="ldn-choice-stack">
+            <button class="ldn-choice-btn primary" onclick="LDN.showSignup()">
+              <span class="ldn-choice-label">New here?</span>
+              <span class="ldn-choice-title">Sign Up <span class="ldn-choice-meta">— Free, takes 30 sec</span></span>
+            </button>
+            <button class="ldn-choice-btn secondary" onclick="LDN.showSignin()">
+              <span class="ldn-choice-label">Returning member?</span>
+              <span class="ldn-choice-title">Sign In <span class="ldn-choice-meta">— Restore your profile</span></span>
+            </button>
+          </div>
+          <p class="ldn-modal-fineprint">By using LDN GLF Club you agree to <a href="legal.html">our terms &amp; privacy</a> and <a href="code.html">our code</a>.</p>
+        </div>
+
+        <!-- SIGNUP FORM -->
+        <div id="ldnSignupForm" style="display: none;">
+          <button class="ldn-back-btn" onclick="LDN.showLanding()" aria-label="Back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>Back</span>
+          </button>
           <div class="ldn-modal-flag">✦ Free · 100 Founding Members</div>
-          <h2 class="ldn-modal-title" id="ldnModalTitle">Become a <span class="italic">member.</span></h2>
-          <p class="ldn-modal-sub">Sign up to unlock <strong>Scorecards, the Caddie and your member dashboard</strong>. Membership is free for the first 100. No commitment, no card details.</p>
+          <h2 class="ldn-modal-title">Join the <span class="italic">club.</span></h2>
+          <p class="ldn-modal-sub">No card details. No commitment. Just your <strong>name, email and DOB</strong>.</p>
 
           <form id="ldnSignupFormEl" onsubmit="LDN.handleSignup(event)">
             <div class="ldn-field">
@@ -331,23 +482,58 @@
               <div class="ldn-field-hint">Got invited by a member? Paste their code.</div>
             </div>
             <button type="submit" class="ldn-submit">Join the Club →</button>
-            <p class="ldn-modal-fineprint">By joining you agree to <a href="legal.html">our terms &amp; privacy policy</a> and <a href="code.html">our code</a>.</p>
           </form>
         </div>
 
+        <!-- SIGN IN FORM -->
+        <div id="ldnSigninForm" style="display: none;">
+          <button class="ldn-back-btn" onclick="LDN.showLanding()" aria-label="Back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            <span>Back</span>
+          </button>
+          <div class="ldn-modal-flag">✦ Welcome back</div>
+          <h2 class="ldn-modal-title">Sign <span class="italic">in.</span></h2>
+          <p class="ldn-modal-sub">Restore your profile on this device. We'll need your <strong>email and either your member number or friend code</strong>.</p>
+
+          <form id="ldnSigninFormEl" onsubmit="LDN.handleSignin(event)">
+            <div class="ldn-field">
+              <label for="ldnSigninName">Your name</label>
+              <input type="text" id="ldnSigninName" required autocomplete="name" placeholder="As you registered">
+            </div>
+            <div class="ldn-field">
+              <label for="ldnSigninEmail">Email you signed up with</label>
+              <input type="email" id="ldnSigninEmail" required autocomplete="email" placeholder="you@email.com">
+            </div>
+            <div class="ldn-field">
+              <label for="ldnSigninIdentifier">Member number <em style="font-weight:500;text-transform:none;letter-spacing:0;opacity:0.6;">or</em> friend code</label>
+              <input type="text" id="ldnSigninIdentifier" required placeholder="e.g. 12  or  LDN-012-XY3K">
+              <div class="ldn-field-hint">Whichever you remember. Both work.</div>
+            </div>
+            <button type="submit" class="ldn-submit">Sign In →</button>
+            <p class="ldn-modal-fineprint ldn-signin-note">
+              <strong>Heads-up:</strong> we don't have a server yet — sign-in restores your profile on <em>this</em> device based on what you remember. A proper account system is coming soon. <br><br>
+              Forgot everything? <a href="#" onclick="LDN.showSignup(); return false;">Just sign up fresh</a> — we'll merge old &amp; new records when accounts are live.
+            </p>
+          </form>
+        </div>
+
+        <!-- WELCOME (post-signup) -->
         <div id="ldnWelcomeState" style="display: none;">
           <div class="ldn-welcome">
             <div class="ldn-welcome-tick">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <div class="ldn-modal-flag">✦ You're in.</div>
-            <h2 class="ldn-modal-title">Welcome to the <span class="italic">club.</span></h2>
+            <div class="ldn-modal-flag" id="ldnWelcomeFlag">✦ You're in.</div>
+            <h2 class="ldn-modal-title" id="ldnWelcomeTitle">Welcome to the <span class="italic">club.</span></h2>
           </div>
           <div style="background: #0B2118; color: #EFE5CC; border-radius: 14px; padding: 22px 20px; margin: 18px 0;">
             <div style="font-family: 'Archivo Black', sans-serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #C9A86A; margin-bottom: 6px;">Your member number</div>
             <div class="ldn-welcome-num" id="ldnWelcomeNum">#---</div>
             <div style="font-family: 'Archivo Black', sans-serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #C9A86A; margin: 14px 0 6px;">Your friend code</div>
             <div style="font-family: 'Archivo Black', sans-serif; font-size: 22px; color: #EFE5CC; letter-spacing: 1px;" id="ldnWelcomeCode">LDN-XXX-XXXX</div>
+            <div style="font-family: 'Archivo', sans-serif; font-size: 11px; color: rgba(239,229,204,0.65); margin-top: 10px; line-height: 1.5;">
+              Save these somewhere — you'll need them if you ever sign in on another device.
+            </div>
           </div>
           <button class="ldn-submit" onclick="LDN.completeSignup()">Continue →</button>
         </div>
@@ -381,6 +567,9 @@
 
     // Build account FAB if logged in
     renderAccountFab();
+
+    // Hide/swap signup CTAs based on auth state
+    refreshAuthVisibility();
 
     // Wire all "data-signup" triggers (any element with this attribute opens modal)
     document.querySelectorAll('[data-signup]').forEach(el => {
@@ -498,6 +687,60 @@
     });
   }
 
+  // ============ AUTH-AWARE UI VISIBILITY ============
+  // Hides signup CTAs when logged in. Swaps "Join the Club" buttons to "My Club".
+  // Adds a "Sign In" link next to signup CTAs for logged-out users.
+  function refreshAuthVisibility() {
+    const loggedIn = !!getMember();
+
+    // Top desktop nav-cta (Sign Up — Free) and mobile menu signup button
+    document.querySelectorAll('.nav-cta[data-signup], .ldnx-mobile-signup, [data-signup-cta]').forEach(el => {
+      if (loggedIn) {
+        el.style.display = 'none';
+      } else {
+        el.style.display = '';
+      }
+    });
+
+    // Any element with [data-signin-cta] — for explicit "Sign In" links
+    document.querySelectorAll('[data-signin-cta]').forEach(el => {
+      if (loggedIn) el.style.display = 'none';
+      else el.style.display = '';
+    });
+
+    // Add a sibling "Sign In" link next to every data-signup element (if not already there)
+    if (!loggedIn) {
+      document.querySelectorAll('.nav-cta[data-signup]').forEach(cta => {
+        if (cta.dataset.signinPaired === '1') return;
+        cta.dataset.signinPaired = '1';
+        const signin = document.createElement('a');
+        signin.href = '#';
+        signin.className = 'nav-signin-link';
+        signin.textContent = 'Sign In';
+        signin.setAttribute('data-signin-cta', '');
+        signin.addEventListener('click', (e) => { e.preventDefault(); LDN.openSignin(); });
+        cta.parentNode.insertBefore(signin, cta);
+      });
+      // Add a Sign In button below the mobile menu Sign Up button
+      document.querySelectorAll('.ldnx-mobile-signup').forEach(btn => {
+        if (btn.dataset.signinPaired === '1') return;
+        btn.dataset.signinPaired = '1';
+        const signin = document.createElement('button');
+        signin.className = 'ldnx-mobile-signin';
+        signin.textContent = 'Sign In — Already a member';
+        signin.setAttribute('data-signin-cta', '');
+        signin.addEventListener('click', () => {
+          document.getElementById('ldnxMobileMenu').classList.remove('open');
+          LDN.openSignin();
+        });
+        btn.parentNode.insertBefore(signin, btn.nextSibling);
+      });
+    } else {
+      // Remove any sign-in pairs that may exist (in case of dynamic state change)
+      document.querySelectorAll('[data-signin-cta]').forEach(el => el.remove());
+    }
+  }
+
   // ============ TOAST ============
   function showToast(msg) {
     const t = document.getElementById('ldnToast');
@@ -511,6 +754,22 @@
   let pendingReturnTo = null;
   let pendingLocked = false;
 
+  function setView(view) {
+    // view ∈ 'landing' | 'signup' | 'signin' | 'welcome'
+    const map = {
+      landing: 'ldnLanding',
+      signup: 'ldnSignupForm',
+      signin: 'ldnSigninForm',
+      welcome: 'ldnWelcomeState'
+    };
+    Object.values(map).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    const showEl = document.getElementById(map[view]);
+    if (showEl) showEl.style.display = 'block';
+  }
+
   window.LDN = {
     isMember: () => !!getMember(),
     getMember: getMember,
@@ -522,11 +781,18 @@
       const modal = document.getElementById('ldnSignupModal');
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
-      // Show form, hide welcome state
-      document.getElementById('ldnSignupForm').style.display = 'block';
-      document.getElementById('ldnWelcomeState').style.display = 'none';
-      // If locked, don't allow easy close — but we still expose close for accessibility
+      // Default opens to the landing chooser
+      // If caller wants to skip straight to a view (e.g. opts.view = 'signin'), honour it
+      setView(opts.view || 'landing');
     },
+
+    openSignin: function(opts) {
+      LDN.openSignup(Object.assign({}, opts || {}, { view: 'signin' }));
+    },
+
+    showLanding: function() { setView('landing'); },
+    showSignup:  function() { setView('signup'); },
+    showSignin:  function() { setView('signin'); },
 
     closeSignup: function() {
       const modal = document.getElementById('ldnSignupModal');
@@ -572,10 +838,62 @@
       } catch {}
 
       // Show welcome state
+      const flag = document.getElementById('ldnWelcomeFlag');
+      const title = document.getElementById('ldnWelcomeTitle');
+      if (flag) flag.innerHTML = '✦ You\'re in.';
+      if (title) title.innerHTML = 'Welcome to the <span class="italic">club.</span>';
       document.getElementById('ldnWelcomeNum').textContent = '#' + String(memberNum).padStart(3, '0');
       document.getElementById('ldnWelcomeCode').textContent = friendCode;
-      document.getElementById('ldnSignupForm').style.display = 'none';
-      document.getElementById('ldnWelcomeState').style.display = 'block';
+      setView('welcome');
+    },
+
+    handleSignin: function(e) {
+      e.preventDefault();
+      const name = document.getElementById('ldnSigninName').value.trim();
+      const email = document.getElementById('ldnSigninEmail').value.trim();
+      const ident = document.getElementById('ldnSigninIdentifier').value.trim().toUpperCase();
+
+      if (!name || !email || !ident) return;
+
+      // Parse identifier — either a member number ("12", "#012") or a friend code ("LDN-012-XY3K")
+      let memberNum = null;
+      let friendCode = null;
+
+      const fcMatch = ident.match(/^LDN-(\d{1,4})-[A-Z0-9]{4}$/);
+      if (fcMatch) {
+        memberNum = parseInt(fcMatch[1], 10);
+        friendCode = ident;
+      } else {
+        // Try as raw number
+        const cleaned = ident.replace(/[^0-9]/g, '');
+        if (cleaned) {
+          memberNum = parseInt(cleaned, 10);
+          friendCode = generateFriendCode(memberNum); // synthesise — they'll get this in their welcome
+        }
+      }
+
+      if (!memberNum || memberNum < 1) {
+        showToast('Member number looks wrong — try again');
+        return;
+      }
+
+      // Reconstruct profile from what they gave us
+      const member = {
+        name, email, dob: null, parentEmail: null, referrer: null,
+        memberNum, friendCode,
+        joinedAt: new Date().toISOString(),
+        restored: true  // flag so we know this came from sign-in, not fresh signup
+      };
+      saveMember(member);
+
+      // Show welcome state, tweak copy for sign-in
+      const flag = document.getElementById('ldnWelcomeFlag');
+      const title = document.getElementById('ldnWelcomeTitle');
+      if (flag) flag.innerHTML = '✦ Welcome back.';
+      if (title) title.innerHTML = 'Signed <span class="italic">in.</span>';
+      document.getElementById('ldnWelcomeNum').textContent = '#' + String(memberNum).padStart(3, '0');
+      document.getElementById('ldnWelcomeCode').textContent = friendCode;
+      setView('welcome');
     },
 
     completeSignup: function() {
@@ -584,6 +902,8 @@
       document.body.style.overflow = '';
       // Render the FAB
       renderAccountFab();
+      // Update visibility of signup CTAs across the page now that user is logged in
+      refreshAuthVisibility();
       // If they were trying to access a locked page, reload it so the page now shows
       if (pendingReturnTo) {
         const target = pendingReturnTo;
@@ -592,10 +912,8 @@
         window.location.href = target;
         return;
       }
-      // Otherwise just refresh the current page state
       pendingLocked = false;
       showToast('Welcome to the club ✦');
-      // Reload so locked-tab clicks now flow through
       setTimeout(() => window.location.reload(), 300);
     },
 
