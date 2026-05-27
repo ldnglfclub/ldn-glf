@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Parents — LDN GLF Club</title>
+<meta name="description" content="A safeguarded community for young golfers. What we stand for. How we protect members under 18.">
+<link rel="icon" type="image/png" href="logo-small.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root { --green-deep: #0B2118; --green-rich: #143425; --green-mid: #1F4A33; --cream: #EFE5CC; --cream-warm: #E5D8B8; --ink: #050505; --brass: #C9A86A; --hot: #E84D2C; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--green-deep); font-family: 'Archivo', sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  ::selection { background: var(--green-deep); color: var(--cream); }
+
+  .marquee { background: var(--green-deep); color: var(--cream); overflow: hidden; border-bottom: 1px solid var(--green-mid); padding: 10px 0; position: fixed; top: 0; left: 0; right: 0; z-index: 90; }
+  .marquee-track { display: flex; gap: 48px; white-space: nowrap; animation: scroll 35s linear infinite; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
+  .marquee-track span { display: flex; align-items: center; gap: 48px; }
+  .marquee-track span::after { content: '✦'; color: var(--brass); font-size: 9px; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  nav { position: fixed; top: 36px; left: 0; right: 0; z-index: 80; padding: 18px 32px; display: flex; justify-content: space-between; align-items: center; background: rgba(239, 229, 204, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(11, 33, 24, 0.1); }
+  .nav-logo { font-family: 'Archivo Black', sans-serif; font-size: 18px; letter-spacing: -0.5px; color: var(--green-deep); text-decoration: none; }
+  .nav-logo .accent { color: var(--hot); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1px; color: var(--green-deep); text-decoration: none; text-transform: uppercase; }
+  .nav-links a:hover, .nav-links a.active { color: var(--hot); }
+  .nav-cta { font-family: 'Archivo Black', sans-serif; font-size: 12px; letter-spacing: 1.5px; color: var(--cream); background: var(--green-deep); padding: 11px 22px; text-decoration: none; text-transform: uppercase; border: 2px solid var(--green-deep); }
+  .nav-cta:hover { background: var(--hot); border-color: var(--hot); }
+
+  .page-header { padding: 180px 32px 60px; text-align: center; }
+  .page-label { display: inline-flex; align-items: center; gap: 8px; background: var(--green-deep); color: var(--cream); padding: 6px 12px; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  .page-label .dot { width: 6px; height: 6px; background: var(--hot); border-radius: 50%; }
+  .page-header h1 { font-family: 'Anton', sans-serif; font-size: clamp(56px, 11vw, 160px); line-height: 0.9; color: var(--green-deep); text-transform: uppercase; letter-spacing: -2px; margin-bottom: 24px; }
+  .page-header h1 .italic { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: 0; }
+  .page-sub { font-family: 'Archivo', sans-serif; font-size: 18px; color: var(--green-deep); max-width: 720px; margin: 0 auto; line-height: 1.5; }
+
+  .section { padding: 80px 32px; }
+  .section-inner { max-width: 980px; margin: 0 auto; }
+  .section-inner.narrow { max-width: 760px; }
+  .section h2 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 6vw, 72px); line-height: 0.95; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 32px; }
+  .section h2 .italic { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--hot); font-weight: 400; letter-spacing: 0; }
+  .section p { font-family: 'Archivo', sans-serif; font-size: 17px; line-height: 1.7; color: var(--green-rich); margin-bottom: 20px; }
+  .section p:last-child { margin-bottom: 0; }
+  .section p strong { font-family: 'Archivo Black', sans-serif; color: var(--green-deep); }
+
+  .promises { background: var(--green-deep); color: var(--cream); }
+  .promises h2 { color: var(--cream); }
+  .promises p { color: rgba(239, 229, 204, 0.85); }
+  .promises h2 .italic { color: var(--brass); }
+
+  .promise-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; margin-top: 48px; }
+  .promise { padding: 28px; border: 1px solid rgba(239, 229, 204, 0.2); }
+  .promise-num { font-family: 'Anton', sans-serif; font-size: 48px; line-height: 0.9; color: var(--brass); margin-bottom: 16px; }
+  .promise h3 { font-family: 'Archivo Black', sans-serif; font-size: 16px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; color: var(--cream); }
+  .promise p { font-family: 'Archivo', sans-serif; font-size: 14px; line-height: 1.6; color: rgba(239, 229, 204, 0.8); margin: 0; }
+
+  .why { background: var(--cream-warm); }
+  .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; }
+  .why-item { padding: 24px; background: var(--cream); border-left: 4px solid var(--hot); }
+  .why-item h4 { font-family: 'Archivo Black', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; color: var(--green-deep); }
+  .why-item p { font-family: 'Archivo', sans-serif; font-size: 14px; line-height: 1.6; color: var(--green-rich); margin: 0; }
+
+  .contact-block { background: var(--hot); color: var(--cream); padding: 60px 32px; text-align: center; }
+  .contact-block h2 { font-family: 'Anton', sans-serif; font-size: clamp(36px, 6vw, 64px); text-transform: uppercase; margin-bottom: 20px; letter-spacing: -1px; }
+  .contact-block p { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 20px; max-width: 640px; margin: 0 auto 32px; }
+  .contact-block .email { display: inline-block; font-family: 'Archivo Black', sans-serif; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--hot); background: var(--cream); padding: 16px 36px; text-decoration: none; border: 2px solid var(--cream); }
+
+  footer { background: var(--ink); color: var(--cream); padding: 60px 32px 32px; }
+  .footer-inner { max-width: 1280px; margin: 0 auto; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-col h4 { font-family: 'Archivo Black', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--brass); text-transform: uppercase; margin-bottom: 20px; }
+  .footer-col p { font-family: 'Archivo', sans-serif; font-size: 14px; color: rgba(239, 229, 204, 0.65); line-height: 1.6; max-width: 320px; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 8px; }
+  .footer-col a { font-family: 'Archivo', sans-serif; font-size: 14px; color: rgba(239, 229, 204, 0.85); text-decoration: none; }
+  .footer-col a:hover { color: var(--hot); }
+  .footer-bottom { display: flex; justify-content: space-between; padding-top: 32px; border-top: 1px solid rgba(239, 229, 204, 0.1); font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: 1px; color: rgba(239, 229, 204, 0.4); text-transform: uppercase; }
+
+  @media (max-width: 900px) {
+    nav { padding: 14px 20px; top: 32px; } .nav-links { display: none; }
+    .page-header { padding: 140px 20px 50px; }
+    .section { padding: 60px 20px; }
+    .promise-grid, .why-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>FOR PARENTS</span><span>SAFEGUARDED COMMUNITY</span><span>WHY GOLF MATTERS</span><span>HOW WE PROTECT</span><span>FOR PARENTS</span><span>SAFEGUARDED COMMUNITY</span><span>WHY GOLF MATTERS</span><span>HOW WE PROTECT</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">LDN GLF<span class="accent">.</span>CLUB</a>
+  <ul class="nav-links">
+    <li><a href="courses.html">Course Atlas</a></li>
+    <li><a href="index.html#range">The Range</a></li>
+    <li><a href="code.html">Our Code</a></li>
+    <li><a href="parents.html" class="active">For Parents</a></li>
+  </ul>
+  <a href="index.html#club" class="nav-cta">Join the Club</a>
+</nav>
+
+<section class="page-header">
+  <div class="page-label"><span class="dot"></span>For Parents</div>
+  <h1>A safer place<br>to <span class="italic">love</span> golf.</h1>
+  <p class="page-sub">If your kid wants to join us, you should know exactly who we are, what we stand for, and how we'll look after them. No spin. Just the truth.</p>
+</section>
+
+<section class="section">
+  <div class="section-inner narrow">
+    <h2>Who we <span class="italic">are.</span></h2>
+    <p>The LDN GLF Club was founded in 2026 by <strong>Dylan</strong>, a London golfer who started playing at twelve. He loved the game but didn't see himself in the world around it — the clothes, the clubs, the gatekeeping. So he built something for kids like him.</p>
+    <p>Dylan is supported by a small adult team handling the boring-but-essential bits: business operations, safeguarding, financial admin, and compliance. The brand belongs to Dylan. The responsibility belongs to all of us.</p>
+    <p>We're a UK-registered business. All transactions, communications, and member data are handled by responsible adults under UK law.</p>
+  </div>
+</section>
+
+<section class="section promises">
+  <div class="section-inner">
+    <h2>Our promises <span class="italic">to</span> you.</h2>
+    <p>Six commitments we make to every parent whose kid joins the club.</p>
+
+    <div class="promise-grid">
+
+      <div class="promise">
+        <div class="promise-num">01</div>
+        <h3>No personal data sold. Ever.</h3>
+        <p>We don't sell, rent, or share your child's email, name, or any personal data with third parties for marketing. Full stop. (See our Privacy Policy.)</p>
+      </div>
+
+      <div class="promise">
+        <div class="promise-num">02</div>
+        <h3>Age-appropriate everything.</h3>
+        <p>Content, language, products, partner venues — all reviewed against an under-18 lens. We will never promote alcohol, gambling, or adult content to members.</p>
+      </div>
+
+      <div class="promise">
+        <div class="promise-num">03</div>
+        <h3>Moderated community.</h3>
+        <p>If the club introduces a group chat or social feed, an adult on the team will be present, behaviour will be monitored, and our Code (no racism, no bullying, no harassment) will be enforced.</p>
+      </div>
+
+      <div class="promise">
+        <div class="promise-num">04</div>
+        <h3>Easy off-ramp.</h3>
+        <p>One email to us deletes the entire account, removes the member from any chats, and erases personal data within 30 days. No friction, no questions, no upsells.</p>
+      </div>
+
+      <div class="promise">
+        <div class="promise-num">05</div>
+        <h3>Transparent finances.</h3>
+        <p>Membership is free. If we ever introduce paid tiers or product purchases, prices will be clear and parental consent will be required for any under-16 transaction.</p>
+      </div>
+
+      <div class="promise">
+        <div class="promise-num">06</div>
+        <h3>A real human to talk to.</h3>
+        <p>If something goes wrong — a comment in a chat, a concern about an interaction, anything — you can email us and get a response from a real adult within 48 hours.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section why">
+  <div class="section-inner">
+    <h2>Why golf is <span class="italic">good</span> for young people.</h2>
+    <p>It's not just our opinion. Sport England, the R&amp;A, and decades of research agree: golf is one of the most under-rated youth sports.</p>
+
+    <div class="why-grid">
+      <div class="why-item">
+        <h4>Mental health</h4>
+        <p>Four hours outdoors, walking, focused on something that isn't a screen. Golf is one of the few sports young people can do at their own pace, on their own terms, with their own thoughts.</p>
+      </div>
+      <div class="why-item">
+        <h4>Honesty &amp; integrity</h4>
+        <p>Golf is the only sport where you call your own penalties. Kids who play golf learn to be honest even when nobody's watching — a real-world skill that matters far beyond the course.</p>
+      </div>
+      <div class="why-item">
+        <h4>Resilience</h4>
+        <p>You can hit a perfect shot, then a terrible one, then have to focus on the next. Learning to handle the swing between confidence and frustration is one of golf's quiet gifts.</p>
+      </div>
+      <div class="why-item">
+        <h4>Intergenerational</h4>
+        <p>Golf is one of the only sports a 12-year-old can play with a 60-year-old, equally. The relationships built on a course often last decades.</p>
+      </div>
+      <div class="why-item">
+        <h4>Focus &amp; patience</h4>
+        <p>In a world built for instant gratification, golf demands the opposite: hours of practice, slow improvement, no shortcuts. That patience compounds.</p>
+      </div>
+      <div class="why-item">
+        <h4>Outdoors, low-cost, year-round</h4>
+        <p>Modern golf doesn't require a country club membership. Driving ranges, pitch-and-putt, par 3s — there are dozens of affordable, welcoming places listed in our Course Atlas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-inner narrow">
+    <h2>Safeguarding <span class="italic">our way.</span></h2>
+    <p><strong>1. Adult-led operations.</strong> Although Dylan is the founder and creative lead, all business-critical functions — accounts, payments, contracts, partnerships, safeguarding response — are handled by named adults on the team.</p>
+    <p><strong>2. Verified age on signup.</strong> Members under 13 require parental email confirmation before their account is activated. We follow the UK Age Appropriate Design Code (Children's Code).</p>
+    <p><strong>3. No private DMs between adults and minors.</strong> If we introduce in-app messaging, communication between the team and under-18 members happens in moderated channels visible to multiple adults.</p>
+    <p><strong>4. Clear reporting routes.</strong> Every page on the site has a contact link. Any member or parent can flag concerns directly to the safeguarding lead.</p>
+    <p><strong>5. Annual training.</strong> All adults handling member data or running events complete safeguarding training annually.</p>
+    <p><strong>6. Partner vetting.</strong> Any venue we partner with for events or discounts is checked for its own youth policies. We won't partner with venues that exclude or harass young players.</p>
+  </div>
+</section>
+
+<section class="contact-block">
+  <h2>Got a question?</h2>
+  <p>Anything — about Dylan, about safeguarding, about a specific event, about what your kid's joining. Real reply within 48 hours.</p>
+  <a class="email" href="contact.html">Contact Us →</a>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>The Club</h4>
+        <p>London's golf club for the next generation. Founded 2026 by Dylan Heer.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Course Atlas</a></li>
+          <li><a href="index.html#story">Story</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Standards</h4>
+        <ul>
+          <li><a href="code.html">Our Code</a></li>
+          <li><a href="parents.html">For Parents</a></li>
+          <li><a href="legal.html">Legal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="contact.html">Get in Touch</a></li>
+          <li><a href="index.html#club">Membership</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 LDN GLF Club · All rights reserved</div>
+      <div>Made in London</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

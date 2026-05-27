@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Code — LDN GLF Club</title>
+<meta name="description" content="What we stand for. What we don't tolerate. The rules of the club, on and off the course.">
+<link rel="icon" type="image/png" href="logo-small.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0B2118; --green-rich: #143425; --green-mid: #1F4A33;
+    --cream: #EFE5CC; --cream-warm: #E5D8B8; --ink: #050505;
+    --brass: #C9A86A; --hot: #E84D2C;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--green-deep); font-family: 'Archivo', sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  ::selection { background: var(--green-deep); color: var(--cream); }
+
+  .marquee { background: var(--green-deep); color: var(--cream); overflow: hidden; border-bottom: 1px solid var(--green-mid); padding: 10px 0; position: fixed; top: 0; left: 0; right: 0; z-index: 90; }
+  .marquee-track { display: flex; gap: 48px; white-space: nowrap; animation: scroll 35s linear infinite; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
+  .marquee-track span { display: flex; align-items: center; gap: 48px; }
+  .marquee-track span::after { content: '✦'; color: var(--brass); font-size: 9px; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  nav { position: fixed; top: 36px; left: 0; right: 0; z-index: 80; padding: 18px 32px; display: flex; justify-content: space-between; align-items: center; background: rgba(239, 229, 204, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(11, 33, 24, 0.1); }
+  .nav-logo { font-family: 'Archivo Black', sans-serif; font-size: 18px; letter-spacing: -0.5px; color: var(--green-deep); text-decoration: none; }
+  .nav-logo .accent { color: var(--hot); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 1px; color: var(--green-deep); text-decoration: none; text-transform: uppercase; }
+  .nav-links a:hover, .nav-links a.active { color: var(--hot); }
+  .nav-cta { font-family: 'Archivo Black', sans-serif; font-size: 12px; letter-spacing: 1.5px; color: var(--cream); background: var(--green-deep); padding: 11px 22px; text-decoration: none; text-transform: uppercase; border: 2px solid var(--green-deep); }
+  .nav-cta:hover { background: var(--hot); border-color: var(--hot); }
+
+  .page-header { padding: 180px 32px 60px; text-align: center; }
+  .page-label { display: inline-flex; align-items: center; gap: 8px; background: var(--green-deep); color: var(--cream); padding: 6px 12px; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 28px; }
+  .page-label .dot { width: 6px; height: 6px; background: var(--hot); border-radius: 50%; }
+  .page-header h1 { font-family: 'Anton', sans-serif; font-size: clamp(56px, 11vw, 160px); line-height: 0.9; color: var(--green-deep); text-transform: uppercase; letter-spacing: -2px; margin-bottom: 24px; }
+  .page-header h1 .italic { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: 0; }
+  .page-sub { font-family: 'Archivo', sans-serif; font-size: 18px; color: var(--green-deep); max-width: 640px; margin: 0 auto; line-height: 1.5; }
+
+  .intro { padding: 0 32px 80px; max-width: 760px; margin: 0 auto; text-align: center; }
+  .intro p { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 24px; color: var(--green-rich); line-height: 1.5; }
+
+  .rules { background: var(--green-deep); color: var(--cream); padding: 100px 32px; }
+  .rules-inner { max-width: 1100px; margin: 0 auto; }
+  .rules-label { font-family: 'Archivo', sans-serif; font-size: 11px; letter-spacing: 4px; color: var(--brass); text-transform: uppercase; font-weight: 700; margin-bottom: 16px; text-align: center; }
+  .rules-title { font-family: 'Anton', sans-serif; font-size: clamp(40px, 7vw, 88px); line-height: 0.95; text-align: center; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 64px; }
+  .rules-title .italic { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--brass); font-weight: 400; letter-spacing: 0; }
+
+  .rule-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .rule { padding: 28px; border: 1px solid rgba(239, 229, 204, 0.2); position: relative; }
+  .rule-num { font-family: 'Anton', sans-serif; font-size: 48px; line-height: 0.9; color: var(--hot); margin-bottom: 16px; }
+  .rule h3 { font-family: 'Archivo Black', sans-serif; font-size: 16px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .rule p { font-family: 'Archivo', sans-serif; font-size: 15px; line-height: 1.65; color: rgba(239, 229, 204, 0.85); }
+
+  .etiquette { padding: 100px 32px; }
+  .etiquette-inner { max-width: 1100px; margin: 0 auto; }
+  .etiquette h2 { font-family: 'Anton', sans-serif; font-size: clamp(40px, 7vw, 88px); line-height: 0.95; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 48px; text-align: center; }
+  .etiquette h2 .italic { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--hot); font-weight: 400; letter-spacing: 0; }
+
+  .etq-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .etq-item { background: var(--cream-warm); padding: 24px; border-left: 4px solid var(--green-deep); }
+  .etq-item h4 { font-family: 'Archivo Black', sans-serif; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; color: var(--green-deep); }
+  .etq-item p { font-family: 'Archivo', sans-serif; font-size: 14px; line-height: 1.6; color: var(--green-rich); }
+  .etq-item.no { border-left-color: var(--hot); }
+  .etq-item.no h4 { color: var(--hot); }
+
+  .pledge { background: var(--hot); color: var(--cream); padding: 100px 32px; text-align: center; }
+  .pledge h2 { font-family: 'Anton', sans-serif; font-size: clamp(40px, 7vw, 96px); line-height: 0.95; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 32px; }
+  .pledge p { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 22px; max-width: 720px; margin: 0 auto 20px; line-height: 1.5; }
+  .pledge .sig { margin-top: 32px; font-family: 'Instrument Serif', serif; font-style: italic; font-size: 24px; color: var(--cream); }
+
+  footer { background: var(--ink); color: var(--cream); padding: 60px 32px 32px; }
+  .footer-inner { max-width: 1280px; margin: 0 auto; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-col h4 { font-family: 'Archivo Black', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--brass); text-transform: uppercase; margin-bottom: 20px; }
+  .footer-col p { font-family: 'Archivo', sans-serif; font-size: 14px; color: rgba(239, 229, 204, 0.65); line-height: 1.6; max-width: 320px; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 8px; }
+  .footer-col a { font-family: 'Archivo', sans-serif; font-size: 14px; color: rgba(239, 229, 204, 0.85); text-decoration: none; }
+  .footer-col a:hover { color: var(--hot); }
+  .footer-bottom { display: flex; justify-content: space-between; padding-top: 32px; border-top: 1px solid rgba(239, 229, 204, 0.1); font-family: 'Archivo', sans-serif; font-size: 12px; letter-spacing: 1px; color: rgba(239, 229, 204, 0.4); text-transform: uppercase; }
+
+  @media (max-width: 900px) {
+    nav { padding: 14px 20px; top: 32px; } .nav-links { display: none; }
+    .page-header { padding: 140px 20px 50px; }
+    .intro, .rules, .etiquette, .pledge { padding-left: 20px; padding-right: 20px; }
+    .rule-grid, .etq-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>OUR CODE</span><span>RESPECT THE GAME</span><span>RESPECT EACH OTHER</span><span>NO RACISM</span><span>NO BULLYING</span><span>NO EXCEPTIONS</span><span>OUR CODE</span><span>RESPECT THE GAME</span><span>RESPECT EACH OTHER</span><span>NO RACISM</span><span>NO BULLYING</span><span>NO EXCEPTIONS</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">LDN GLF<span class="accent">.</span>CLUB</a>
+  <ul class="nav-links">
+    <li><a href="courses.html">Course Atlas</a></li>
+    <li><a href="index.html#range">The Range</a></li>
+    <li><a href="code.html" class="active">Our Code</a></li>
+    <li><a href="parents.html">For Parents</a></li>
+  </ul>
+  <a href="index.html#club" class="nav-cta">Join the Club</a>
+</nav>
+
+<section class="page-header">
+  <div class="page-label"><span class="dot"></span>Our Code</div>
+  <h1>What we<br><span class="italic">stand</span> for.</h1>
+  <p class="page-sub">Joining the club means signing onto something. These aren't suggestions — they're the rules of being here.</p>
+</section>
+
+<section class="intro">
+  <p>"Golf taught us patience, focus, honesty, and how to lose well. We owe the game back by being the kind of players, friends, and people that make it better than we found it."</p>
+</section>
+
+<section class="rules">
+  <div class="rules-inner">
+    <p class="rules-label">✦ The Six Rules ✦</p>
+    <h2 class="rules-title">The <span class="italic">non-negotiables.</span></h2>
+    <div class="rule-grid">
+
+      <div class="rule">
+        <div class="rule-num">01</div>
+        <h3>No racism. Ever.</h3>
+        <p>Golf has a long history of excluding people based on race. We're the opposite. If you make a racist comment, joke, or post — on the course, on the app, in the group chat — your membership ends. No warnings. No second chances.</p>
+      </div>
+
+      <div class="rule">
+        <div class="rule-num">02</div>
+        <h3>Equality is the standard.</h3>
+        <p>Anyone can play this game. We support golfers regardless of gender, sexuality, religion, ability, or background. Our junior coaching, our drops, our app, our content — everything is built with that in mind.</p>
+      </div>
+
+      <div class="rule">
+        <div class="rule-num">03</div>
+        <h3>Bullying is the worst miss.</h3>
+        <p>Tearing down your mate over a bad shot, hyping a pile-on, calling someone out for their swing — none of that lives here. If you see it, call it out. If you do it, take time off the club. We have each other's backs.</p>
+      </div>
+
+      <div class="rule">
+        <div class="rule-num">04</div>
+        <h3>Mental health matters.</h3>
+        <p>The course is a place to clear your head, not lose it. If you're struggling — with school, friends, family, anything — talking to someone is a strength. The club isn't a therapist, but we'll always point you to people who can help. (Childline 0800 1111 if you need someone right now.)</p>
+      </div>
+
+      <div class="rule">
+        <div class="rule-num">05</div>
+        <h3>Respect the course, the staff, the game.</h3>
+        <p>Repair your pitch marks. Rake the bunker. Don't be rude to the starter. Don't slam clubs. Don't ghost a tee time. The people who run these places work hard so we get to play. Treat them right.</p>
+      </div>
+
+      <div class="rule">
+        <div class="rule-num">06</div>
+        <h3>Be a good ambassador.</h3>
+        <p>When you're wearing the kit, you're representing the club. When you're in the app talking to other members, you're representing the club. When other young golfers see you — at the range, on the course, online — what they see should make them want in. Carry that weight well.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="etiquette">
+  <div class="etiquette-inner">
+    <h2>Course <span class="italic">etiquette,</span><br>fast version.</h2>
+    <div class="etq-grid">
+
+      <div class="etq-item">
+        <h4>DO · Pace of play</h4>
+        <p>Keep up with the group in front. If you're holding people up, wave them through. Ready golf — hit when you're ready, not strictly furthest from the hole.</p>
+      </div>
+
+      <div class="etq-item no">
+        <h4>DON'T · Slow play</h4>
+        <p>Don't take three practice swings on every shot. Don't ride out 80-yard chip walks. Don't make the group behind wait.</p>
+      </div>
+
+      <div class="etq-item">
+        <h4>DO · Repair the course</h4>
+        <p>Fix your pitch marks on the green. Rake the bunker after you. Replace divots on the fairway or sand them in.</p>
+      </div>
+
+      <div class="etq-item no">
+        <h4>DON'T · Talk during swings</h4>
+        <p>When someone's over the ball, stay still and silent. No phones ringing, no chat. Wait until contact's made.</p>
+      </div>
+
+      <div class="etq-item">
+        <h4>DO · Phones on silent</h4>
+        <p>You can use it for GPS, score, photos. Silent ringer, no speaker music — unless everyone's into it and there's nobody else around.</p>
+      </div>
+
+      <div class="etq-item no">
+        <h4>DON'T · Throw clubs</h4>
+        <p>Bad shot? Tough. Throwing or slamming a club is the most amateur move there is, gets you removed from clubs, and ruins it for everyone watching.</p>
+      </div>
+
+      <div class="etq-item">
+        <h4>DO · Call your own penalties</h4>
+        <p>Golf is the only sport where you call your own fouls. Hit it in the trees? Take the drop properly. Whiffed a swing? Count it. Honesty is the whole game.</p>
+      </div>
+
+      <div class="etq-item no">
+        <h4>DON'T · Cheat on the scorecard</h4>
+        <p>Adding a mulligan when nobody's looking, fudging the count — there's no point. The number is for you. Get it right.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="pledge">
+  <h2>The pledge.</h2>
+  <p>"I join the LDN GLF Club not just as a customer, but as part of a community. I'll respect the game, the people around me, and the standards we've agreed on together. I'll stand up for my mates, call out behaviour that doesn't belong, and represent this club like I mean it. Because we don't just play — we set the tone."</p>
+  <p class="sig">— Signed by every member, on the way in.</p>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>The Club</h4>
+        <p>London's golf club for the next generation. Founded 2026 by Dylan Heer.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Course Atlas</a></li>
+          <li><a href="index.html#story">Story</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Standards</h4>
+        <ul>
+          <li><a href="code.html">Our Code</a></li>
+          <li><a href="parents.html">For Parents</a></li>
+          <li><a href="legal.html">Legal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="contact.html">Get in Touch</a></li>
+          <li><a href="index.html#club">Membership</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 LDN GLF Club · All rights reserved</div>
+      <div>Made in London</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

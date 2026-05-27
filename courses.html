@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Course Atlas — LDN GLF Club</title>
+<meta name="description" content="Greater London's top 20 places to play golf. Youth-friendly. Real prices. Real ratings. Your digital caddie.">
+<link rel="icon" type="image/png" href="logo-small.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #0B2118;
+    --green-rich: #143425;
+    --green-mid: #1F4A33;
+    --cream: #EFE5CC;
+    --cream-warm: #E5D8B8;
+    --ink: #050505;
+    --brass: #C9A86A;
+    --hot: #E84D2C;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--green-deep);
+    font-family: 'Archivo', sans-serif;
+    font-weight: 400;
+    line-height: 1.4;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--green-deep); color: var(--cream); }
+
+  /* MARQUEE */
+  .marquee {
+    background: var(--green-deep);
+    color: var(--cream);
+    overflow: hidden;
+    border-bottom: 1px solid var(--green-mid);
+    padding: 10px 0;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 90;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 48px;
+    white-space: nowrap;
+    animation: scroll 35s linear infinite;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .marquee-track span { display: flex; align-items: center; gap: 48px; }
+  .marquee-track span::after { content: '✦'; color: var(--brass); font-size: 9px; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 36px; left: 0; right: 0;
+    z-index: 80;
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(239, 229, 204, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(11, 33, 24, 0.1);
+  }
+  .nav-logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    color: var(--green-deep);
+    text-decoration: none;
+  }
+  .nav-logo .accent { color: var(--hot); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-family: 'Archivo', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--green-deep);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { color: var(--hot); }
+  .nav-links a.active { color: var(--hot); }
+  .nav-cta {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--cream);
+    background: var(--green-deep);
+    padding: 11px 22px;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: 2px solid var(--green-deep);
+  }
+  .nav-cta:hover { background: var(--hot); border-color: var(--hot); }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 180px 32px 60px;
+    text-align: center;
+    border-bottom: 1px solid rgba(11, 33, 24, 0.15);
+  }
+  .page-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 6px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .page-label .dot { width: 6px; height: 6px; background: var(--hot); border-radius: 50%; }
+  .page-header h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(56px, 11vw, 160px);
+    line-height: 0.9;
+    color: var(--green-deep);
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+  }
+  .page-header h1 .italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .page-sub {
+    font-family: 'Archivo', sans-serif;
+    font-size: 18px;
+    color: var(--green-deep);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* FILTER BAR */
+  .filters {
+    position: sticky;
+    top: 88px;
+    z-index: 60;
+    background: var(--cream);
+    padding: 20px 32px;
+    border-bottom: 1px solid rgba(11, 33, 24, 0.1);
+  }
+  .filters-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .filter-chip {
+    background: transparent;
+    border: 1.5px solid var(--green-deep);
+    color: var(--green-deep);
+    padding: 8px 16px;
+    font-family: 'Archivo', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .filter-chip:hover { background: var(--green-deep); color: var(--cream); }
+  .filter-chip.active { background: var(--green-deep); color: var(--cream); }
+  .filter-chip.hot.active { background: var(--hot); border-color: var(--hot); }
+
+  /* COURSE GRID */
+  .courses-section { padding: 60px 32px 120px; }
+  .courses-inner { max-width: 1280px; margin: 0 auto; }
+  .result-count {
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    color: var(--green-deep);
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .result-count strong { color: var(--hot); font-family: 'Archivo Black', sans-serif; }
+
+  .course-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .course-card {
+    background: var(--cream-warm);
+    border: 1.5px solid var(--green-deep);
+    padding: 28px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0 var(--green-deep);
+  }
+
+  .card-num {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-family: 'Anton', sans-serif;
+    font-size: 48px;
+    color: var(--brass);
+    line-height: 0.9;
+    opacity: 0.7;
+  }
+
+  .card-type {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--hot);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 36px;
+    line-height: 0.95;
+    color: var(--green-deep);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+    padding-right: 48px;
+  }
+  .card-location {
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    color: var(--green-rich);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .card-location .dist {
+    color: var(--green-deep);
+    font-weight: 700;
+  }
+
+  .card-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 8px 12px;
+    background: var(--green-deep);
+    color: var(--cream);
+    width: fit-content;
+  }
+  .card-rating .stars {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    color: var(--brass);
+    letter-spacing: 1px;
+  }
+  .card-rating .score {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+  }
+  .card-rating .source {
+    font-family: 'Archivo', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .tag {
+    font-family: 'Archivo', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--green-deep);
+    color: var(--green-deep);
+  }
+  .tag.youth {
+    background: var(--green-deep);
+    color: var(--cream-warm);
+    border-color: var(--green-deep);
+  }
+  .tag.partner {
+    background: var(--hot);
+    color: var(--cream);
+    border-color: var(--hot);
+  }
+  .tag.cheap { background: var(--brass); color: var(--green-deep); border-color: var(--brass); }
+
+  .card-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(11, 33, 24, 0.2);
+    border-bottom: 1px solid rgba(11, 33, 24, 0.2);
+  }
+  .info-block .label {
+    font-family: 'Archivo', sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green-rich);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .info-block .value {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 15px;
+    color: var(--green-deep);
+    line-height: 1.2;
+  }
+
+  .card-caddie {
+    background: var(--cream);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border-left: 3px solid var(--hot);
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--green-deep);
+    font-style: italic;
+  }
+  .card-caddie .label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--hot);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-style: normal;
+    display: block;
+  }
+
+  .card-discount {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-discount .badge {
+    background: var(--hot);
+    color: var(--cream);
+    padding: 3px 7px;
+    font-size: 9px;
+  }
+
+  .card-cta {
+    margin-top: auto;
+    display: flex;
+    gap: 8px;
+  }
+  .btn-book {
+    flex: 1;
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 14px;
+    text-align: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 2px solid var(--green-deep);
+    transition: all 0.2s;
+  }
+  .btn-book:hover { background: var(--hot); border-color: var(--hot); }
+  .btn-info {
+    background: transparent;
+    color: var(--green-deep);
+    padding: 14px 18px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 2px solid var(--green-deep);
+    cursor: pointer;
+  }
+  .btn-info:hover { background: var(--green-deep); color: var(--cream); }
+
+  /* CTA SECTION */
+  .cta-strip {
+    background: var(--green-deep);
+    color: var(--cream);
+    padding: 80px 32px;
+    text-align: center;
+  }
+  .cta-strip h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(40px, 7vw, 96px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  .cta-strip h2 .italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--brass);
+    letter-spacing: 0;
+  }
+  .cta-strip p {
+    font-family: 'Archivo', sans-serif;
+    font-size: 17px;
+    max-width: 540px;
+    margin: 0 auto 32px;
+    opacity: 0.85;
+  }
+  .cta-strip a {
+    display: inline-block;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green-deep);
+    background: var(--cream);
+    padding: 16px 36px;
+    text-decoration: none;
+    border: 2px solid var(--cream);
+  }
+  .cta-strip a:hover { background: var(--hot); border-color: var(--hot); color: var(--cream); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 60px 32px 32px;
+  }
+  .footer-inner { max-width: 1280px; margin: 0 auto; }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-col h4 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--brass);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .footer-col p {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    color: rgba(239, 229, 204, 0.65);
+    line-height: 1.6;
+    max-width: 320px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 8px; }
+  .footer-col a {
+    font-family: 'Archivo', sans-serif;
+    font-size: 14px;
+    color: rgba(239, 229, 204, 0.85);
+    text-decoration: none;
+  }
+  .footer-col a:hover { color: var(--hot); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 32px;
+    border-top: 1px solid rgba(239, 229, 204, 0.1);
+    font-family: 'Archivo', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: rgba(239, 229, 204, 0.4);
+    text-transform: uppercase;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 14px 20px; top: 32px; }
+    .nav-links { display: none; }
+    .page-header { padding: 140px 20px 50px; }
+    .filters { padding: 16px 20px; top: 80px; }
+    .courses-section { padding: 40px 20px 80px; }
+    .course-grid { grid-template-columns: 1fr; gap: 16px; }
+    .course-card { padding: 24px 20px; }
+    .card-name { font-size: 28px; padding-right: 40px; }
+    .card-num { font-size: 36px; top: 20px; right: 20px; }
+    .card-info { grid-template-columns: 1fr; gap: 12px; }
+    .cta-strip { padding: 60px 20px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>THE COURSE ATLAS</span><span>20 PLACES TO PLAY</span><span>GREATER LONDON</span><span>MEMBER DISCOUNTS COMING</span><span>YOUR DIGITAL CADDIE</span><span>THE COURSE ATLAS</span><span>20 PLACES TO PLAY</span><span>GREATER LONDON</span><span>MEMBER DISCOUNTS COMING</span><span>YOUR DIGITAL CADDIE</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">LDN GLF<span class="accent">.</span>CLUB</a>
+  <ul class="nav-links">
+    <li><a href="courses.html" class="active">Course Atlas</a></li>
+    <li><a href="index.html#range">The Range</a></li>
+    <li><a href="code.html">Our Code</a></li>
+    <li><a href="parents.html">For Parents</a></li>
+  </ul>
+  <a href="index.html#club" class="nav-cta">Join the Club</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="page-label"><span class="dot"></span>The Course Atlas · Greater London</div>
+  <h1>20 places<br>to <span class="italic">play.</span></h1>
+  <p class="page-sub">Curated by us, for you. Real prices. Real ratings from real golfers. Where to go, what to expect, what it costs. Think of it as your digital caddie before you even leave the house.</p>
+</section>
+
+<!-- FILTERS -->
+<div class="filters">
+  <div class="filters-inner">
+    <button class="filter-chip active" data-filter="all">All Venues</button>
+    <button class="filter-chip hot" data-filter="youth">Youth Welcome</button>
+    <button class="filter-chip" data-filter="cheap">Under £20</button>
+    <button class="filter-chip" data-filter="range">Driving Ranges</button>
+    <button class="filter-chip" data-filter="course">Full Courses</button>
+    <button class="filter-chip" data-filter="par3">Par 3 / 9 Holes</button>
+    <button class="filter-chip" data-filter="crazy">Crazy / Mini Golf</button>
+    <button class="filter-chip" data-filter="indoor">Indoor</button>
+    <button class="filter-chip" data-filter="beginner">Beginner Friendly</button>
+  </div>
+</div>
+
+<!-- COURSE GRID -->
+<section class="courses-section">
+  <div class="courses-inner">
+    <p class="result-count">Showing <strong id="count">20</strong> venues across Greater London</p>
+    <div class="course-grid" id="grid">
+      <!-- Course cards injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <h2>Save 10% at <span class="italic">partner</span> venues.</h2>
+  <p>We're partnering with venues across Greater London to give founding members a real discount. Join the club, get the card, save on every round.</p>
+  <a href="index.html#club">Join the Club →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>The Club</h4>
+        <p>London's golf club for the next generation. Founded 2026 by Dylan Heer.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Course Atlas</a></li>
+          <li><a href="index.html#range">The Range</a></li>
+          <li><a href="index.html#story">Story</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Standards</h4>
+        <ul>
+          <li><a href="code.html">Our Code</a></li>
+          <li><a href="parents.html">For Parents</a></li>
+          <li><a href="legal.html">Legal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="contact.html">Get in Touch</a></li>
+          <li><a href="index.html#club">Membership</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 LDN GLF Club · All rights reserved</div>
+      <div>Made in London</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const VENUES = [
+  {
+    id: 1, name: "Topgolf Watford", type: "Range + Entertainment",
+    location: "Bushey Mill Lane, Watford", distance: "Greater London · NW",
+    rating: 4.4, source: "Google · 8,400+ reviews",
+    holes: "Range + 18-hole Adventure Golf",
+    price: "From £8 / game",
+    youth: "U16s welcome until 8pm",
+    dress: "Casual — anything goes",
+    food: "Full restaurant & bar",
+    tags: ["youth", "range", "indoor", "beginner"],
+    caddie: "The most chilled intro to golf in London. Eat-Drink-Play deal £16 for juniors Mon-Thu. No booking needed if under 4 players. Kids' menu free in school holidays. Heated bays in winter.",
+    partner: false,
+    book: "https://topgolf.com/uk/watford/"
+  },
+  {
+    id: 2, name: "Richmond Park GC", type: "Two Full 18-Hole Courses + Par 3",
+    location: "Roehampton, SW15", distance: "Greater London · SW",
+    rating: 4.3, source: "Google · 1,200+ reviews",
+    holes: "Two 18-hole + 9-hole Par 3 + Range",
+    price: "From £14 (junior weekday)",
+    youth: "Junior memberships available",
+    dress: "Smart casual — no jeans, collared shirts",
+    food: "Clubhouse bar & restaurant",
+    tags: ["youth", "course", "par3", "beginner"],
+    caddie: "London's largest public golf complex inside the Royal Park. Prince's course is friendlier for beginners; Duke's tests every club in the bag. Junior rates make this one of the best value full-course experiences inside zone 3.",
+    partner: false,
+    book: "https://www.richmondparkgolf.co.uk/"
+  },
+  {
+    id: 3, name: "Greenwich Peninsula Range", type: "Driving Range",
+    location: "John Harrison Way, SE10", distance: "Greater London · SE",
+    rating: 4.5, source: "Google · 2,100+ reviews",
+    holes: "60-bay floodlit range",
+    price: "From £14 / bay",
+    youth: "All ages welcome",
+    dress: "Casual",
+    food: "Café & bar on site",
+    tags: ["youth", "range", "cheap", "beginner"],
+    caddie: "Riverside swing with the Thames behind you. 60 bays, sofas, tables for your mates to watch. PGA pros on site for lessons. Best vibe of any London range — easy to book on the app.",
+    partner: true,
+    book: "https://www.greenwichpeninsulagolfrange.com/"
+  },
+  {
+    id: 4, name: "Swingers West End", type: "Crazy Golf",
+    location: "8 Brown Hart Gardens, W1K", distance: "Greater London · Central",
+    rating: 4.6, source: "Google · 6,500+ reviews",
+    holes: "Two 9-hole crazy golf courses",
+    price: "From £12 / round",
+    youth: "U18s welcome daily before 6pm (not Saturdays)",
+    dress: "Anything — actively encouraged to dress fun",
+    food: "Street food, cocktails, mocktails",
+    tags: ["youth", "crazy", "indoor"],
+    caddie: "Crazy golf done properly. Two themed 9-hole courses, mocktails for the under 18s, food worth going for alone. New family hours mean you can play here every day before 6pm. Pricey but worth it for a birthday.",
+    partner: false,
+    book: "https://www.swingers.club/uk/"
+  },
+  {
+    id: 5, name: "Puttshack Watford", type: "Tech-Powered Mini Golf",
+    location: "5 Charter Place, Watford", distance: "Greater London · NW",
+    rating: 4.4, source: "Google · 1,800+ reviews",
+    holes: "Four 9-hole courses, smart-scoring",
+    price: "From £11 / game (£1 off online)",
+    youth: "U18s welcome until 7pm; U12s with adult",
+    dress: "Casual",
+    food: "Full menu, mocktails",
+    tags: ["youth", "crazy", "indoor", "beginner"],
+    caddie: "Mini golf but the balls track themselves. Points mean prizes — free cocktails for adults, free games for kids. Student deal Mon-Wed: buy one get one free. The most fun you can have indoors.",
+    partner: false,
+    book: "https://www.puttshack.com/uk/locations/watford/"
+  },
+  {
+    id: 6, name: "World of Golf — New Malden", type: "Range + Mini Golf",
+    location: "Beverley Way, New Malden, KT3", distance: "Greater London · SW",
+    rating: 4.3, source: "Google · 3,200+ reviews",
+    holes: "60-bay range + mini golf",
+    price: "From £13 / bay (unlimited balls)",
+    youth: "Family-friendly, all ages",
+    dress: "Casual",
+    food: "Costa coffee, clean facilities",
+    tags: ["youth", "range", "beginner", "indoor"],
+    caddie: "60 floodlit bays with Toptracer tech on every one — your shots get tracked like a tour pro. Free beginner lessons. Dinosaur statues on the way in. American Golf store next door for kit.",
+    partner: false,
+    book: "https://www.worldofgolflondon.co.uk/"
+  },
+  {
+    id: 7, name: "Metro Golf Centre", type: "Range + 9-Hole Course",
+    location: "Barnet Lane, Barnet", distance: "Greater London · N",
+    rating: 4.2, source: "Google · 950+ reviews",
+    holes: "48-bay range + 9-hole par 3",
+    price: "From £6 / 50 balls",
+    youth: "Junior programmes available",
+    dress: "Casual on range, smart on course",
+    food: "Metro Italia café on site",
+    tags: ["youth", "range", "cheap", "par3", "beginner"],
+    caddie: "Solid all-rounder. Two-tiered 48-bay heated range plus a proper 9-hole par 3 with no holes longer than 130 yards — ideal first course experience. Italian café is way better than your average range food.",
+    partner: false,
+    book: "https://www.metrogolfcentre.co.uk/"
+  },
+  {
+    id: 8, name: "Dukes Meadows Golf", type: "Range + 9-Hole Course",
+    location: "Dan Mason Drive, W4", distance: "Greater London · W",
+    rating: 4.3, source: "Google · 1,100+ reviews",
+    holes: "50-bay floodlit range + 9-hole",
+    price: "From £10 / 60 balls",
+    youth: "Junior coaching available",
+    dress: "Casual",
+    food: "Café + restaurant",
+    tags: ["youth", "range", "par3", "beginner"],
+    caddie: "Riverside spot in Chiswick. 50 floodlit bays so you can swing late, and a 9-hole course for when you're ready. Also does tennis, skiing and snowboarding — random but fun.",
+    partner: false,
+    book: "https://www.dukesmeadowsgolf.com/"
+  },
+  {
+    id: 9, name: "Playgolf London", type: "Range + Par 3 Course",
+    location: "Beach Road, Northwick Park, HA1", distance: "Greater London · NW",
+    rating: 4.2, source: "Google · 700+ reviews",
+    holes: "Range + 9-hole Par 3",
+    price: "From £8 / bucket",
+    youth: "Junior welcome — no handicap needed",
+    dress: "Relaxed — 'sensible attire'",
+    food: "Café & bar",
+    tags: ["youth", "range", "par3", "cheap", "beginner"],
+    caddie: "Their slogan is literally 'have fun'. Dress code is the most relaxed in London. The 9-hole par 3 is designed as a tribute to famous Ryder Cup holes — punches above its weight.",
+    partner: false,
+    book: "https://www.playgolf-london.com/"
+  },
+  {
+    id: 10, name: "BigShots Golf Northwick Park", type: "Tech Driving Range",
+    location: "Watford Road, HA1", distance: "Greater London · NW",
+    rating: 4.4, source: "Google · 1,400+ reviews",
+    holes: "56-bay heated, TrackMan in every bay",
+    price: "From £15 / bay",
+    youth: "All ages welcome",
+    dress: "Casual",
+    food: "Full menu & bar",
+    tags: ["youth", "range", "indoor", "beginner"],
+    caddie: "Every bay has free TrackMan — pro-level swing analysis you'd usually pay £100/hour for. Game modes turn practice into competition. Best for nerding out on your numbers.",
+    partner: false,
+    book: "https://www.bigshotsgolf.co.uk/northwick-park/"
+  },
+  {
+    id: 11, name: "The Shire London", type: "Full 36-Hole Course + Range",
+    location: "Barnet Lane, EN5", distance: "Greater London · N",
+    rating: 4.6, source: "Google · 2,800+ reviews",
+    holes: "18 + 9 + 6-hole short course + range",
+    price: "From £25 (junior weekday)",
+    youth: "Junior memberships + academy",
+    dress: "Smart — collared shirt, no jeans",
+    food: "Restaurant, bar, clubhouse",
+    tags: ["course", "youth", "beginner"],
+    caddie: "Seve Ballesteros designed it. The 6-hole short course is genuinely the best beginner-to-intermediate transition in Greater London. Junior academy is highly rated. Worth the train out.",
+    partner: false,
+    book: "https://www.theshirelondon.com/"
+  },
+  {
+    id: 12, name: "Beckenham Place Golf", type: "9-Hole Public Course",
+    location: "Beckenham Hill Road, BR3", distance: "Greater London · SE",
+    rating: 4.1, source: "Google · 800+ reviews",
+    holes: "9-hole parkland",
+    price: "From £8 (junior 9 holes)",
+    youth: "Open to all, walk-up welcome",
+    dress: "Casual",
+    food: "Café in mansion clubhouse",
+    tags: ["youth", "course", "cheap", "beginner"],
+    caddie: "Council-run, walk-up friendly, in a gorgeous historic park. Cheapest 9 holes inside zone 4 with a real course feel. No dress code drama. Bring your own clubs or hire on site.",
+    partner: false,
+    book: "https://www.beckenhamplacegolf.com/"
+  },
+  {
+    id: 13, name: "Pitch City Indoor Golf", type: "Indoor Simulator",
+    location: "Leadenhall, EC3", distance: "Greater London · Central",
+    rating: 4.8, source: "Google · 100+ reviews",
+    holes: "Indoor simulators (Pebble, St Andrews, etc.)",
+    price: "From £30 / hour (group)",
+    youth: "All ages with adult",
+    dress: "Whatever",
+    food: "Bar + small plates",
+    tags: ["indoor", "beginner", "course"],
+    caddie: "Play Augusta after school. Indoor simulators with the world's most famous courses pre-loaded. Better with mates than solo. City location means it's a great post-school spot if your dad works near Bank.",
+    partner: false,
+    book: "https://www.pitchcity.co.uk/"
+  },
+  {
+    id: 14, name: "Urban Golf — Soho", type: "Indoor Simulator",
+    location: "Smith's Court, W1D", distance: "Greater London · Central",
+    rating: 4.5, source: "Google · 500+ reviews",
+    holes: "Indoor simulators",
+    price: "From £35 / hour",
+    youth: "U18s welcome with adult before 7pm",
+    dress: "Casual",
+    food: "Full bar, food",
+    tags: ["indoor", "course"],
+    caddie: "Soho golf. Premium indoor sim, hidden basement vibe, fun for a birthday or after-school session. Slightly pricier than Pitch City but the location adds drama.",
+    partner: false,
+    book: "https://urbangolf.co.uk/"
+  },
+  {
+    id: 15, name: "Brent Valley GC", type: "18-Hole Public Course",
+    location: "Hanwell, W7", distance: "Greater London · W",
+    rating: 4.0, source: "Google · 450+ reviews",
+    holes: "18-hole parkland",
+    price: "From £18 (junior)",
+    youth: "Junior section, coaching available",
+    dress: "Smart casual",
+    food: "Bar in clubhouse",
+    tags: ["youth", "course", "beginner"],
+    caddie: "Wide fairways = beginner forgiveness. Elizabeth line gets you to Hanwell in 25 mins from central. Free car park if you register your plate at the shop — they fine you £100 if you don't, so don't forget.",
+    partner: false,
+    book: "https://www.brentvalleygolfcourse.co.uk/"
+  },
+  {
+    id: 16, name: "Plonk Crazy Golf — Borough", type: "Crazy Golf",
+    location: "5 Glasshill St, SE1", distance: "Greater London · Central",
+    rating: 4.5, source: "Google · 1,600+ reviews",
+    holes: "9-hole themed crazy golf",
+    price: "From £9 / round",
+    youth: "Family-friendly daytime",
+    dress: "Anything",
+    food: "Cocktails + small plates",
+    tags: ["youth", "crazy", "indoor", "cheap"],
+    caddie: "Subterranean 9-holer under London Bridge arches with mini London landmarks as obstacles. Cheaper than Swingers, smaller, more intimate. Walk-up friendly midweek.",
+    partner: false,
+    book: "https://plonkgolf.co.uk/"
+  },
+  {
+    id: 17, name: "Putt in the Park — Battersea", type: "Mini Golf (Outdoor)",
+    location: "Albert Bridge Road, SW11", distance: "Greater London · SW",
+    rating: 4.3, source: "Google · 2,400+ reviews",
+    holes: "18-hole outdoor mini golf",
+    price: "From £9 / round",
+    youth: "Family-first",
+    dress: "Anything",
+    food: "Café in the park",
+    tags: ["youth", "crazy", "cheap", "beginner"],
+    caddie: "Riverside Battersea Park mini golf. Outdoor course so it's weather dependent but on a good day this is the move. Tag a coffee at the café after. Walk to Battersea Power Station.",
+    partner: false,
+    book: "https://www.puttinthepark.com/"
+  },
+  {
+    id: 18, name: "Lee Valley Golf", type: "Range + 18-Hole Course",
+    location: "Picketts Lock, N9", distance: "Greater London · NE",
+    rating: 4.0, source: "Google · 1,300+ reviews",
+    holes: "18-hole + 30-bay range",
+    price: "From £12 (junior 9 holes)",
+    youth: "Junior memberships, coaching",
+    dress: "Smart casual on course",
+    food: "Café + bar",
+    tags: ["youth", "course", "range", "cheap", "beginner"],
+    caddie: "Solid North London option. Floodlit range means you can swing after school in winter. The course is forgiving — wide fairways and not too punishing. Strong junior coaching programme.",
+    partner: false,
+    book: "https://leevalleygolf.club/"
+  },
+  {
+    id: 19, name: "Trent Park Golf", type: "Range + 18-Hole Course",
+    location: "Bramley Road, N14", distance: "Greater London · N",
+    rating: 4.2, source: "Google · 1,000+ reviews",
+    holes: "18-hole parkland + range",
+    price: "From £15 (junior)",
+    youth: "Junior welcome — academy on site",
+    dress: "Collared shirt required on course",
+    food: "Café + clubhouse bar",
+    tags: ["youth", "course", "range", "beginner"],
+    caddie: "Big parkland course in Cockfosters with proper academy facilities. Range is well-kept. Junior academy is one of the best run in north London. Easy on the Piccadilly line.",
+    partner: false,
+    book: "https://www.trentparkgolf.co.uk/"
+  },
+  {
+    id: 20, name: "Mile End — Sutton Common", type: "Pitch & Putt",
+    location: "Multiple London Boroughs", distance: "Greater London · Various",
+    rating: 3.9, source: "Council facilities",
+    holes: "Various 9-hole pitch & putt",
+    price: "From £5 / round",
+    youth: "Walk-up, all ages",
+    dress: "Anything",
+    food: "Bring your own",
+    tags: ["youth", "cheap", "par3", "beginner"],
+    caddie: "The hidden gem of London golf — council-run pitch & putt courses scattered across boroughs. Cheapest way to actually play 'a course'. Hackney Marshes, Sutton, Lee Valley all worth checking. Bring your own clubs.",
+    partner: false,
+    book: "#"
+  }
+];
+
+function star(rating) {
+  const full = Math.floor(rating);
+  const half = rating - full >= 0.5;
+  let s = '';
+  for (let i = 0; i < full; i++) s += '★';
+  if (half) s += '⯨';
+  while (s.length < 5) s += '☆';
+  return s.substring(0, 5);
+}
+
+function render(filter = 'all') {
+  const grid = document.getElementById('grid');
+  const filtered = filter === 'all' ? VENUES : VENUES.filter(v => v.tags.includes(filter));
+
+  document.getElementById('count').textContent = filtered.length;
+
+  grid.innerHTML = filtered.map((v, i) => {
+    const tags = v.tags.map(t => {
+      const labels = {
+        youth: 'Youth Welcome', cheap: 'Under £20', range: 'Range',
+        course: 'Full Course', par3: 'Par 3', crazy: 'Crazy Golf',
+        indoor: 'Indoor', beginner: 'Beginner OK'
+      };
+      const cls = t === 'youth' ? 'youth' : (t === 'cheap' ? 'cheap' : '');
+      return `<span class="tag ${cls}">${labels[t] || t}</span>`;
+    }).join('');
+
+    return `
+      <article class="course-card">
+        <div class="card-num">${String(v.id).padStart(2, '0')}</div>
+        <div class="card-type">${v.type}</div>
+        <h2 class="card-name">${v.name}</h2>
+        <p class="card-location"><span class="dist">${v.distance}</span> · ${v.location}</p>
+
+        <div class="card-rating">
+          <span class="stars">${star(v.rating)}</span>
+          <span class="score">${v.rating.toFixed(1)}</span>
+          <span class="source">${v.source}</span>
+        </div>
+
+        <div class="card-tags">${tags}${v.partner ? '<span class="tag partner">LDN GLF Partner</span>' : ''}</div>
+
+        <div class="card-info">
+          <div class="info-block"><div class="label">Holes / Type</div><div class="value">${v.holes}</div></div>
+          <div class="info-block"><div class="label">Price From</div><div class="value">${v.price}</div></div>
+          <div class="info-block"><div class="label">Youth Policy</div><div class="value">${v.youth}</div></div>
+          <div class="info-block"><div class="label">Dress Code</div><div class="value">${v.dress}</div></div>
+        </div>
+
+        <div class="card-caddie">
+          <span class="label">✦ The Caddie Says</span>
+          ${v.caddie}
+        </div>
+
+        ${v.partner ? '<div class="card-discount"><span class="badge">10% OFF</span> LDN GLF Member Discount Available</div>' : ''}
+
+        <div class="card-cta">
+          <a class="btn-book" href="${v.book}" target="_blank" rel="noopener">Book →</a>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    render(chip.dataset.filter);
+  });
+});
+
+render();
+</script>
+
+</body>
+</html>
