@@ -482,6 +482,18 @@
     .signup { flex-direction: column; }
     .signup button { padding: 16px; }
   }
+
+  .menu-btn { display: none; background: var(--green-deep); color: var(--cream); border: 2px solid var(--green-deep); width: 44px; height: 44px; cursor: pointer; padding: 0; align-items: center; justify-content: center; }
+  .menu-btn svg { width: 20px; height: 20px; }
+  .mobile-menu { display: none; position: fixed; inset: 0; background: var(--green-deep); z-index: 200; flex-direction: column; padding: 80px 32px 32px; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu-close { position: absolute; top: 24px; right: 24px; background: transparent; border: 2px solid var(--cream); color: var(--cream); width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+  .mobile-menu-close svg { width: 20px; height: 20px; }
+  .mobile-menu a { font-family: 'Anton', sans-serif; font-size: 36px; color: var(--cream); text-decoration: none; text-transform: uppercase; letter-spacing: -0.5px; padding: 16px 0; border-bottom: 1px solid rgba(239, 229, 204, 0.15); display: block; }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--hot); }
+  .mobile-menu .menu-cta { font-family: 'Archivo Black', sans-serif; font-size: 14px; letter-spacing: 1.5px; background: var(--hot); padding: 18px; text-align: center; margin-top: 32px; border: 2px solid var(--hot); }
+  @media (max-width: 900px) { .menu-btn { display: flex; } .nav-cta { display: none; } }
+
 </style>
 </head>
 <body>
@@ -494,6 +506,19 @@
 </div>
 
 <!-- NAV -->
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" onclick="document.getElementById('mobileMenu').classList.remove('open')" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="index.html">Home</a>
+  <a href="courses.html">Course Atlas</a>
+  <a href="code.html">Our Code</a>
+  <a href="parents.html">For Parents</a>
+  <a href="contact.html">Contact</a>
+  <a href="index.html#club" class="menu-cta">Join the Movement →</a>
+</div>
+
 <nav>
   <a href="index.html" class="nav-logo">LDN GLF<span class="accent">.</span>CLUB</a>
   <ul class="nav-links">
@@ -503,6 +528,9 @@
     <li><a href="#story">The Story</a></li>
   </ul>
   <a href="#join" class="nav-cta">Join the Movement</a>
+  <button class="menu-btn" onclick="document.getElementById('mobileMenu').classList.add('open')" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
 </nav>
 
 <!-- HERO -->
